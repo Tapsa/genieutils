@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -88,7 +88,11 @@ unsigned char* DrsFile::getWavPtr(uint32_t id)
   {
     wav_file_.clear();
     getIStream()->seekg(std::streampos(i->second));
+#ifndef NDEBUG
     uint32_t type = read<uint32_t>();
+#else // Avoid -Wunused-value
+    read<uint32_t>();
+#endif
     uint32_t size = read<uint32_t>();
 #ifndef NDEBUG
     log.debug("WAV [%u], type [%X], size [%u]", id, type, size);

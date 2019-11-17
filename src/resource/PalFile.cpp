@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2018  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -119,8 +120,17 @@ void PalFile::serializeObject(void)
       *istr >> color_in;
       colors_[i].b = color_in;
       
+      // Be naughty and assume 1024 has alpha in it.
+      if (1024 == num_colors_)
+      {
+        *istr >> color_in;
+        colors_[i].a = color_in;
+      }
+      else
+      {
       colors_[i].a = 255;  //transparency off
     }
+  }
   }
   else
   {
@@ -185,7 +195,4 @@ size_t PalFile::objectSize(void)
   return size;
 }
 
-
 }
-
-

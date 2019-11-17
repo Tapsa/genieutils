@@ -107,12 +107,18 @@ void TerrainBlock::serializeObject(void)
   std::cout << "Terrains: " << Terrains.size() << std::endl;
 
   if (gv < GV_AoEB)
+  {
     serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
+  }
+  if (gv < GV_C9 || gv > GV_LatestDE2)
+  {
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-  serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
+    serializeSub<TerrainBorder>(TerrainBorders, 16);
 
   // Probably filled after loading map in game.
   serialize<int32_t>(MapRowOffset);
+  }
+
   if (gv >= GV_AoKA)
   {
     serialize<float>(MapMinX);
@@ -163,11 +169,14 @@ void TerrainBlock::serializeObject(void)
   serialize<int8_t>(FogFlag); // Always 1
 
 //From here on data is filled in game anyway.
+  if (gv < GV_C9 || gv > GV_LatestDE2)
+  {
 //There are two 32-bit pointers random map and game world, rest should be all 0.
   serialize<int8_t>(SomeBytes, getBytesSize());
 
   // Few pointers and small numbers.
   serialize<int32_t>(SomeInt32, getSomethingSize());
+}
 }
 
 //------------------------------------------------------------------------------

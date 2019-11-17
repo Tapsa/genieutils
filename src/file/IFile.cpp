@@ -53,7 +53,7 @@ const char *IFile::getFileName(void) const
 }
 
 //------------------------------------------------------------------------------
-void IFile::load(void)
+void IFile::load()
 {
   if (fileName_.empty())
     throw std::ios_base::failure("Load: File name not set");
@@ -83,7 +83,7 @@ void IFile::load(const char *fileName)
 }
 
 //------------------------------------------------------------------------------
-void IFile::save(void)
+void IFile::save(void )
 {
   if (fileName_.empty())
     throw std::ios_base::failure("Save: File name not set");

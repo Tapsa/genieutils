@@ -52,7 +52,7 @@ void Sound::serializeObject(void)
   if (gv >= GV_TEST)
   {
     serialize<int32_t>(CacheTime);
-    if (gv >= GV_T8 && gv <= GV_LatestTap)
+    if (gv >= GV_T8 && gv <= GV_LatestTap || gv >= GV_C11 && gv <= GV_LatestDE2)
       serialize<int16_t>(TotalProbability);
   }
 

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2018  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -58,7 +58,7 @@ void Unit::serializeObject(void)
   if (gv < GV_AoEB && isOperation(OP_READ)) Type *= 10;
 
   uint16_t name_len;
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
     serializeSize<uint16_t>(name_len, Name);
   serialize<int16_t>(ID);
   serialize<uint16_t>(LanguageDLLName);
@@ -79,7 +79,7 @@ void Unit::serializeObject(void)
   if (gv >= GV_AoKE3)
     serialize<int16_t>(DamageSound);
   serialize<int16_t>(DeadUnitID);
-  if (gv >= GV_T6 && gv <= GV_LatestTap)
+  if (gv >= GV_T6 && gv <= GV_LatestTap || gv >= GV_C7 && gv <= GV_LatestDE2)
     serialize<int16_t>(BloodUnitID);
   serialize<int8_t>(SortNumber);
   serialize<int8_t>(CanBeBuiltOn);
@@ -144,6 +144,15 @@ void Unit::serializeObject(void)
     serialize<float>(OutlineSize.x);
     serialize<float>(OutlineSize.y);
     serialize<float>(OutlineSize.z);
+
+    if (gv >= GV_CK && gv <= GV_LatestDE2)
+    {
+      // This data is for scenario triggers.
+      uint32_t data = -2;
+      serialize<uint32_t>(data);
+      data = 0;
+      serialize<uint32_t>(data);
+    }
   }
 
   serializeSub<ResourceStorage>(ResourceStorages, 3);
@@ -154,10 +163,17 @@ void Unit::serializeObject(void)
 
   serialize<int16_t>(SelectionSound);
   serialize<int16_t>(DyingSound);
+  if (gv >= GV_C4 && gv <= GV_LatestDE2)
+  {
+    serialize<uint32_t>(WwiseTrainSoundID);
+    serialize<uint32_t>(WwiseDamageSoundID);
+    serialize<uint32_t>(WwiseSelectionSoundID);
+    serialize<uint32_t>(WwiseDyingSoundID);
+  }
   serialize<int8_t>(OldAttackReaction);
   serialize<int8_t>(ConvertTerrain);
 
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
   {
     serialize(Name, name_len);
 
