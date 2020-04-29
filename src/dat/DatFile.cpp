@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ namespace genie
 
 float ISerializable::dat_internal_ver = 0.f;
 GameVersion GV_LatestTap = GV_T8;
-GameVersion GV_LatestDE2 = GV_C14;
+GameVersion GV_LatestDE2 = GV_C15;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() : compressor_(this)
@@ -93,7 +93,9 @@ void DatFile::serializeObject(void)
   // Handle all different versions while in development.
   if(getGameVersion() == GV_C2) // 5.8
   {
-    if("VER 7.1" == FileVersion)
+    if("VER 7.2" == FileVersion)
+      setGameVersion(GV_C15);
+    else if("VER 7.1" == FileVersion)
       setGameVersion(GV_C14);
     else if("VER 7.0" == FileVersion)
       setGameVersion(GV_C13);

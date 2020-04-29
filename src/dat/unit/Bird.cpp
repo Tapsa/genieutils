@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2018  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,19 @@ void Bird::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
+  DropSites.resize(getDropSiteCount(), -1);
+
   updateGameVersion(TaskList);
+}
+
+unsigned short Bird::getDropSiteCount(void)
+{
+  GameVersion gv = getGameVersion();
+  if (gv >= GV_C15 && gv <= GV_LatestDE2)
+    return 3;
+  if (gv >= GV_TEST)
+    return 2;
+  return 1;
 }
 
 void Bird::serializeObject(void)
@@ -49,7 +61,7 @@ void Bird::serializeObject(void)
   serialize<int16_t>(DefaultTaskID);
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
-  serializePair<int16_t>(DropSite, (gv < GV_TEST) ? true : false);
+  serialize<int16_t>(DropSites, getDropSiteCount());
   serialize<int8_t>(TaskSwapGroup);
   serialize<int16_t>(AttackSound);
   if (gv >= GV_AoEB)
@@ -61,7 +73,8 @@ void Bird::serializeObject(void)
   }
   serialize<int8_t>(RunPattern);
 
-  if (gv < GV_AoK) // 11.24
+  if (gv < GV_AoK // 11.24
+  || gv >= GV_C15 && gv <= GV_LatestDE2)
   {
     uint16_t task_count;
     serializeSize<uint16_t>(task_count, TaskList.size());
