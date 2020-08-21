@@ -30,7 +30,7 @@ namespace genie
 
 float ISerializable::dat_internal_ver = 0.f;
 GameVersion GV_LatestTap = GV_T8;
-GameVersion GV_LatestDE2 = GV_C15;
+GameVersion GV_LatestDE2 = GV_C16;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() : compressor_(this)
@@ -93,7 +93,9 @@ void DatFile::serializeObject(void)
   // Handle all different versions while in development.
   if(getGameVersion() == GV_C2) // 5.8
   {
-    if("VER 7.2" == FileVersion)
+    if("VER 7.3" == FileVersion)
+      setGameVersion(GV_C16);
+    else if("VER 7.2" == FileVersion)
       setGameVersion(GV_C15);
     else if("VER 7.1" == FileVersion)
       setGameVersion(GV_C14);

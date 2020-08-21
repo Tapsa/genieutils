@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -72,6 +72,11 @@ public:
   int16_t DisplayedPierceArmour = 0;
   int16_t SpawningGraphic = -1;
   int16_t UpgradeGraphic = -1;
+
+  float MaxCharge = 0;
+  float RechargeRate = 0;
+  int16_t ChargeEvent = 0;
+  int16_t ChargeType = 0;
 
 protected:
   virtual void serializeObject(void);
