@@ -16,8 +16,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 #set(Boost_USE_STATIC_RUNTIME     ON)
 set(Boost_USE_MULTITHREADED      ON)
 
-find_package(Iconv REQUIRED)
-
 # dependencies:
 
 find_package(ZLIB REQUIRED)
@@ -32,7 +30,7 @@ if (GUTILS_TEST)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
 
-find_package(Iconv)
+find_package(Iconv REQUIRED)
 
 if (${ICONV_FOUND})
   message(STATUS "Iconv found! Language file support: ENABLED")
