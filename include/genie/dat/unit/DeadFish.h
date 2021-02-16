@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -48,10 +48,10 @@ public:
 
   // All can change while playing
   float TurnRadius = 0;
-  float TurnRadiusSpeed = 3.40282347e+38f;
-  float MaxYawPerSecondMoving = 3.40282347e+38f;
+  float TurnRadiusSpeed = 3.402823e+38f;
+  float MaxYawPerSecondMoving = 3.402823e+38f;
   float StationaryYawRevolutionTime = 0;
-  float MaxYawPerSecondStationary = 3.40282347e+38f;
+  float MaxYawPerSecondStationary = 3.402823e+38f;
   float MinCollisionSizeMultiplier = 1.0f;
 
 protected:

@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -84,7 +85,7 @@ void Logger::log(Logger::LogLevel loglevel, va_list args, const char *msg)
   if (loglevel >= Logger::LOG_LEVEL)
   {
     char msgBuf[1024];                  //TODO: reserve memory on time
-    vsprintf(msgBuf, msg, args);
+    vsprintf_s(msgBuf, 1024, msg, args);
 
     if (out_)
       *out_ << getLogLevelName(loglevel) << ": " << msgBuf << std::endl;

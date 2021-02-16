@@ -9,8 +9,9 @@
 
 # build subdirectory
 build/
-debug/
-release/
+*debug/
+*release/
+.vs/
 
 # generated files by doxygen
 doc/

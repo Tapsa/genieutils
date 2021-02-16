@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL Debug|Win32">
+      <Configuration>DLL Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL Debug|x64">
+      <Configuration>DLL Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL Release|Win32">
+      <Configuration>DLL Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL Release|x64">
+      <Configuration>DLL Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{794b165e-582e-43eb-bbb5-67a8cb8a2c0f}</ProjectGuid>
+    <RootNamespace>genieutils</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\genie\dat\Civ.h" />
+    <ClInclude Include="include\genie\dat\DatFile.h" />
+    <ClInclude Include="include\genie\dat\Graphic.h" />
+    <ClInclude Include="include\genie\dat\GraphicAttackSound.h" />
+    <ClInclude Include="include\genie\dat\GraphicDelta.h" />
+    <ClInclude Include="include\genie\dat\PlayerColour.h" />
+    <ClInclude Include="include\genie\dat\RandomMap.h" />
+    <ClInclude Include="include\genie\dat\Research.h" />
+    <ClInclude Include="include\genie\dat\ResourceUsage.h" />
+    <ClInclude Include="include\genie\dat\Sound.h" />
+    <ClInclude Include="include\genie\dat\SoundItem.h" />
+    <ClInclude Include="include\genie\dat\Techage.h" />
+    <ClInclude Include="include\genie\dat\TechageEffect.h" />
+    <ClInclude Include="include\genie\dat\TechTree.h" />
+    <ClInclude Include="include\genie\dat\Terrain.h" />
+    <ClInclude Include="include\genie\dat\TerrainBlock.h" />
+    <ClInclude Include="include\genie\dat\TerrainBorder.h" />
+    <ClInclude Include="include\genie\dat\TerrainCommon.h" />
+    <ClInclude Include="include\genie\dat\TerrainPassGraphic.h" />
+    <ClInclude Include="include\genie\dat\TerrainRestriction.h" />
+    <ClInclude Include="include\genie\dat\Unit.h" />
+    <ClInclude Include="include\genie\dat\UnitCommand.h" />
+    <ClInclude Include="include\genie\dat\UnitHeader.h" />
+    <ClInclude Include="include\genie\dat\UnitLine.h" />
+    <ClInclude Include="include\genie\dat\unit\AttackOrArmor.h" />
+    <ClInclude Include="include\genie\dat\unit\Bird.h" />
+    <ClInclude Include="include\genie\dat\unit\Building.h" />
+    <ClInclude Include="include\genie\dat\unit\Creatable.h" />
+    <ClInclude Include="include\genie\dat\unit\DamageGraphic.h" />
+    <ClInclude Include="include\genie\dat\unit\DeadFish.h" />
+    <ClInclude Include="include\genie\dat\unit\Projectile.h" />
+    <ClInclude Include="include\genie\dat\unit\Type50.h" />
+    <ClInclude Include="include\genie\file\Compressor.h" />
+    <ClInclude Include="include\genie\file\IFile.h" />
+    <ClInclude Include="include\genie\file\ISerializable.h" />
+    <ClInclude Include="include\genie\lang\LangFile.h" />
+    <ClInclude Include="include\genie\resource\BinaFile.h" />
+    <ClInclude Include="include\genie\resource\Color.h" />
+    <ClInclude Include="include\genie\resource\DrsFile.h" />
+    <ClInclude Include="include\genie\resource\PalFile.h" />
+    <ClInclude Include="include\genie\resource\SlpFile.h" />
+    <ClInclude Include="include\genie\resource\SlpFrame.h" />
+    <ClInclude Include="include\genie\resource\SmpFile.h" />
+    <ClInclude Include="include\genie\resource\SmpFrame.h" />
+    <ClInclude Include="include\genie\script\ScnFile.h" />
+    <ClInclude Include="include\genie\script\scn\MapDescription.h" />
+    <ClInclude Include="include\genie\script\scn\ScnPlayerData.h" />
+    <ClInclude Include="include\genie\script\scn\ScnResource.h" />
+    <ClInclude Include="include\genie\script\scn\Trigger.h" />
+    <ClInclude Include="include\genie\Types.h" />
+    <ClInclude Include="include\genie\util\Logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AGE\Misc Files\zlib.cpp" />
+    <ClCompile Include="src\dat\Civ.cpp" />
+    <ClCompile Include="src\dat\DatFile.cpp" />
+    <ClCompile Include="src\dat\Graphic.cpp" />
+    <ClCompile Include="src\dat\GraphicAttackSound.cpp" />
+    <ClCompile Include="src\dat\GraphicDelta.cpp" />
+    <ClCompile Include="src\dat\PlayerColour.cpp" />
+    <ClCompile Include="src\dat\RandomMap.cpp" />
+    <ClCompile Include="src\dat\Research.cpp" />
+    <ClCompile Include="src\dat\Sound.cpp" />
+    <ClCompile Include="src\dat\SoundItem.cpp" />
+    <ClCompile Include="src\dat\Techage.cpp" />
+    <ClCompile Include="src\dat\TechageEffect.cpp" />
+    <ClCompile Include="src\dat\TechTree.cpp" />
+    <ClCompile Include="src\dat\Terrain.cpp" />
+    <ClCompile Include="src\dat\TerrainBlock.cpp" />
+    <ClCompile Include="src\dat\TerrainBorder.cpp" />
+    <ClCompile Include="src\dat\TerrainCommon.cpp" />
+    <ClCompile Include="src\dat\TerrainPassGraphic.cpp" />
+    <ClCompile Include="src\dat\TerrainRestriction.cpp" />
+    <ClCompile Include="src\dat\Unit.cpp" />
+    <ClCompile Include="src\dat\UnitCommand.cpp" />
+    <ClCompile Include="src\dat\UnitHeader.cpp" />
+    <ClCompile Include="src\dat\UnitLine.cpp" />
+    <ClCompile Include="src\dat\unit\AttackOrArmor.cpp" />
+    <ClCompile Include="src\dat\unit\Bird.cpp" />
+    <ClCompile Include="src\dat\unit\Building.cpp" />
+    <ClCompile Include="src\dat\unit\Creatable.cpp" />
+    <ClCompile Include="src\dat\unit\DamageGraphic.cpp" />
+    <ClCompile Include="src\dat\unit\DeadFish.cpp" />
+    <ClCompile Include="src\dat\unit\Projectile.cpp" />
+    <ClCompile Include="src\dat\unit\Type50.cpp" />
+    <ClCompile Include="src\file\Compressor.cpp" />
+    <ClCompile Include="src\file\IFile.cpp" />
+    <ClCompile Include="src\file\ISerializable.cpp" />
+    <ClCompile Include="src\lang\LangFile.cpp" />
+    <ClCompile Include="src\resource\BinaFile.cpp" />
+    <ClCompile Include="src\resource\Color.cpp" />
+    <ClCompile Include="src\resource\DrsFile.cpp" />
+    <ClCompile Include="src\resource\PalFile.cpp" />
+    <ClCompile Include="src\resource\SlpFile.cpp" />
+    <ClCompile Include="src\resource\SlpFrame.cpp" />
+    <ClCompile Include="src\resource\SmpFile.cpp" />
+    <ClCompile Include="src\resource\SmpFrame.cpp" />
+    <ClCompile Include="src\script\ScnFile.cpp" />
+    <ClCompile Include="src\script\scn\MapDescription.cpp" />
+    <ClCompile Include="src\script\scn\ScnPlayerData.cpp" />
+    <ClCompile Include="src\script\scn\ScnResource.cpp" />
+    <ClCompile Include="src\script\scn\Trigger.cpp" />
+    <ClCompile Include="src\util\Logger.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

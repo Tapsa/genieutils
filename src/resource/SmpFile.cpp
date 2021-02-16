@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2018  Mikko "Tapsa" P
+    Copyright (C) 2018 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -65,7 +65,7 @@ void SmpFile::loadFile()
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SmpFramePtr(new SmpFrame());
-    frames_[i]->setLoadParams(*getIStream(), frame_offsets_[i] + getInitialReadPosition());
+    frames_[i]->setLoadParams(*getIStream(), static_cast<uint32_t>(frame_offsets_[i] + getInitialReadPosition()));
     frames_[i]->serializeHeader();
   }
 

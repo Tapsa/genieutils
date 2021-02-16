@@ -2,6 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -331,11 +332,11 @@ std::string LangFile::convert(iconv_t cd, std::string input)
 
   std::string decodedStr;
   
-  strncpy(inbuf, input.c_str(), inleft);
+  strncpy_s(inbuf, inleft, input.c_str(), inleft);
   
   while (cd != (iconv_t)-1 && inleft > 0 && iconv_value == 0)
   { 
-    iconv_value = iconv(cd, &inptr, &inleft, &outptr, &outleft);
+    iconv_value = iconv(cd, const_cast<const char**>(&inptr), &inleft, &outptr, &outleft);
     
     if (iconv_value == (size_t)-1) 
     {

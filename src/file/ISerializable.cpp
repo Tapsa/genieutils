@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -119,7 +119,7 @@ void ISerializable::writeString(std::string str, size_t len)
 {
   char *buf = new char[len];
 
-  strncpy(buf, str.c_str(), len);
+  strncpy_s(buf, len, str.c_str(), len);
 
   for (unsigned int i=str.size(); i < len; i++)
     buf[i] = 0; // fill up with 0
