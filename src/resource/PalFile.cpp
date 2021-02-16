@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2018  Mikko "Tapsa" P
+    Copyright (C) 2018 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -180,7 +180,7 @@ size_t PalFile::objectSize(void)
   if (colors_.size() > 256)
     log.error("Too much colors (>256)");
   
-  size += numOfChars(colors_.size()) + CL_LF_SIZE;
+  size += numOfChars(static_cast<uint8_t>(colors_.size())) + CL_LF_SIZE;
   
   for (uint32_t i=0; i < colors_.size(); i++)
   {

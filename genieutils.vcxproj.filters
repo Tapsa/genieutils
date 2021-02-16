@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Data">
+      <UniqueIdentifier>{6583f09d-3c1a-49ce-92cd-179a968bda91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{dd1913d0-301a-4840-8815-2e7820284691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprites">
+      <UniqueIdentifier>{f04e0039-a708-455e-bf66-9a6b7aa301a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Language">
+      <UniqueIdentifier>{3be67ec6-2a2a-4165-9c5b-7d14b7ff30e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenario">
+      <UniqueIdentifier>{1882e00a-7d55-4647-95ad-29c27661a2a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File IO">
+      <UniqueIdentifier>{3ae49a24-0a3b-4da7-8020-89f8d70c2958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{a40b95cc-115b-4424-92c2-050f844e4bfd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\genie\Types.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\file\Compressor.h">
+      <Filter>File IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\file\IFile.h">
+      <Filter>File IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\file\ISerializable.h">
+      <Filter>File IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Civ.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\DatFile.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Graphic.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\GraphicAttackSound.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\GraphicDelta.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\PlayerColour.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\RandomMap.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Research.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\ResourceUsage.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Sound.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\SoundItem.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Techage.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TechageEffect.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TechTree.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Terrain.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TerrainBlock.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TerrainBorder.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TerrainCommon.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TerrainPassGraphic.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\TerrainRestriction.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\Unit.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\UnitCommand.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\UnitHeader.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\UnitLine.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\AttackOrArmor.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\Bird.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\Building.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\Creatable.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\DamageGraphic.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\DeadFish.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\Projectile.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\Type50.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\lang\LangFile.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\script\ScnFile.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\script\scn\MapDescription.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\script\scn\ScnPlayerData.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\script\scn\ScnResource.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\script\scn\Trigger.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\BinaFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\Color.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\DrsFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\PalFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SlpFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SlpFrame.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SmpFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SmpFrame.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\util\Logger.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\file\Compressor.cpp">
+      <Filter>File IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\file\IFile.cpp">
+      <Filter>File IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\file\ISerializable.cpp">
+      <Filter>File IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Civ.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\DatFile.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Graphic.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\GraphicAttackSound.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\GraphicDelta.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\PlayerColour.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\RandomMap.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Research.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Sound.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\SoundItem.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Techage.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TechageEffect.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TechTree.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Terrain.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TerrainBlock.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TerrainBorder.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TerrainCommon.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TerrainPassGraphic.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\TerrainRestriction.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\Unit.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\UnitCommand.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\UnitHeader.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\UnitLine.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\AttackOrArmor.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\Bird.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\Building.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\Creatable.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\DamageGraphic.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\DeadFish.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\Projectile.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\Type50.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lang\LangFile.cpp">
+      <Filter>Language</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script\ScnFile.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script\scn\MapDescription.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script\scn\ScnPlayerData.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script\scn\ScnResource.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script\scn\Trigger.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\BinaFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\Color.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\DrsFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\PalFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SlpFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SlpFrame.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SmpFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SmpFrame.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Logger.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AGE\Misc Files\zlib.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

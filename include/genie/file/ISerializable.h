@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ class ISerializable
 
 public:
   //----------------------------------------------------------------------------
-  ISerializable() {}
+  ISerializable() : operation_(Operation::OP_CALC_SIZE), size_(0) {}
 
   //----------------------------------------------------------------------------
   virtual ~ISerializable() {}
@@ -322,7 +322,7 @@ protected:
     T size;
     if (isOperation(OP_WRITE))
     {
-      size = str.size() + 1;
+      size = static_cast<T>(str.size() + 1);
     }
     else // Avoid -Wmaybe-uninitialized
     {
@@ -405,13 +405,13 @@ protected:
     {
       switch(getOperation())
       {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
           writeString(str, len);
           break;
-        case OP_READ:
+        case Operation::OP_READ:
           str = readString(len);
           break;
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
           size_ += sizeof(char) * len;
           break;
       }
@@ -526,7 +526,7 @@ protected:
   void serializeSize(T &data, size_t size)
   {
     if (isOperation(OP_WRITE))
-      data = size;
+      data = static_cast<T>(size);
 
     serialize<T>(data);
   }
@@ -549,7 +549,7 @@ protected:
       if (cString && size != 0)
         size++;   //counting \0
 
-      data = size;
+      data = static_cast<T>(size);
     }
 
     serialize<T>(data);
@@ -634,7 +634,7 @@ private:
 
   Operation operation_;
 
-  GameVersion gameVersion_ = GV_None;
+  GameVersion gameVersion_ = GameVersion::GV_None;
 
   size_t size_;
 };

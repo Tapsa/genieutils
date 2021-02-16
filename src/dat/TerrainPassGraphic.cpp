@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -52,9 +52,9 @@ void TerrainPassGraphic::serializeObject()
   serialize<int32_t>(WalkTileSpriteID);
   if (gv < GV_SWGB && gv > GV_LatestTap)
   {
-    int32_t replicationAmount = WalkSpriteRate;
+    int32_t replicationAmount = static_cast<int32_t>(WalkSpriteRate);
     serialize<int32_t>(replicationAmount);
-    WalkSpriteRate = replicationAmount;
+    WalkSpriteRate = static_cast<float>(replicationAmount);
   }
   else
   {
