@@ -332,7 +332,7 @@ std::string LangFile::convert(iconv_t cd, std::string input)
 
   std::string decodedStr;
   
-  strncpy_s(inbuf, inleft, input.c_str(), inleft);
+  input.copy(inbuf, inleft);
   
   while (cd != (iconv_t)-1 && inleft > 0 && iconv_value == 0)
   { 

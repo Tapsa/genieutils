@@ -119,9 +119,9 @@ void ISerializable::writeString(std::string str, size_t len)
 {
   char *buf = new char[len];
 
-  strncpy_s(buf, len, str.c_str(), len);
+  str.copy(buf, len);
 
-  for (unsigned int i=str.size(); i < len; i++)
+  for (size_t i = str.size(); i < len; i++)
     buf[i] = 0; // fill up with 0
 
   ostr_->write(buf, len);
