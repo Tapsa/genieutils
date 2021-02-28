@@ -69,6 +69,7 @@ void SmpFrame::setSaveParams(std::ostream &ostr, uint32_t &smp_offset_)
 {
   setOStream(ostr);
   setOperation(OP_WRITE);
+  smp_offset_;
 }
 
 //------------------------------------------------------------------------------

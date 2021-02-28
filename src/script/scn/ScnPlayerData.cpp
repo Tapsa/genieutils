@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ void ScnMainPlayerData::serializeObject(void)
     for (unsigned int i=0; i<16; ++i)
       serialize(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
     if (scn_plr_data_ver > 1.15f)
-      serialize<uint32_t>(playerNamesStringTable, 16);
+      serialize<int32_t>(playerNamesStringTable, 16);
     CombinedResources::playerInfo = true;
     serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
   }
@@ -56,14 +56,14 @@ void ScnMainPlayerData::serializeObject(void)
 
   if (scn_plr_data_ver > 1.15f)
   {
-    serialize<uint32_t>(instructionsStringTable);
-    serialize<uint32_t>(hintsStringTable);
-    serialize<uint32_t>(victoryStringTable);
-    serialize<uint32_t>(lossStringTable);
-    serialize<uint32_t>(historyStringTable);
+    serialize<int32_t>(instructionsStringTable);
+    serialize<int32_t>(hintsStringTable);
+    serialize<int32_t>(victoryStringTable);
+    serialize<int32_t>(lossStringTable);
+    serialize<int32_t>(historyStringTable);
 
     if (scn_plr_data_ver > 1.21f)
-      serialize<uint32_t>(scoutsStringTable);
+      serialize<int32_t>(scoutsStringTable);
   }
 
   serializeSizedString<uint16_t>(instructions, false);
@@ -232,12 +232,13 @@ void ScnMainPlayerData::serializeBitmap(void)
   serialize<char>(&bmpHeader, 0x28);
   if (isOperation(OP_READ))
   {
-    bitmapByteSize = *reinterpret_cast<uint32_t *>(bmpHeader + 20);
+    bitmapByteSize = *reinterpret_cast<uint16_t *>(bmpHeader + 20);
 
     bitmap = new char[bitmapByteSize];
 
-    for (unsigned int i=0; i < 0x28; ++i)
-      bitmap[i] = bmpHeader[i];
+    if (bitmapByteSize > 0x28)
+      for (unsigned int i=0; i < 0x28; ++i)
+        bitmap[i] = bmpHeader[i];
 
     char *bitmapStart = (bitmap + 0x28);
 
