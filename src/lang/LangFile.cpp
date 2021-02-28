@@ -199,7 +199,7 @@ std::string LangFile::getString(unsigned int id)
   
   log.info("| Result: \"%s\"", decodedStr.c_str());
   
-  delete strBuf;
+  delete[] strBuf;
   
   return decodedStr;
 }
@@ -349,7 +349,7 @@ std::string LangFile::convert(iconv_t cd, std::string input)
       }
       else  
       {
-        delete (inbuf);
+        delete[] inbuf;
         
         std::string error("Error in converting characters: ");
 
@@ -368,7 +368,7 @@ std::string LangFile::convert(iconv_t cd, std::string input)
       
   }
   
-  delete (inbuf);
+  delete[] inbuf;
   
   return decodedStr;
 }

@@ -51,9 +51,9 @@ void ScnFile::extractRaw(const char *from, const char *to)
   ifs.open(from, std::ios::binary);
   ofs.open(to, std::ios::binary);
 
-  char version[4];
-  ifs.read(version, 4);
-  ofs.write(version, 4);
+  char readVersion[4];
+  ifs.read(readVersion, 4);
+  ofs.write(readVersion, 4);
 
   uint32_t headerLen;
 
@@ -67,15 +67,8 @@ void ScnFile::extractRaw(const char *from, const char *to)
 
   Compressor::decompress(ifs, ofs);
 
-//   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
-
-//   boost::iostreams::copy((*dec), ofs);
-
-//   compressor_.stopDecompression();
-
   ifs.close();
   ofs.close();
-
 }
 
 //------------------------------------------------------------------------------

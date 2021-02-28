@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ void Unit::serializeObject(void)
   serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
   if (gv < GV_AoEB && isOperation(OP_READ)) Type *= 10;
 
-  uint16_t name_len;
+  uint16_t name_len = 0;
   if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
     serializeSize<uint16_t>(name_len, Name);
   serialize<int16_t>(ID);
@@ -68,12 +68,12 @@ void Unit::serializeObject(void)
   }
   else
   {
-    uint16_t data = LanguageDLLName;
+    uint16_t data = static_cast<uint16_t>(LanguageDLLName);
     serialize<uint16_t>(data);
     LanguageDLLName = data;
     if (gv >= GV_MATT)
     {
-      data = LanguageDLLCreation;
+      data = static_cast<uint16_t>(LanguageDLLCreation);
       serialize<uint16_t>(data);
       LanguageDLLCreation = data;
     }
@@ -162,10 +162,10 @@ void Unit::serializeObject(void)
     if (gv >= GV_CK && gv <= GV_LatestDE2)
     {
       // This data is for scenario triggers.
-      uint32_t data = -2;
-      serialize<uint32_t>(data);
+      int32_t data = -2;
+      serialize<int32_t>(data);
       data = 0;
-      serialize<uint32_t>(data);
+      serialize<int32_t>(data);
     }
   }
 

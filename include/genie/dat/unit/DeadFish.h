@@ -48,10 +48,10 @@ public:
 
   // All can change while playing
   float TurnRadius = 0;
-  float TurnRadiusSpeed = 3.402823e+38f;
-  float MaxYawPerSecondMoving = 3.402823e+38f;
+  float TurnRadiusSpeed = 3.402823466e+38f;
+  float MaxYawPerSecondMoving = 3.402823466e+38f;
   float StationaryYawRevolutionTime = 0;
-  float MaxYawPerSecondStationary = 3.402823e+38f;
+  float MaxYawPerSecondStationary = 3.402823466e+38f;
   float MinCollisionSizeMultiplier = 1.0f;
 
 protected:
