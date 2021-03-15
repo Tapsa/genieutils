@@ -88,11 +88,19 @@ public:
 
   int16_t ID = -1;
 
-  /// ID of the name string stored in the language.dll file
-  int32_t LanguageDLLName = 5000;
+  union
+  {
+     /// ID of the name string stored in the language.dll file
+     int32_t LanguageDLLName = 5000;
+     uint16_t LanguageDLLNameU16;
+  };
+  union
+  {
+     /// ID of the name string stored in the language.dll file
+     int32_t LanguageDLLCreation = 6000;
+     uint16_t LanguageDLLCreationU16;
+  };
 
-  /// ID of the name string stored in the language.dll file
-  int32_t LanguageDLLCreation = 6000;
 
   /// Class that gives certain properties
   int16_t Class = -1;

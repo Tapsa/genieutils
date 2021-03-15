@@ -52,13 +52,11 @@ void TerrainPassGraphic::serializeObject()
   serialize<int32_t>(WalkTileSpriteID);
   if (gv < GV_SWGB && gv > GV_LatestTap)
   {
-    int32_t replicationAmount = static_cast<int32_t>(WalkSpriteRate);
-    serialize<int32_t>(replicationAmount);
-    WalkSpriteRate = static_cast<float>(replicationAmount);
+    serialize<int32_t>(WalkSpriteRate);
   }
   else
   {
-    serialize<float>(WalkSpriteRate);
+    serialize<float>(WalkSpriteRateF);
   }
 }
 

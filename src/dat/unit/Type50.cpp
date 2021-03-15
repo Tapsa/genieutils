@@ -49,9 +49,8 @@ void Type50::serializeObject(void)
   if (gv < GV_TC // 11.52
   && (gv > GV_LatestTap || gv < GV_T3))
   {
-    uint8_t defarmor_byte = static_cast<uint8_t>(BaseArmor);
-    serialize<uint8_t>(defarmor_byte);
-    BaseArmor = defarmor_byte;
+    serialize<uint8_t>(BaseArmorU8);
+    BaseArmor = BaseArmorU8;
   }
   else
   {
