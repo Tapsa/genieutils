@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,11 @@ public:
   virtual ~Type50();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t BaseArmor = 1000; // uint8_t below TC
+  union
+  {
+     int16_t BaseArmor = 1000;
+     uint8_t BaseArmorU8;
+  };
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
   int16_t DefenseTerrainBonus = -1;
