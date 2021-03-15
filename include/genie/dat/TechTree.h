@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -110,17 +110,17 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1; //Age ID
-  int8_t Status = 2; //Always 2
+  uint8_t Status = 2; //Always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
   std::vector<int32_t> Techs;
 
   techtree::Common Common;
-  int8_t NumBuildingLevels = 0;
-  std::vector<int8_t> BuildingsPerZone;
-  std::vector<int8_t> GroupLengthPerZone;
-  int8_t MaxAgeLength = 0;
+  uint8_t NumBuildingLevels = 0;
+  std::vector<uint8_t> BuildingsPerZone;
+  std::vector<uint8_t> GroupLengthPerZone;
+  uint8_t MaxAgeLength = 0;
   int32_t LineMode = 0;
 
   unsigned short getZoneCount();
@@ -137,7 +137,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Status = 2; //always 2
+  uint8_t Status = 2; //always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
@@ -146,9 +146,9 @@ public:
   techtree::Common Common;
 
   static const unsigned short AGES = 5;
-  int8_t LocationInAge = 0;
-  std::vector<int8_t> UnitsTechsTotal;
-  std::vector<int8_t> UnitsTechsFirst;
+  uint8_t LocationInAge = 0;
+  std::vector<uint8_t> UnitsTechsTotal;
+  std::vector<uint8_t> UnitsTechsFirst;
 
   /// 5 One or more connections, 6 No connections.
   int32_t LineMode = 0;
@@ -167,7 +167,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Status = 2; //always 2
+  uint8_t Status = 2; //always 2
   int32_t UpperBuilding = -1;
 
   techtree::Common Common;
@@ -198,7 +198,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Status = 2; //always 2
+  uint8_t Status = 2; //always 2
   int32_t UpperBuilding = -1;
 
   std::vector<int32_t> Buildings;

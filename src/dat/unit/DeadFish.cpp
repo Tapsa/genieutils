@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -47,11 +47,11 @@ void DeadFish::serializeObject(void)
   serialize<int16_t>(WalkingGraphic);
   serialize<int16_t>(RunningGraphic);
   serialize<float>(RotationSpeed);
-  serialize<int8_t>(OldSizeClass);
+  serialize<uint8_t>(OldSizeClass);
   serialize<int16_t>(TrackingUnit);
-  serialize<int8_t>(TrackingUnitMode);
+  serialize<uint8_t>(TrackingUnitMode);
   serialize<float>(TrackingUnitDensity);
-  serialize<int8_t>(OldMoveAlgorithm);
+  serialize<uint8_t>(OldMoveAlgorithm);
 
   if (gv >= GV_AoKB) // 10.28
   {

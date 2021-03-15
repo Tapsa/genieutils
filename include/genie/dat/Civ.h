@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// Always one
-  int8_t PlayerType = 1;
+  uint8_t PlayerType = 1;
 
   /// Returns size for both names
   static unsigned short getNameSize();
@@ -55,7 +55,7 @@ public:
   /// Resources can easily added and removed using this vector.
   std::vector<float> Resources;
 
-  int8_t IconSet = 0;
+  uint8_t IconSet = 0;
 
   std::vector<int32_t> UnitPointers;
 

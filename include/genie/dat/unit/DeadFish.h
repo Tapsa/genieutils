@@ -40,11 +40,11 @@ public:
   int16_t WalkingGraphic = -1;
   int16_t RunningGraphic = -1;
   float RotationSpeed = 0;
-  int8_t OldSizeClass = 0;
+  uint8_t OldSizeClass = 0;
   int16_t TrackingUnit = -1;
-  int8_t TrackingUnitMode = 0;
+  uint8_t TrackingUnitMode = 0;
   float TrackingUnitDensity = 0;
-  int8_t OldMoveAlgorithm = 0;
+  uint8_t OldMoveAlgorithm = 0;
 
   // All can change while playing
   float TurnRadius = 0;

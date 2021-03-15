@@ -199,8 +199,8 @@ UnknownData1::~UnknownData1()
 
 void UnknownData1::serializeObject(void)
 {
-  serialize<uint16_t>(unknownCount);
-  serialize<uint16_t>(unknown2);
+  serialize<int16_t>(unknownCount);
+  serialize<int16_t>(unknown2);
   serialize<float>(unknown3);
 
   /*/ 48 bytes? Lots of data if count is over 0
@@ -369,12 +369,12 @@ void ScnMorePlayerData::serializeObject(void)
   serialize<int16_t>(initCameraX2);
   serialize<int16_t>(initCameraY2);
   serialize<uint8_t>(alliedVictory);
-  serializeSize<uint16_t>(playerCount_, diplomacy1.size());
+  serializeSize<int16_t>(playerCount_, diplomacy1.size());
   serialize<uint8_t>(diplomacy1, playerCount_);
   serialize<uint32_t>(diplomacy2, playerCount_);
   serialize<uint32_t>(playerColor);
   serialize<float>(unknown1);
-  serializeSize<uint16_t>(unknownCount_, unknown3.size() / 44);
+  serializeSize<int16_t>(unknownCount_, unknown3.size() / 44);
   serialize<uint8_t>(unknown2, 8);
   serialize<uint8_t>(unknown3, unknownCount_ * 44);
   serialize<uint8_t>(unknown4, 7);

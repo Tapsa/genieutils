@@ -59,14 +59,14 @@ void TechTree::serializeObject(void)
   uint8_t age_count;
   uint8_t building_count;
   uint8_t research_count;
-  uint16_t unit_count;
+  int16_t unit_count;
 
   serializeSize<uint8_t>(age_count, TechTreeAges.size());
 
   serializeSize<uint8_t>(building_count, BuildingConnections.size());
 
   if (getGameVersion() >= GV_SWGB)
-   serializeSize<uint16_t>(unit_count, UnitConnections.size());
+   serializeSize<int16_t>(unit_count, UnitConnections.size());
   else
   {
     uint8_t tbc = 0;
@@ -118,7 +118,7 @@ unsigned short TechTreeAge::getZoneCount()
 void TechTreeAge::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Status);
+  serialize<uint8_t>(Status);
 
   // All of these need rework. Used + actual? Fix actual!
   uint8_t count;
@@ -149,10 +149,10 @@ void TechTreeAge::serializeObject(void)
 
   // 9.39
   {
-    serialize<int8_t>(NumBuildingLevels);
-    serialize<int8_t>(BuildingsPerZone, getZoneCount());
-    serialize<int8_t>(GroupLengthPerZone, getZoneCount());
-    serialize<int8_t>(MaxAgeLength);
+    serialize<uint8_t>(NumBuildingLevels);
+    serialize<uint8_t>(BuildingsPerZone, getZoneCount());
+    serialize<uint8_t>(GroupLengthPerZone, getZoneCount());
+    serialize<uint8_t>(MaxAgeLength);
     serialize<int32_t>(LineMode); // 9.51
   }
 }
@@ -178,7 +178,7 @@ void BuildingConnection::setGameVersion(GameVersion gv)
 void BuildingConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Status);
+  serialize<uint8_t>(Status);
 
   uint8_t count;
   if (getGameVersion() < GV_AoKB)// < 10.84
@@ -208,9 +208,9 @@ void BuildingConnection::serializeObject(void)
 
   // 9.39
   {
-    serialize<int8_t>(LocationInAge);
-    serialize<int8_t>(UnitsTechsTotal, AGES);
-    serialize<int8_t>(UnitsTechsFirst, AGES); // 9.42
+    serialize<uint8_t>(LocationInAge);
+    serialize<uint8_t>(UnitsTechsTotal, AGES);
+    serialize<uint8_t>(UnitsTechsFirst, AGES); // 9.42
     serialize<int32_t>(LineMode); // 9.51
     serialize<int32_t>(EnablingResearch); // 9.91
   }
@@ -236,7 +236,7 @@ void UnitConnection::setGameVersion(GameVersion gv)
 void UnitConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Status);
+  serialize<uint8_t>(Status);
   serialize<int32_t>(UpperBuilding);
 
   serialize<ISerializable>(Common);
@@ -284,7 +284,7 @@ void ResearchConnection::setGameVersion(GameVersion gv)
 void ResearchConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Status);
+  serialize<uint8_t>(Status);
   serialize<int32_t>(UpperBuilding);
 
   uint8_t count;

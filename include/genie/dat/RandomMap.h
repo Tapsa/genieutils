@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -52,8 +52,8 @@ public:
 
   int32_t Unit = -1;
   int32_t HostTerrain = -1;
-  int8_t GroupPlacing = 0;
-  int8_t ScaleFlag = 0;
+  uint8_t GroupPlacing = 0;
+  uint8_t ScaleFlag = 0;
   int16_t Padding1 = 0;
   int32_t ObjectsPerGroup = 1;
   int32_t Fluctuation = 0;
@@ -94,16 +94,16 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t LandID = 1;
-  int32_t Terrain = -1;
+  uint32_t Terrain = 0;
   int32_t LandSpacing = 2;
   int32_t BaseSize = 7;
-  int8_t Zone = 0;
-  int8_t PlacementType = 1;
+  uint8_t Zone = 0;
+  uint8_t PlacementType = 1;
   int16_t Padding1 = 0;
   int32_t BaseX = 0;
   int32_t BaseY = 0;
-  int8_t LandProportion = 100;
-  int8_t ByPlayerFlag = 1;
+  uint8_t LandProportion = 100;
+  uint8_t ByPlayerFlag = 1;
   int16_t Padding2 = 0;
   int32_t StartAreaRadius = 10;
   int32_t TerrainEdgeFade = 25;

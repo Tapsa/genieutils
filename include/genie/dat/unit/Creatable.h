@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -44,14 +44,14 @@ public:
   std::vector<ResourceCost> ResourceCosts;
   int16_t TrainTime = 0;
   int16_t TrainLocationID = -1;
-  int8_t ButtonID = 0;
+  uint8_t ButtonID = 0;
   float RearAttackModifier = 0;
   float FlankAttackModifier = 0;
-  int8_t CreatableType = 0;
-  int8_t HeroMode = 0;
+  uint8_t CreatableType = 0;
+  uint8_t HeroMode = 0;
   int32_t GarrisonGraphic = -1; 
   float TotalProjectiles = 0;
-  int8_t MaxTotalProjectiles = 0;
+  uint8_t MaxTotalProjectiles = 0;
 
   /// The area from which projectiles spawn. Size and randomness.
   std::vector<float> ProjectileSpawningArea = {0, 0, 0};
@@ -68,7 +68,7 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t SpecialAbility = 0;
+  uint8_t SpecialAbility = 0;
   int16_t DisplayedPierceArmour = 0;
   int16_t SpawningGraphic = -1;
   int16_t UpgradeGraphic = -1;

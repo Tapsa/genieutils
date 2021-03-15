@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -151,16 +151,16 @@ void MapLand::setGameVersion(GameVersion gv)
 void MapLand::serializeObject(void)
 {
   serialize<int32_t>(LandID);
-  serialize<int32_t>(Terrain);//int8_t
+  serialize<uint32_t>(Terrain);//uint8_t
   serialize<int32_t>(LandSpacing);
   serialize<int32_t>(BaseSize);
-  serialize<int8_t>(Zone);
-  serialize<int8_t>(PlacementType);
+  serialize<uint8_t>(Zone);
+  serialize<uint8_t>(PlacementType);
   serialize<int16_t>(Padding1);
   serialize<int32_t>(BaseX);
   serialize<int32_t>(BaseY);
-  serialize<int8_t>(LandProportion);
-  serialize<int8_t>(ByPlayerFlag);
+  serialize<uint8_t>(LandProportion);
+  serialize<uint8_t>(ByPlayerFlag);
   serialize<int16_t>(Padding2);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(TerrainEdgeFade);
@@ -215,8 +215,8 @@ void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<int8_t>(GroupPlacing);
-  serialize<int8_t>(ScaleFlag);
+  serialize<uint8_t>(GroupPlacing);
+  serialize<uint8_t>(ScaleFlag);
   serialize<int16_t>(Padding1);
   serialize<int32_t>(ObjectsPerGroup);
   serialize<int32_t>(Fluctuation);

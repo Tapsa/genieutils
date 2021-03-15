@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ void Bird::serializeObject(void)
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
   serialize<int16_t>(DropSites, getDropSiteCount());
-  serialize<int8_t>(TaskSwapGroup);
+  serialize<uint8_t>(TaskSwapGroup);
   serialize<int16_t>(AttackSound);
   if (gv >= GV_AoEB)
     serialize<int16_t>(MoveSound); // 6.92
@@ -71,13 +71,13 @@ void Bird::serializeObject(void)
     serialize<uint32_t>(WwiseAttackSoundID);
     serialize<uint32_t>(WwiseMoveSoundID);
   }
-  serialize<int8_t>(RunPattern);
+  serialize<uint8_t>(RunPattern);
 
   if (gv < GV_AoK // 11.24
   || gv >= GV_C15 && gv <= GV_LatestDE2)
   {
-    uint16_t task_count;
-    serializeSize<uint16_t>(task_count, TaskList.size());
+    int16_t task_count;
+    serializeSize<int16_t>(task_count, TaskList.size());
     serializeSub<Task>(TaskList, task_count);
   }
 }

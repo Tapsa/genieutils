@@ -127,7 +127,7 @@ void ScnFile::serializeObject(void)
   scn_trigger_ver = triggerVersion;
 
   if (scn_trigger_ver > 1.4f)
-    serialize<int8_t>(objectivesStartingState);
+    serialize<uint8_t>(objectivesStartingState);
   serializeSize<uint32_t>(numTriggers_, triggers.size());
   serializeSub<Trigger>(triggers, numTriggers_);
   if (scn_trigger_ver > 1.3f)

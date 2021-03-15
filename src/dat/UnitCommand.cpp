@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2018  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ void Task::serializeObject(void)
 
   serialize<int16_t>(TaskType);
   serialize<int16_t>(ID);
-  serialize<int8_t>(IsDefault);
+  serialize<uint8_t>(IsDefault);
   serialize<int16_t>(ActionType);
   serialize<int16_t>(ClassID);
   serialize<int16_t>(UnitID);
@@ -58,15 +58,15 @@ void Task::serializeObject(void)
   serialize<float>(WorkValue1);
   serialize<float>(WorkValue2);
   serialize<float>(WorkRange);
-  serialize<int8_t>(AutoSearchTargets);
+  serialize<uint8_t>(AutoSearchTargets);
   serialize<float>(SearchWaitTime);
-  serialize<int8_t>(EnableTargeting);
-  serialize<int8_t>(CombatLevelFlag);
+  serialize<uint8_t>(EnableTargeting);
+  serialize<uint8_t>(CombatLevelFlag);
   serialize<int16_t>(GatherType);
   serialize<int16_t>(WorkFlag2);
-  serialize<int8_t>(TargetDiplomacy);
-  serialize<int8_t>(CarryCheck);
-  serialize<int8_t>(PickForConstruction);
+  serialize<uint8_t>(TargetDiplomacy);
+  serialize<uint8_t>(CarryCheck);
+  serialize<uint8_t>(PickForConstruction);
   serialize<int16_t>(MovingGraphicID);
   serialize<int16_t>(ProceedingGraphicID);
   serialize<int16_t>(WorkingGraphicID);

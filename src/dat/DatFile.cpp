@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -143,12 +143,12 @@ void DatFile::serializeObject(void)
   }
 
   GameVersion gv = getGameVersion();
-  uint16_t count16;
-  uint32_t count32;
+  int16_t count16;
+  int32_t count32;
 
   if (gv >= GV_SWGB)
   {
-    serializeSize<uint16_t>(count16, Civs.size());
+    serializeSize<int16_t>(count16, Civs.size());
     serialize<int32_t>(SUnknown2);
     serialize<int32_t>(SUnknown3);
     serialize<int32_t>(SUnknown4);
@@ -164,8 +164,8 @@ void DatFile::serializeObject(void)
     }
   }
 
-  serializeSize<uint16_t>(count16, TerrainRestrictions.size());
-  serialize<uint16_t>(TerrainsUsed1);
+  serializeSize<int16_t>(count16, TerrainRestrictions.size());
+  serialize<int16_t>(TerrainsUsed1);
 
   if (verbose_)
   {
@@ -182,21 +182,21 @@ void DatFile::serializeObject(void)
   TerrainRestriction::setTerrainCount(TerrainsUsed1);
   serializeSub<TerrainRestriction>(TerrainRestrictions, count16);
 
-  serializeSize<uint16_t>(count16, PlayerColours.size());
+  serializeSize<int16_t>(count16, PlayerColours.size());
 
   if (verbose_)
     std::cout << "PlayerColours: " << count16 << std::endl;
 
   serializeSub<PlayerColour>(PlayerColours, count16);
 
-  serializeSize<uint16_t>(count16, Sounds.size());
+  serializeSize<int16_t>(count16, Sounds.size());
 
   if (verbose_)
     std::cout << "Sounds: " << count16 << std::endl;
 
   serializeSub<Sound>(Sounds, count16);
 
-  serializeSize<uint16_t>(count16, Graphics.size());
+  serializeSize<int16_t>(count16, Graphics.size());
   if (gv < GV_AoE)
   {
     serializeSub<Graphic>(Graphics, count16);
@@ -226,7 +226,7 @@ void DatFile::serializeObject(void)
   // It exists in Star Wars games too, but is not used.
   serialize<ISerializable>(RandomMaps);
 
-  serializeSize<uint32_t>(count32, Effects.size());
+  serializeSize<int32_t>(count32, Effects.size());
 
   if (verbose_)
     std::cout << "Effects: " << count32 << std::endl;
@@ -235,13 +235,13 @@ void DatFile::serializeObject(void)
 
   if (gv >= GV_SWGB) //pos: 0x111936
   {
-    serializeSize<uint16_t>(count16, UnitLines.size());
+    serializeSize<int16_t>(count16, UnitLines.size());
     serializeSub<UnitLine>(UnitLines, count16);
   }
 
   if (gv >= GV_AoK)
   {
-    serializeSize<uint32_t>(count32, UnitHeaders.size());
+    serializeSize<int32_t>(count32, UnitHeaders.size());
 
     if (verbose_)
       std::cout << "Units: " << count32 << std::endl;
@@ -249,7 +249,7 @@ void DatFile::serializeObject(void)
     serializeSub<UnitHeader>(UnitHeaders, count32);
   }
 
-  serializeSize<uint16_t>(count16, Civs.size());
+  serializeSize<int16_t>(count16, Civs.size());
 
   if (verbose_)
     std::cout << "Civs: " << count16 << std::endl;
@@ -257,9 +257,9 @@ void DatFile::serializeObject(void)
   serializeSub<Civ>(Civs, count16);
 
   if (gv >= GV_SWGB)
-    serialize<int8_t>(SUnknown7);
+    serialize<uint8_t>(SUnknown7);
 
-  serializeSize<uint16_t>(count16, Techs.size());
+  serializeSize<int16_t>(count16, Techs.size());
 
   if (verbose_)
     std::cout << "Techs: " << count16 << std::endl;
@@ -273,7 +273,7 @@ void DatFile::serializeObject(void)
   }
 
   if (gv >= GV_SWGB)
-    serialize<int8_t>(SUnknown8);
+    serialize<uint8_t>(SUnknown8);
 
   if (gv >= GV_AoKA) // 9.38
   {

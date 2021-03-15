@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -42,11 +42,11 @@ void Projectile::setGameVersion(GameVersion gv)
 
 void Projectile::serializeObject(void)
 {
-  serialize<int8_t>(ProjectileType);
-  serialize<int8_t>(SmartMode);
-  serialize<int8_t>(HitMode);
-  serialize<int8_t>(VanishMode);
-  serialize<int8_t>(AreaEffectSpecials);
+  serialize<uint8_t>(ProjectileType);
+  serialize<uint8_t>(SmartMode);
+  serialize<uint8_t>(HitMode);
+  serialize<uint8_t>(VanishMode);
+  serialize<uint8_t>(AreaEffectSpecials);
   serialize<float>(ProjectileArc);
 }
 
