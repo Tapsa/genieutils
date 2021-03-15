@@ -55,12 +55,12 @@ public:
   int16_t AccuracyPercent = 0;
 
   /// Used in AoE/RoR for towers.
-  int8_t BreakOffCombat = 0;
+  uint8_t BreakOffCombat = 0;
   int16_t FrameDelay = 0;
 
   std::vector<float> GraphicDisplacement = {0, 0, 0};
 
-  int8_t BlastAttackLevel = 0;
+  uint8_t BlastAttackLevel = 0;
   float MinRange = 0;
   float AccuracyDispersion = 0;
   int16_t AttackGraphic = -1;

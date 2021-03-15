@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -49,8 +49,8 @@ public:
   virtual ~TerrainBlock();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t VirtualFunctionPtr;
-  int32_t MapPointer;
+  uint32_t VirtualFunctionPtr;
+  uint32_t MapPointer;
   int32_t MapWidth;
   int32_t MapHeight;
   int32_t WorldWidth;
@@ -63,7 +63,7 @@ public:
   std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
   std::vector<TerrainBorder> TerrainBorders;
 
-  int32_t MapRowOffset;
+  uint32_t MapRowOffset;
   float MapMinX;
   float MapMinY;
   float MapMaxX;
@@ -71,9 +71,9 @@ public:
   float MapMaxXplus1;
   float MapMaxYplus1;
 
-  uint16_t TerrainsUsed2;
-  uint16_t RemovedBlocksUsed;
-  uint16_t BordersUsed;
+  int16_t TerrainsUsed2;
+  int16_t RemovedBlocksUsed;
+  int16_t BordersUsed;
   int16_t MaxTerrain;
   int16_t TileWidth;
   int16_t TileHeight;
@@ -87,17 +87,17 @@ public:
   int16_t BlockBegCol;
   int16_t BlockEndCol;
 
-  int32_t SearchMapPtr;
-  int32_t SearchMapRowsPtr;
-  int8_t AnyFrameChange;
+  uint32_t SearchMapPtr;
+  uint32_t SearchMapRowsPtr;
+  uint8_t AnyFrameChange;
 
-  int8_t MapVisibleFlag;
-  int8_t FogFlag;
+  uint8_t MapVisibleFlag;
+  uint8_t FogFlag;
 
   unsigned short getBytesSize(void);
-  std::vector<int8_t> SomeBytes;
+  std::vector<uint8_t> SomeBytes;
   unsigned short getSomethingSize(void);
-  std::vector<int32_t> SomeInt32;
+  std::vector<uint32_t> SomeInt32;
 
 private:
   virtual void serializeObject(void);

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -36,16 +36,16 @@ public:
   virtual ~Projectile();
   virtual void setGameVersion(GameVersion gv);
 
-  int8_t ProjectileType = 0;
-  int8_t SmartMode = 0;
-  int8_t HitMode = 0;
+  uint8_t ProjectileType = 0;
+  uint8_t SmartMode = 0;
+  uint8_t HitMode = 0;
 
   /// Affects the graphics so that they pass through the target instead of stopping
   /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
   /// Only affects graphic not pass through damage.
-  int8_t VanishMode = 0;
+  uint8_t VanishMode = 0;
 
-  int8_t AreaEffectSpecials = 0;
+  uint8_t AreaEffectSpecials = 0;
 
   /// Determines the arc a projectile follows.
   /// Enter a non-negative value.

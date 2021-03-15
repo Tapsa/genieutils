@@ -59,8 +59,8 @@ public:
   UnknownData1();
   virtual ~UnknownData1();
 
-  uint16_t unknownCount;
-  uint16_t unknown2;
+  int16_t unknownCount;
+  int16_t unknown2;
   float unknown3;
 
 private:
@@ -206,7 +206,7 @@ public:
   /// -1 if there's a bitmap, 1 otherwise
   int16_t unknown1 = 1;
 
-  uint16_t bitmapByteSize = 0;
+  int16_t bitmapByteSize = 0;
 
   char* bmpHeader = 0;
   char* bitmap = 0;
@@ -260,8 +260,8 @@ public:
   int32_t unknown5;
 
 private:
-  uint16_t playerCount_;
-  uint16_t unknownCount_;
+  int16_t playerCount_;
+  int16_t unknownCount_;
   virtual void serializeObject(void);
 };
 

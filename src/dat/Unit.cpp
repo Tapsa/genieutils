@@ -54,12 +54,12 @@ void Unit::serializeObject(void)
 
   //Type 10+
   if (gv < GV_AoEB && isOperation(OP_WRITE)) Type /= 10;
-  serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
+  serialize<uint8_t>(Type); // 7 = 70 in AoE alphas etc
   if (gv < GV_AoEB && isOperation(OP_READ)) Type *= 10;
 
-  uint16_t name_len = 0;
+  int16_t name_len = 0;
   if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
-    serializeSize<uint16_t>(name_len, Name);
+    serializeSize<int16_t>(name_len, Name);
   serialize<int16_t>(ID);
   if (gv <= GV_LatestDE2 && gv >= GV_C15)
   {
@@ -68,11 +68,11 @@ void Unit::serializeObject(void)
   }
   else
   {
-    serialize<uint16_t>(LanguageDLLNameU16);
+    serialize<int16_t>(LanguageDLLNameU16);
     LanguageDLLName = LanguageDLLNameU16;
     if (gv >= GV_MATT)
     {
-      serialize<uint16_t>(LanguageDLLCreationU16);
+      serialize<int16_t>(LanguageDLLCreationU16);
       LanguageDLLCreation = LanguageDLLCreationU16;
     }
   }
@@ -80,10 +80,10 @@ void Unit::serializeObject(void)
   serializePair<int16_t>(StandingGraphic, (gv >= GV_AoKB) ? false : true);
   serialize<int16_t>(DyingGraphic);
   serialize<int16_t>(UndeadGraphic);
-  serialize<int8_t>(UndeadMode);
+  serialize<uint8_t>(UndeadMode);
   serialize<int16_t>(HitPoints);
   serialize<float>(LineOfSight);
-  serialize<int8_t>(GarrisonCapacity);
+  serialize<uint8_t>(GarrisonCapacity);
   serialize<float>(CollisionSize.x);
   serialize<float>(CollisionSize.y);
   serialize<float>(CollisionSize.z);
@@ -93,31 +93,31 @@ void Unit::serializeObject(void)
   serialize<int16_t>(DeadUnitID);
   if (gv >= GV_T6 && gv <= GV_LatestTap || gv >= GV_C7 && gv <= GV_LatestDE2)
     serialize<int16_t>(BloodUnitID);
-  serialize<int8_t>(SortNumber);
-  serialize<int8_t>(CanBeBuiltOn);
+  serialize<uint8_t>(SortNumber);
+  serialize<uint8_t>(CanBeBuiltOn);
   serialize<int16_t>(IconID);
-  serialize<int8_t>(HideInEditor);
+  serialize<uint8_t>(HideInEditor);
   serialize<int16_t>(OldPortraitPict);
-  serialize<int8_t>(Enabled);
+  serialize<uint8_t>(Enabled);
 
   if (gv >= GV_AoK) // 11.48
-    serialize<int8_t>(Disabled);
+    serialize<uint8_t>(Disabled);
 
   if (gv >= GV_MIK)
     serializePair<int16_t>(PlacementSideTerrain);
   serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
   serializePair<float>(ClearanceSize);
-  serialize<int8_t>(HillMode);
-  serialize<int8_t>(FogVisibility);
+  serialize<uint8_t>(HillMode);
+  serialize<uint8_t>(FogVisibility);
   serialize<int16_t>(TerrainRestriction);
-  serialize<int8_t>(FlyMode);
+  serialize<uint8_t>(FlyMode);
   serialize<int16_t>(ResourceCapacity);
   serialize<float>(ResourceDecay);
-  serialize<int8_t>(BlastDefenseLevel);
-  serialize<int8_t>(CombatLevel);
-  serialize<int8_t>(InteractionMode);
-  serialize<int8_t>(MinimapMode);
-  serialize<int8_t>(InterfaceKind);
+  serialize<uint8_t>(BlastDefenseLevel);
+  serialize<uint8_t>(CombatLevel);
+  serialize<uint8_t>(InteractionMode);
+  serialize<uint8_t>(MinimapMode);
+  serialize<uint8_t>(InterfaceKind);
   serialize<float>(MultipleAttributeMode);
   serialize<uint8_t>(MinimapColor);
   if (gv >= GV_AoEB) // 7.04
@@ -125,33 +125,33 @@ void Unit::serializeObject(void)
     serialize<int32_t>(LanguageDLLHelp);
     serialize<int32_t>(LanguageDLLHotKeyText);
     serialize<int32_t>(HotKey);
-    serialize<int8_t>(Recyclable);
-    serialize<int8_t>(EnableAutoGather);
-    serialize<int8_t>(CreateDoppelgangerOnDeath);
-    serialize<int8_t>(ResourceGatherGroup);
+    serialize<uint8_t>(Recyclable);
+    serialize<uint8_t>(EnableAutoGather);
+    serialize<uint8_t>(CreateDoppelgangerOnDeath);
+    serialize<uint8_t>(ResourceGatherGroup);
 
     if (gv >= GV_AoKE3) // 9.15
     {
-      serialize<int8_t>(OcclusionMode);
+      serialize<uint8_t>(OcclusionMode);
       if (gv >= GV_AoKA) // 9.53
       {
-        serialize<int8_t>(ObstructionType);
-        serialize<int8_t>(ObstructionClass); // 9.56
+        serialize<uint8_t>(ObstructionType);
+        serialize<uint8_t>(ObstructionClass); // 9.56
         if (gv >= GV_TC) // 11.55
         {
           serialize<uint8_t>(Trait);
-          serialize<int8_t>(Civilization);
+          serialize<uint8_t>(Civilization);
           serialize<int16_t>(Nothing);
         }
       }
     }
     else if (gv >= GV_T7 && gv <= GV_LatestTap)
     {
-      serialize<int8_t>(ObstructionType);
-      serialize<int8_t>(ObstructionClass);
+      serialize<uint8_t>(ObstructionType);
+      serialize<uint8_t>(ObstructionClass);
     }
 
-    serialize<int8_t>(SelectionEffect);
+    serialize<uint8_t>(SelectionEffect);
     serialize<uint8_t>(EditorSelectionColour);
     serialize<float>(OutlineSize.x);
     serialize<float>(OutlineSize.y);
@@ -182,8 +182,8 @@ void Unit::serializeObject(void)
     serialize<uint32_t>(WwiseSelectionSoundID);
     serialize<uint32_t>(WwiseDyingSoundID);
   }
-  serialize<int8_t>(OldAttackReaction);
-  serialize<int8_t>(ConvertTerrain);
+  serialize<uint8_t>(OldAttackReaction);
+  serialize<uint8_t>(ConvertTerrain);
 
   if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
   {
@@ -191,11 +191,11 @@ void Unit::serializeObject(void)
 
     if (gv >= GV_SWGB)
     {
-      serializeSize<uint16_t>(name_len, Name2);
+      serializeSize<int16_t>(name_len, Name2);
       serialize(Name2, name_len);
 
       serialize<int16_t>(Unitline);
-      serialize<int8_t>(MinTechLevel);
+      serialize<uint8_t>(MinTechLevel);
     }
   }
   else

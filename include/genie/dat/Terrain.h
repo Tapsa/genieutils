@@ -35,8 +35,8 @@ public:
   static unsigned short getTerrainCount(GameVersion gv);
   static void setTerrainCount(unsigned short cnt);
 
-  int8_t IsWater = 0;
-  int8_t HideInEditor = 0;
+  uint8_t IsWater = 0;
+  uint8_t HideInEditor = 0;
   int32_t StringID = 0;
   int16_t Phantom = 0;
 
@@ -59,8 +59,8 @@ public:
   std::string OverlayMaskName = "";
 
   std::pair<uint8_t, uint8_t> CliffColors = {0, 0};
-  int8_t PassableTerrain = -1;
-  int8_t ImpassableTerrain = -1;
+  uint8_t PassableTerrain = -1;
+  uint8_t ImpassableTerrain = -1;
 
   std::vector<FrameData> ElevationGraphics;
 
@@ -77,7 +77,7 @@ public:
 
   /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
   /// 1 = prevails, others don't.
-  std::vector<int8_t> TerrainUnitCentering;
+  std::vector<uint8_t> TerrainUnitCentering;
 
   int16_t NumberOfTerrainUnitsUsed = 0;
 

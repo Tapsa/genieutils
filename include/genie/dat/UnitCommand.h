@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2018  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ public:
 
   int16_t TaskType = 1;
   int16_t ID = -1;
-  int8_t IsDefault = false;
+  uint8_t IsDefault = false;
   int16_t ActionType = 0;
   int16_t ClassID = -1;
   int16_t UnitID = -1;
@@ -46,15 +46,15 @@ public:
   float WorkValue1 = 0;
   float WorkValue2 = 0;
   float WorkRange = 0;
-  int8_t AutoSearchTargets = 0;
+  uint8_t AutoSearchTargets = 0;
   float SearchWaitTime = 0;
-  int8_t EnableTargeting = 0;
-  int8_t CombatLevelFlag = false;
+  uint8_t EnableTargeting = 0;
+  uint8_t CombatLevelFlag = false;
   int16_t GatherType = 0;
   int16_t WorkFlag2 = 0;
-  int8_t TargetDiplomacy = 0;
-  int8_t CarryCheck = false;
-  int8_t PickForConstruction = false;
+  uint8_t TargetDiplomacy = 0;
+  uint8_t CarryCheck = false;
+  uint8_t PickForConstruction = false;
   int16_t MovingGraphicID = -1;
   int16_t ProceedingGraphicID = -1;
   int16_t WorkingGraphicID = -1;

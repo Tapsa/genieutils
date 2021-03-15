@@ -87,8 +87,8 @@ void Terrain::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize<int8_t>(Enabled);
-  serialize<int8_t>(Random);
+  serialize<uint8_t>(Enabled);
+  serialize<uint8_t>(Random);
 
   if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
   {
@@ -99,8 +99,8 @@ void Terrain::serializeObject(void)
   {
     if (gv >= GV_T2 && gv < GV_C2 || gv >= GV_C8 && gv <= GV_LatestDE2)
     {
-      serialize<int8_t>(IsWater);
-      serialize<int8_t>(HideInEditor);
+      serialize<uint8_t>(IsWater);
+      serialize<uint8_t>(HideInEditor);
       serialize<int32_t>(StringID);
     }
     if (gv >= GV_T2 && gv < GV_C2)
@@ -144,10 +144,10 @@ void Terrain::serializeObject(void)
 
   serialize<uint8_t>(Colors, 3);
   serializePair<uint8_t>(CliffColors);
-  serialize<int8_t>(PassableTerrain);
-  serialize<int8_t>(ImpassableTerrain);
+  serialize<uint8_t>(PassableTerrain);
+  serialize<uint8_t>(ImpassableTerrain);
 
-  serialize<int8_t>(IsAnimated);
+  serialize<uint8_t>(IsAnimated);
   serialize<int16_t>(AnimationFrames);
   serialize<int16_t>(PauseFames);
   serialize<float>(Interval);
@@ -155,8 +155,8 @@ void Terrain::serializeObject(void)
   serialize<int16_t>(Frame);
   serialize<int16_t>(DrawFrame);
   serialize<float>(AnimateLast);
-  serialize<int8_t>(FrameChanged);
-  serialize<int8_t>(Drawn);
+  serialize<uint8_t>(FrameChanged);
+  serialize<uint8_t>(Drawn);
 
   serializeSub<FrameData>(ElevationGraphics, TILE_TYPE_COUNT);
   serialize<int16_t>(TerrainToDraw);
@@ -189,7 +189,7 @@ void Terrain::serializeObject(void)
   }
   serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);
   serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_SIZE);
-  serialize<int8_t>(TerrainUnitCentering, TERRAIN_UNITS_SIZE);
+  serialize<uint8_t>(TerrainUnitCentering, TERRAIN_UNITS_SIZE);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
   if (gv < GV_SWGB)

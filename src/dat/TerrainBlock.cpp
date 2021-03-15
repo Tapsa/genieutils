@@ -88,8 +88,8 @@ void TerrainBlock::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize<int32_t>(VirtualFunctionPtr);// __vfptr
-  serialize<int32_t>(MapPointer);
+  serialize<uint32_t>(VirtualFunctionPtr);// __vfptr
+  serialize<uint32_t>(MapPointer);
   serialize<int32_t>(MapWidth);
   serialize<int32_t>(MapHeight);
   serialize<int32_t>(WorldWidth);
@@ -117,7 +117,7 @@ void TerrainBlock::serializeObject(void)
       serializeSub<TerrainBorder>(TerrainBorders, 16);
 
     // Probably filled after loading map in game.
-    serialize<int32_t>(MapRowOffset);
+    serialize<uint32_t>(MapRowOffset);
   }
 
   if (gv >= GV_AoKA)
@@ -133,10 +133,10 @@ void TerrainBlock::serializeObject(void)
     }
   }
 
-  serialize<uint16_t>(TerrainsUsed2);
+  serialize<int16_t>(TerrainsUsed2);
   if (gv < GV_AoEB)
-    serialize<uint16_t>(RemovedBlocksUsed);
-  serialize<uint16_t>(BordersUsed);
+    serialize<int16_t>(RemovedBlocksUsed);
+  serialize<int16_t>(BordersUsed);
   serialize<int16_t>(MaxTerrain);
   serialize<int16_t>(TileWidth);
   serialize<int16_t>(TileHeight);
@@ -152,31 +152,31 @@ void TerrainBlock::serializeObject(void)
 
   if (gv >= GV_AoKE3)
   {
-    serialize<int32_t>(SearchMapPtr);
-    serialize<int32_t>(SearchMapRowsPtr);
-    serialize<int8_t>(AnyFrameChange);
+    serialize<uint32_t>(SearchMapPtr);
+    serialize<uint32_t>(SearchMapRowsPtr);
+    serialize<uint8_t>(AnyFrameChange);
   }
   else
   {
     // Padding fix
-    int32_t any = AnyFrameChange;
-    serialize<int32_t>(any);
+    uint32_t any = AnyFrameChange;
+    serialize<uint32_t>(any);
     AnyFrameChange = any;
 
-    serialize<int32_t>(SearchMapPtr);
-    serialize<int32_t>(SearchMapRowsPtr);
+    serialize<uint32_t>(SearchMapPtr);
+    serialize<uint32_t>(SearchMapRowsPtr);
   }
-  serialize<int8_t>(MapVisibleFlag);
-  serialize<int8_t>(FogFlag); // Always 1
+  serialize<uint8_t>(MapVisibleFlag);
+  serialize<uint8_t>(FogFlag); // Always 1
 
   //From here on data is filled in game anyway.
   if (gv < GV_C9 || gv > GV_LatestDE2)
   {
     //There are two 32-bit pointers random map and game world, rest should be all 0.
-    serialize<int8_t>(SomeBytes, getBytesSize());
+    serialize<uint8_t>(SomeBytes, getBytesSize());
 
     // Few pointers and small numbers.
-    serialize<int32_t>(SomeInt32, getSomethingSize());
+    serialize<uint32_t>(SomeInt32, getSomethingSize());
   }
 }
 

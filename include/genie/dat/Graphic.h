@@ -51,7 +51,7 @@ public:
   std::string ParticleEffectName = "";
 
   /// Number of frames to skip
-  uint16_t FirstFrame = 0;
+  int16_t FirstFrame = 0;
 
   union
   {
@@ -61,8 +61,8 @@ public:
   };
 
   //TODO
-  int8_t IsLoaded = 0;
-  int8_t OldColorFlag = 0;
+  uint8_t IsLoaded = 0;
+  uint8_t OldColorFlag = 0;
 
   /// The layer describes order of graphics being rendered.
   /// Possible values: 0 (lowest layer) to 40 (highest layer)
@@ -70,30 +70,29 @@ public:
   /// layer. If graphics share the same layer, graphics will be displayed
   /// dependend on their map positions.
   ///
-  int8_t Layer = 0;
+  uint8_t Layer = 0;
 
   /// Setting this to 0 forces the player color to be blue.
-  int8_t PlayerColor = -1;
-  int8_t Rainbow = -1;
+  int16_t PlayerColor = -1;
 
   /// .
-  int8_t TransparentSelection = 0;
+  uint8_t TransparentSelection = 0;
 
   /// TODO: What kind of coordinates?
   std::vector<int16_t> Coordinates = {0, 0, 0, 0};
 
   int16_t SoundID = -1;
   uint32_t WwiseSoundID = 0;
-  int8_t AngleSoundsUsed = 0;
+  uint8_t AngleSoundsUsed = 0;
 
   /// Number of frames per angle animation
-  uint16_t FrameCount = 0;
+  int16_t FrameCount = 0;
 
   /// Number of angles tored in slp and also the number of extra structures.
   /// If there are more than 1 angle, AngleCount/2 - 1 frames will be
   /// mirrored. That means angles starting from south going clockwise to
   /// north are stored and the others will be mirrored.
-  uint16_t AngleCount = 0;
+  int16_t AngleCount = 0;
 
   /// If this is over 0, the speed of the unit will be replaced with this.
   float SpeedMultiplier = 0;
@@ -105,10 +104,10 @@ public:
   /// Time to wait until the animation sequence is started again.
   float ReplayDelay = 0;
 
-  int8_t SequenceType = 0;
+  uint8_t SequenceType = 0;
   int16_t ID = -1;
-  int8_t MirroringMode = 0;
-  int8_t EditorFlag = 0;
+  uint8_t MirroringMode = 0;
+  uint8_t EditorFlag = 0;
 
   std::vector<GraphicDelta> Deltas;
   std::vector<GraphicAngleSound> AngleSounds;

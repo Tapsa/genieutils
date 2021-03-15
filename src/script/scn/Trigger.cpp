@@ -1,7 +1,7 @@
 /*
     genieutils - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -36,9 +36,9 @@ Trigger::~Trigger()
 void Trigger::serializeObject(void)
 {
   serialize<int32_t>(startingState);
-  serialize<int8_t>(looping);
+  serialize<uint8_t>(looping);
   serialize<int32_t>(stringTableID);
-  serialize<int8_t>(isObjective);
+  serialize<uint8_t>(isObjective);
   serialize<int32_t>(descriptionOrder);
   if (scn_trigger_ver > 1.5f)
     serialize<int32_t>(startingTime);

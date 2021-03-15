@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2018  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ void Civ::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize<int8_t>(PlayerType);
+  serialize<uint8_t>(PlayerType);
 
   if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
   {
@@ -58,8 +58,8 @@ void Civ::serializeObject(void)
     serializeDebugString(Name);
   }
 
-  uint16_t count;
-  serializeSize<uint16_t>(count, Resources.size());
+  int16_t count;
+  serializeSize<int16_t>(count, Resources.size());
 
   if (gv >= GV_MIK)
   {
@@ -78,9 +78,9 @@ void Civ::serializeObject(void)
 
   serialize<float>(Resources, count);
 
-  serialize<int8_t>(IconSet);
+  serialize<uint8_t>(IconSet);
 
-  serializeSize<uint16_t>(count, Units.size());
+  serializeSize<int16_t>(count, Units.size());
   serialize<int32_t>(UnitPointers, count);
   serializeSubWithPointers<Unit>(Units, count, UnitPointers);
 }

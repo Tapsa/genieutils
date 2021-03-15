@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -69,9 +69,9 @@ void Building::serializeObject(void)
     }
   }
 
-  serialize<int8_t>(AdjacentMode);
+  serialize<uint8_t>(AdjacentMode);
   serialize<int16_t>(GraphicsAngle);
-  serialize<int8_t>(DisappearsWhenBuilt);
+  serialize<uint8_t>(DisappearsWhenBuilt);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(FoundationTerrainID);
   serialize<int16_t>(OldOverlayID); // No longer used
@@ -79,7 +79,7 @@ void Building::serializeObject(void)
 
   if (gv >= GV_AoKE3)
   {
-    serialize<int8_t>(CanBurn);
+    serialize<uint8_t>(CanBurn);
     serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_SIZE); // 40 bytes
     if (gv >= GV_AoKA)
       serialize<int16_t>(HeadUnit); // 9.89
@@ -96,13 +96,13 @@ void Building::serializeObject(void)
       serialize<uint32_t>(WwiseTransformSoundID);
       serialize<uint32_t>(WwiseConstructionSoundID);
     }
-    serialize<int8_t>(GarrisonType);
+    serialize<uint8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<float>(GarrisonRepairRate);
     {
       serialize<int16_t>(PileUnit); // 9.06
       // 9.06 - 9.25 -> 5 x 2 x int16_t
-      serialize<int8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
+      serialize<uint8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
     }
   }
 }

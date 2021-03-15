@@ -57,11 +57,11 @@ void Type50::serializeObject(void)
     serialize<int16_t>(BaseArmor);
   }
 
-  uint16_t attack_count;
-  serializeSize<uint16_t>(attack_count, Attacks.size());
+  int16_t attack_count;
+  serializeSize<int16_t>(attack_count, Attacks.size());
   serializeSub<unit::AttackOrArmor>(Attacks, attack_count);
 
-  serializeSize<uint16_t>(attack_count, Armours.size());
+  serializeSize<int16_t>(attack_count, Armours.size());
   serializeSub<unit::AttackOrArmor>(Armours, attack_count);
 
   serialize<int16_t>(DefenseTerrainBonus);
@@ -74,10 +74,10 @@ void Type50::serializeObject(void)
   serialize<float>(ReloadTime);
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
-  serialize<int8_t>(BreakOffCombat); // Not used anymore
+  serialize<uint8_t>(BreakOffCombat); // Not used anymore
   serialize<int16_t>(FrameDelay);
   serialize<float>(GraphicDisplacement, 3);
-  serialize<int8_t>(BlastAttackLevel);
+  serialize<uint8_t>(BlastAttackLevel);
   serialize<float>(MinRange);
 
   if (gv >= GV_AoKB) // 10.36

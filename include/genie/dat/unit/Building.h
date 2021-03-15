@@ -65,9 +65,9 @@ public:
   int16_t ResearchingGraphic = -1;
   int16_t ResearchCompletedGraphic = -1;
   /// Enabler for annex units.
-  int8_t AdjacentMode = 0;
+  uint8_t AdjacentMode = 0;
   int16_t GraphicsAngle = 0;
-  int8_t DisappearsWhenBuilt = 0;
+  uint8_t DisappearsWhenBuilt = 0;
 
   /// These four (4) variables are used when building is created
   int16_t StackUnitID = -1;
@@ -76,7 +76,7 @@ public:
   int16_t OldOverlayID = -1;
   int16_t TechID = -1;
 
-  int8_t CanBurn = 0;
+  uint8_t CanBurn = 0;
 
   static const unsigned short BUILDING_ANNEXES_SIZE = 4;
   std::vector<unit::BuildingAnnex> Annexes;
@@ -86,7 +86,7 @@ public:
   int16_t ConstructionSound = -1;
   uint32_t WwiseTransformSoundID = 0;
   uint32_t WwiseConstructionSoundID = 0;
-  int8_t GarrisonType = 0;
+  uint8_t GarrisonType = 0;
   float GarrisonHealRate = 0;
   float GarrisonRepairRate = 0;
   int16_t PileUnit = -1;
@@ -94,7 +94,7 @@ public:
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
   static const unsigned short LOOTABLE_RES_COUNT = 6;
-  std::vector<int8_t> LootingTable;
+  std::vector<uint8_t> LootingTable;
 
 protected:
   virtual void serializeObject(void);

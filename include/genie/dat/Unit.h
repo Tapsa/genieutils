@@ -84,7 +84,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// See enum UnitType
-  int8_t Type = 10;
+  uint8_t Type = 10;
 
   int16_t ID = -1;
 
@@ -92,15 +92,14 @@ public:
   {
      /// ID of the name string stored in the language.dll file
      int32_t LanguageDLLName = 5000;
-     uint16_t LanguageDLLNameU16;
+     int16_t LanguageDLLNameU16;
   };
   union
   {
      /// ID of the name string stored in the language.dll file
      int32_t LanguageDLLCreation = 6000;
-     uint16_t LanguageDLLCreationU16;
+     int16_t LanguageDLLCreationU16;
   };
-
 
   /// Class that gives certain properties
   int16_t Class = -1;
@@ -113,7 +112,7 @@ public:
   int16_t UndeadGraphic = -1;
 
   /// Enables undead state
-  int8_t UndeadMode = 0;
+  uint8_t UndeadMode = 0;
 
   /// Unit's hit points
   int16_t HitPoints = 1;
@@ -122,7 +121,7 @@ public:
   float LineOfSight = 2;
 
   /// Maximum number of units that can be garrisonned at the same time.
-  int8_t GarrisonCapacity = 0;
+  uint8_t GarrisonCapacity = 0;
 
   /// Collision detection area taken by the unit.
   /// No other unit can move into this area except flying units.
@@ -138,44 +137,39 @@ public:
   int16_t DeadUnitID = -1;
   int16_t BloodUnitID = -1;
 
-  /// TODO
-  int8_t SortNumber = 0;
+  uint8_t SortNumber = 0;
 
-  /// TODO
-  int8_t CanBeBuiltOn = 0;
+  uint8_t CanBeBuiltOn = 0;
 
   /// ID of the icon shown at the bottom when selected or when building
   int16_t IconID = -1;
 
   /// If true, unit can not be placed in the editor
-  int8_t HideInEditor = 0;
+  uint8_t HideInEditor = 0;
 
-  /// TODO Unknown
   int16_t OldPortraitPict = -1;         // Always -1
 
-  /// TODO
-  int8_t Enabled = 1;
-  int8_t Disabled = 0;
+  uint8_t Enabled = 1;
+  uint8_t Disabled = 0;
   std::pair<int16_t, int16_t> PlacementSideTerrain = {-1, -1};
   std::pair<int16_t, int16_t> PlacementTerrain = {-1, -1};
   std::pair<float, float> ClearanceSize = {0.f, 0.f};
-  int8_t HillMode = 0;
-  int8_t FogVisibility = 0;
+  uint8_t HillMode = 0;
+  uint8_t FogVisibility = 0;
 
   /// ID of terrain restrictions that are imposed on the unit.
   int16_t TerrainRestriction = 0;
 
   /// Bool which determines wheter the unit can fly.
-  int8_t FlyMode = 0;
+  uint8_t FlyMode = 0;
 
   /// How much resources this unit is able to carry
   int16_t ResourceCapacity = 0;
 
-  // TODO
   float ResourceDecay = 0;
-  int8_t BlastDefenseLevel = 0;
-  int8_t CombatLevel = 0;
-  int8_t InteractionMode = 0;
+  uint8_t BlastDefenseLevel = 0;
+  uint8_t CombatLevel = 0;
+  uint8_t InteractionMode = 0;
 
   /**
    * \brief Defines if and how a unit is shown on the minimap.
@@ -202,19 +196,19 @@ public:
    * - 10 does the same thing as “6”. Hawks, macaws, and flying dogs have
    *      this value.
    */
-  int8_t MinimapMode = 0;
+  uint8_t MinimapMode = 0;
 
-  int8_t InterfaceKind = 0;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
+  uint8_t InterfaceKind = 0;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
   float MultipleAttributeMode = 0;
   uint8_t MinimapColor = 0;
   int32_t LanguageDLLHelp = 105000;
   int32_t LanguageDLLHotKeyText = 155000;
   int32_t HotKey = 16000;
-  int8_t Recyclable = 0;
-  int8_t EnableAutoGather = 0;
-  int8_t CreateDoppelgangerOnDeath = 0;
-  int8_t ResourceGatherGroup = 0;
-  int8_t OcclusionMode = 0;
+  uint8_t Recyclable = 0;
+  uint8_t EnableAutoGather = 0;
+  uint8_t CreateDoppelgangerOnDeath = 0;
+  uint8_t ResourceGatherGroup = 0;
+  uint8_t OcclusionMode = 0;
 
   /// values for ObstructionType
   /// 0 farm, gate, dead bodies, town center
@@ -222,13 +216,13 @@ public:
   /// 3 berserk, flag x
   /// 5 units
   /// 10 mountain(matches selction mask)
-  int8_t ObstructionType = 0;
+  uint8_t ObstructionType = 0;
 
   /// 0 default, 1+ above
-  int8_t ObstructionClass = 0;
+  uint8_t ObstructionClass = 0;
   uint8_t Trait = 0;
   /// Seems to be used only in SWGB/CC
-  int8_t Civilization = 0;
+  uint8_t Civilization = 0;
   int16_t Nothing = 0;
 
   /**
@@ -238,11 +232,11 @@ public:
    * 4.HP Bar off, normal outline
    * Note: this doe not work with all units
    */
-  int8_t SelectionEffect = 1;
+  uint8_t SelectionEffect = 1;
   uint8_t EditorSelectionColour = 52;
   XYZF OutlineSize = {0, 0, 0};
 
-  typedef ResourceUsage<int16_t, float, int8_t> ResourceStorage;
+  typedef ResourceUsage<int16_t, float, uint8_t> ResourceStorage;
 
   /// Resource cost of a unit
   std::vector<ResourceStorage> ResourceStorages;
@@ -254,8 +248,8 @@ public:
   int16_t DyingSound = -1;
   uint32_t WwiseSelectionSoundID = 0;
   uint32_t WwiseDyingSoundID = 0;
-  int8_t OldAttackReaction = 0;
-  int8_t ConvertTerrain = 0;
+  uint8_t OldAttackReaction = 0;
+  uint8_t ConvertTerrain = 0;
   std::string Name = "";
   std::string Name2 = "";
 
@@ -263,7 +257,7 @@ public:
   int16_t Unitline = -1;
 
   /// MinGameVersion: SWGB
-  int8_t MinTechLevel = -1;
+  uint8_t MinTechLevel = -1;
 
   int16_t CopyID = -1;
   int16_t BaseID = -1;//not in aoe/ror

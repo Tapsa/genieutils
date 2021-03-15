@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ void Creatable::serializeObject(void)
   serializeSub<ResourceCost>(ResourceCosts, 3);
   serialize<int16_t>(TrainTime);
   serialize<int16_t>(TrainLocationID);
-  serialize<int8_t>(ButtonID);
+  serialize<uint8_t>(ButtonID);
 
   if (gv >= GV_AoEB) // 7.01
   {
@@ -61,11 +61,11 @@ void Creatable::serializeObject(void)
     {
       serialize<float>(RearAttackModifier);
       serialize<float>(FlankAttackModifier);
-      serialize<int8_t>(CreatableType);
+      serialize<uint8_t>(CreatableType);
 
       if (gv >= GV_AoKB)
       {
-        serialize<int8_t>(HeroMode); // 10.49
+        serialize<uint8_t>(HeroMode); // 10.49
         serialize<int32_t>(GarrisonGraphic); // 10.73
 
         if (gv <= GV_LatestDE2 && gv >= GV_C13)
@@ -84,13 +84,13 @@ void Creatable::serializeObject(void)
       }
 
       serialize<float>(TotalProjectiles);
-      serialize<int8_t>(MaxTotalProjectiles);
+      serialize<uint8_t>(MaxTotalProjectiles);
       serialize<float>(ProjectileSpawningArea, 3);
       serialize<int32_t>(SecondaryProjectileUnit); // 9.08
       // 9.2
       {
         serialize<int32_t>(SpecialGraphic);
-        serialize<int8_t>(SpecialAbility);
+        serialize<uint8_t>(SpecialAbility);
       }
     }
     serialize<int16_t>(DisplayedPierceArmour);
