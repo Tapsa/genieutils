@@ -154,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -169,7 +169,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -186,7 +186,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -205,7 +205,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -222,7 +222,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -237,7 +237,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -254,7 +254,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -273,7 +273,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -329,6 +329,9 @@
     <ClInclude Include="include\genie\resource\SlpFrame.h" />
     <ClInclude Include="include\genie\resource\SmpFile.h" />
     <ClInclude Include="include\genie\resource\SmpFrame.h" />
+    <ClInclude Include="include\genie\resource\SmxFile.h" />
+    <ClInclude Include="include\genie\resource\SmxFrame.h" />
+    <ClInclude Include="include\genie\resource\SpriteFile.h" />
     <ClInclude Include="include\genie\script\ScnFile.h" />
     <ClInclude Include="include\genie\script\scn\MapDescription.h" />
     <ClInclude Include="include\genie\script\scn\ScnPlayerData.h" />
@@ -382,6 +385,8 @@
     <ClCompile Include="src\resource\SlpFrame.cpp" />
     <ClCompile Include="src\resource\SmpFile.cpp" />
     <ClCompile Include="src\resource\SmpFrame.cpp" />
+    <ClCompile Include="src\resource\SmxFile.cpp" />
+    <ClCompile Include="src\resource\SmxFrame.cpp" />
     <ClCompile Include="src\script\ScnFile.cpp" />
     <ClCompile Include="src\script\scn\MapDescription.cpp" />
     <ClCompile Include="src\script\scn\ScnPlayerData.cpp" />

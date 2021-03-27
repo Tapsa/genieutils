@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2018  Mikko "Tapsa" P
+    Copyright (C) 2018 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -135,11 +135,9 @@ void SmpFrame::load(std::istream &istr)
     istr.seekg(smp_frame_pos_ + std::streampos(cmd_offsets_[row]));
     assert(!istr.eof());
 
-    uint8_t data = 0;
     while (true)
     {
-      data = read<uint8_t>();
-
+      uint8_t data = read<uint8_t>();
       uint8_t cmd = data & 0x3;
 
       if (0x3 == cmd)
@@ -147,7 +145,7 @@ void SmpFrame::load(std::istream &istr)
         break;
       }
 
-      uint8_t pix_cnt = 1 + ((data & 0xFC) >> 2);
+      uint8_t pix_cnt = 1 + (data >> 2);
 
       switch (cmd)
       {

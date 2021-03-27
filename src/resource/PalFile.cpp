@@ -21,6 +21,7 @@
 #include "genie/resource/PalFile.h"
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #include "genie/util/Logger.h"
@@ -88,64 +89,74 @@ void PalFile::serializeObject(void)
     std::istream *istr = getIStream();
 
     std::string header;
-    
+
     *istr >> header;
-    
-    if (header.compare(getHeader()) != 0)
+
+    if (header.substr(0, getHeader().length()).compare(getHeader()) != 0)
     {
       log.error("Not a color palette!");
       //TODO: Exception
       return;
     }
-    
+
     *istr >> header;
-    
+
     if (header.compare(getHeader2()) != 0)
       log.warn("Different header2 in PalFile");
-    
+
     *istr >> num_colors_;
-    
-    colors_.resize(num_colors_);
-    
-    for (uint32_t i=0; i<num_colors_; i++)
+
+    colors_.reserve(num_colors_);
+
+    for (std::string line; std::getline(*istr, line);)
     {
-      uint32_t color_in;
-      
-      *istr >> color_in;
-      colors_[i].r = color_in;
-      
-      *istr >> color_in;
-      colors_[i].g = color_in;
-      
-      *istr >> color_in;
-      colors_[i].b = color_in;
-      
-      // Be naughty and assume 1024 has alpha in it.
-      if (1024 == num_colors_)
+      std::istringstream iss(line);
+      uint32_t part;
+      iss >> part;
+      if (iss.fail())
       {
-        *istr >> color_in;
-        colors_[i].a = color_in;
+        continue;
+      }
+      Color color;
+      color.r = part;
+      iss >> part;
+      if (iss.fail())
+      {
+        continue;
+      }
+      color.g = part;
+      iss >> part;
+      if (iss.fail())
+      {
+        continue;
+      }
+      color.b = part;
+      iss >> part;
+      if (iss.fail())
+      {
+        color.a = 255;
       }
       else
       {
-      colors_[i].a = 255;  //transparency off
+        color.a = part;
+      }
+      colors_.push_back(color);
     }
-  }
   }
   else
   {
     std::ostream *ostr = getOStream();
-    
+
     std::string CR_LF = "\r\n"; // windows line ending
-    
+
     *ostr << getHeader() << CR_LF;
     *ostr << getHeader2() << CR_LF;
-    
+
     if (colors_.size() > 256)
       log.error("Too much colors (>256)");
-    
+
     *ostr << colors_.size() << CR_LF;
-    
+
     for (uint32_t i=0; i< colors_.size(); i++)
     {
       *ostr << (int)colors_[i].r << " ";
@@ -160,10 +171,10 @@ size_t PalFile::numOfChars(uint8_t number)
 {
   if (number < 10)
     return 1;
-  
+
   if (number < 100)
     return 2;
-  
+
   return 3;
 }
 
@@ -171,27 +182,27 @@ size_t PalFile::numOfChars(uint8_t number)
 size_t PalFile::objectSize(void)
 {
   int CL_LF_SIZE = 2;
-  
+
   size_t size = 0;
-  
+
   size += getHeader().size() + CL_LF_SIZE;
   size += getHeader2().size() + CL_LF_SIZE;
-  
+
   if (colors_.size() > 256)
     log.error("Too much colors (>256)");
-  
+
   size += numOfChars(static_cast<uint8_t>(colors_.size())) + CL_LF_SIZE;
-  
+
   for (uint32_t i=0; i < colors_.size(); i++)
   {
     size += numOfChars(colors_[i].r);
     size += numOfChars(colors_[i].g);
     size += numOfChars(colors_[i].b);
-    
+
     size += 2; // spaces
     size += CL_LF_SIZE;
   }
-  
+
   return size;
 }
 

@@ -177,6 +177,15 @@
     <ClInclude Include="include\genie\util\Logger.h">
       <Filter>Log</Filter>
     </ClInclude>
+    <ClInclude Include="include\genie\resource\SmxFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SmxFrame.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\resource\SpriteFile.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file\Compressor.cpp">
@@ -328,6 +337,12 @@
     </ClCompile>
     <ClCompile Include="..\AGE\Misc Files\zlib.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SmxFile.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\SmxFrame.cpp">
+      <Filter>Sprites</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

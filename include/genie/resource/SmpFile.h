@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2018  Mikko "Tapsa" P
+    Copyright (C) 2018 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,7 @@
 #include "genie/util/Logger.h"
 #include "PalFile.h"
 #include "SmpFrame.h"
+#include "SpriteFile.h"
 
 namespace genie
 {
@@ -35,7 +36,7 @@ namespace genie
 /// The image is stored as 8 bits per pixel, that means only the index of a
 /// color in a palette is saved.
 //
-class SmpFile : public IFile
+class SmpFile : public SpriteFile, public IFile
 {
 
 public:
@@ -52,7 +53,7 @@ public:
   //----------------------------------------------------------------------------
   /// Frees all content of a smp file.
   //
-  void unload(void);
+  void unload(void) override;
 
   //----------------------------------------------------------------------------
   /// Check whether the files content is loaded or not.

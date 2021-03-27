@@ -20,11 +20,11 @@
 
 namespace genie
 {
-  
+
 BinaFile::BinaFile()
 {
 }
-  
+
 BinaFile::~BinaFile()
 {
 }
@@ -32,11 +32,11 @@ BinaFile::~BinaFile()
 PalFilePtr BinaFile::readPalFile(std::istream *istr)
 {
   PalFilePtr pal(new PalFile());
-  
+
   pal->setInitialReadPosition(getInitialReadPosition());
-  
+
   pal->readObject(*istr);
-  
+
   return pal;
 }
 
