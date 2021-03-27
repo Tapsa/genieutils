@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -107,6 +107,52 @@ private:
   std::ifstream fileIn_;
 
   bool loaded_ = false;
+};
+
+class IMemory : public std::streambuf
+{
+public:
+  IMemory(char *begin, char *end)
+  {
+    setg(begin, begin, end);
+  }
+
+  std::streampos seekoff(std::streamoff off, std::ios_base::seekdir dir,
+    std::ios_base::openmode which = std::ios_base::in | std::ios_base::out) override
+  {
+    switch (dir)
+    {
+      case std::ios_base::beg:
+        setg(eback(), eback() + off, egptr());
+        break;
+      case std::ios_base::end:
+        setg(eback(), egptr() + off, egptr());
+        break;
+      case std::ios_base::cur:
+        gbump(static_cast<int>(off));
+        break;
+    }
+    return gptr() - eback();
+  }
+
+  std::streampos seekpos(std::streampos pos,
+    std::ios_base::openmode which = std::ios_base::in | std::ios_base::out) override
+  {
+    return seekoff(pos - std::streampos(std::streamoff(0)), std::ios_base::beg, which);
+  }
+};
+
+class IMemoryStream : public std::istream
+{
+public:
+  IMemoryStream(char *begin, char *end) :
+    std::istream(&buffer_), buffer_(begin, end)
+  {
+    rdbuf(&buffer_);
+  }
+
+private:
+  IMemory buffer_;
 };
 
 }

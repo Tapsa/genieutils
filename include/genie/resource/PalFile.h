@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2018  Mikko "Tapsa" P
+    Copyright (C) 2018 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -30,9 +30,12 @@
 
 namespace genie
 {
-  
+
 struct XY
 {
+  XY(uint32_t x, uint32_t y) :x(x), y(y)
+  {
+  }
   uint32_t x;
   uint32_t y;
 };
@@ -46,6 +49,10 @@ inline bool operator<(const XY &l, const XY &r)
 // a player color pixel and the palette index for the color
 struct PlayerColorXY
 {
+  PlayerColorXY(uint32_t x, uint32_t y, uint32_t index) :
+    x(x), y(y), index(index)
+  {
+  }
   uint32_t x;
   uint32_t y;
   uint32_t index;
@@ -70,12 +77,12 @@ public:
   /// Constructor
   //
   PalFile();
-  
+
   //----------------------------------------------------------------------------
   /// Destructor
   //
   virtual ~PalFile();
-   
+
   //----------------------------------------------------------------------------
   /// Returns a color at given index.
   ///
@@ -84,36 +91,36 @@ public:
   //
   Color& operator[](uint16_t index);
   std::vector<Color> getColors(void) const;
-  
+
   //----------------------------------------------------------------------------
   /// Number of colors stored in this palette.
   ///
   /// @return size
   //
   size_t size(void) const;
-  
+
   //----------------------------------------------------------------------------
   /// TODO: Somethings wrong...
   //
-  virtual size_t objectSize(void); 
+  virtual size_t objectSize(void);
 private:
-  
+
   static Logger &log;
-  
+
   std::vector<Color> colors_;
-  
+
   uint32_t num_colors_ = 0;
-  
+
   std::string type_;
   std::string unknown_;
-  
-  std::string getHeader() const; 
+
+  std::string getHeader() const;
   std::string getHeader2() const; //TODO Unknown
-  
+
   virtual void serializeObject(void);
-  
+
   // TODO: Not implemented yet
-  
+
   //----------------------------------------------------------------------------
   /// Get number of characters of a number serialized as a string.
   //

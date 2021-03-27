@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,32 +16,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_BINAFILE_H
-#define GENIE_BINAFILE_H
-
-#include "genie/file/ISerializable.h"
-#include "PalFile.h"
+#ifndef GENIE_SPRITEFILE_H
+#define GENIE_SPRITEFILE_H
 
 namespace genie
 {
 
-//------------------------------------------------------------------------------
-/// Class for loading "bina" files of a drs file.
-//
-class BinaFile : public ISerializable
+class SpriteFile
 {
 public:
-  BinaFile();
-  virtual ~BinaFile();
-
-  PalFilePtr readPalFile(std::istream *istr);
-
-private:
-  virtual void serializeObject(void);
+  virtual void unload(void) = 0;
 };
 
-typedef std::shared_ptr<BinaFile> BinaFilePtr;
+typedef std::shared_ptr<SpriteFile> SpriteFilePtr;
 
 }
 
-#endif // GENIE_BINAFILE_H
+#endif // GENIE_SPRITEFILE_H

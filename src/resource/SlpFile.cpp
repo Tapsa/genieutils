@@ -25,6 +25,8 @@
 #include "genie/resource/SlpFrame.h"
 #include "genie/resource/PalFile.h"
 
+#include "lz4hc.h"
+
 namespace genie
 {
 
@@ -38,6 +40,8 @@ SlpFile::SlpFile() : IFile()
 //------------------------------------------------------------------------------
 SlpFile::~SlpFile()
 {
+  delete slp_stream_;
+  delete[] slp_data_;
 }
 
 //------------------------------------------------------------------------------
@@ -75,6 +79,11 @@ void SlpFile::loadFile()
     frames_[i]->load(*getIStream());
   }
 
+  // In case file content was decompressed
+  delete slp_stream_;
+  delete[] slp_data_;
+  slp_stream_ = nullptr;
+  slp_data_ = nullptr;
   loaded_ = true;
 }
 
@@ -169,8 +178,44 @@ void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
 void SlpFile::serializeHeader()
 {
   serialize(version, 4);
-  serializeSize<uint32_t>(num_frames_, frames_.size());
-  serialize(comment, 24);
+  if (version[3] != 'P')//4.2P
+  {
+    serializeSize<uint32_t>(num_frames_, frames_.size());
+    serialize(comment, 24);
+
+    // Avoid crash
+    if (num_frames_ > 4000)
+    {
+      num_frames_ = 0;
+    }
+  }
+  else
+  {
+    // Decompress rest of the file
+    int32_t original_size = read<int32_t>();
+    int32_t unpack_count;
+    slp_data_ = new char[original_size];
+    // There's probably better way to do this.
+    {
+      std::vector<uint8_t> input(std::istreambuf_iterator<char>(*getIStream()), {});
+      int32_t size = input.size();
+      unpack_count = LZ4_decompress_safe(reinterpret_cast<const char*>(input.data()),
+        slp_data_, size, original_size);
+    }
+    // Set the stream
+    if (unpack_count == original_size)
+    {
+      slp_stream_ = new IMemoryStream(slp_data_, slp_data_ + original_size);
+      setIStream(*slp_stream_);
+      serializeHeader();
+    }
+    else
+    {
+      num_frames_ = 0;
+      delete[] slp_data_;
+      slp_data_ = nullptr;
+    }
+  }
 }
 
 }
