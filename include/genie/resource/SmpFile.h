@@ -32,8 +32,9 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
+/// This format is superseded by smx.
 /// A smp file stores one or several images encoded using simple commands.
-/// The image is stored as 8 bits per pixel, that means only the index of a
+/// The image is stored as 10 bits per pixel, that means only the index of a
 /// color in a palette is saved.
 //
 class SmpFile : public SpriteFile, public IFile
@@ -50,22 +51,29 @@ public:
   //
   virtual ~SmpFile();
 
+  inline bool isSMP(void) override { return true; }
+
+  //----------------------------------------------------------------------------
+  /// Loads contents of a sprite file and then unlocks the file for others.
+  //
+  void loadAndRelease(const char *fileName) override;
+
   //----------------------------------------------------------------------------
   /// Frees all content of a smp file.
   //
   void unload(void) override;
 
   //----------------------------------------------------------------------------
-  /// Check whether the files content is loaded or not.
+  /// Check whether the file's content is loaded or not.
   //
-  bool isLoaded(void) const;
+  inline bool isLoaded(void) const { return loaded_; }
 
   //----------------------------------------------------------------------------
   /// Return number of frames stored in the file. Available after load.
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount(void);
+  uint32_t getFrameCount(void) override;
   void setFrameCount(uint32_t);
 
   //----------------------------------------------------------------------------
@@ -93,7 +101,6 @@ private:
 
   uint32_t num_frames_ = 0;
 
-  std::vector<uint32_t> frame_offsets_;
   typedef std::vector<SmpFramePtr> FrameVector;
   FrameVector frames_;
 
@@ -107,7 +114,6 @@ private:
   /// Loads the file and its frames.
   //
   void loadFile(void);
-  void saveFile(void);
 
   //----------------------------------------------------------------------------
   void serializeHeader(void);

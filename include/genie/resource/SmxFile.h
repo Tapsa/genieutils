@@ -50,22 +50,29 @@ public:
   //
   virtual ~SmxFile();
 
+  inline bool isSMX(void) override { return true; }
+
+  //----------------------------------------------------------------------------
+  /// Loads contents of a sprite file and then unlocks the file for others.
+  //
+  void loadAndRelease(const char *fileName) override;
+
   //----------------------------------------------------------------------------
   /// Frees all content of a smx file.
   //
   void unload(void) override;
 
   //----------------------------------------------------------------------------
-  /// Check whether the files content is loaded or not.
+  /// Check whether the file's content is loaded or not.
   //
-  bool isLoaded(void) const;
+  inline bool isLoaded(void) const { return loaded_; }
 
   //----------------------------------------------------------------------------
   /// Return number of frames stored in the file. Available after load.
   ///
   /// @return number of frames
   //
-  uint16_t getFrameCount(void);
+  uint32_t getFrameCount(void) override;
   void setFrameCount(uint16_t);
 
   //----------------------------------------------------------------------------

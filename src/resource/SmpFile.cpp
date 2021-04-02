@@ -46,10 +46,6 @@ void SmpFile::serializeObject(void)
   {
     loadFile();
   }
-  else if (isOperation(OP_WRITE))// && loaded_)
-  {
-    saveFile();
-  }
 }
 
 //------------------------------------------------------------------------------
@@ -58,29 +54,25 @@ void SmpFile::loadFile()
   serializeHeader();
 
   frames_.resize(num_frames_);
+  std::vector<uint32_t> frame_offsets;
+  serialize<uint32_t>(frame_offsets, num_frames_);
 
-  serialize<uint32_t>(frame_offsets_, num_frames_);
-
-  // Load frame headers
+  // Load frame headers and content
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SmpFramePtr(new SmpFrame());
-    frames_[i]->setLoadParams(*getIStream(), static_cast<uint32_t>(frame_offsets_[i] + getInitialReadPosition()));
-    frames_[i]->serializeHeader();
-  }
-
-  // Load frame content
-  for (uint32_t i = 0; i < num_frames_; ++i)
-  {
-    frames_[i]->load(*getIStream());
+    std::streampos frame_offset = std::streampos(frame_offsets[i]) + getInitialReadPosition();
+    frames_[i]->load(*getIStream(), frame_offset);
   }
 
   loaded_ = true;
 }
 
 //------------------------------------------------------------------------------
-void SmpFile::saveFile()
+void SmpFile::loadAndRelease(const char *fileName)
 {
+  load(fileName);
+  freelock();
 }
 
 //------------------------------------------------------------------------------
@@ -93,12 +85,6 @@ void SmpFile::unload(void)
   num_frames_ = 0;
 
   loaded_ = false;
-}
-
-//------------------------------------------------------------------------------
-bool SmpFile::isLoaded(void) const
-{
-  return loaded_;
 }
 
 //------------------------------------------------------------------------------

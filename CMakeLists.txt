@@ -125,6 +125,8 @@ set(RESOURCE_SRC
     src/resource/SlpFrame.cpp
     src/resource/SmpFile.cpp
     src/resource/SmpFrame.cpp
+    src/resource/SmxFile.cpp
+    src/resource/SmxFrame.cpp
     src/resource/DrsFile.cpp
     src/resource/Color.cpp
     src/resource/BinaFile.cpp

@@ -30,8 +30,6 @@
 namespace genie
 {
 
-using std::string;
-
 Logger& PalFile::log = Logger::getLogger("genie.PalFile");
 
 //------------------------------------------------------------------------------
@@ -140,7 +138,11 @@ void PalFile::serializeObject(void)
       {
         color.a = part;
       }
-      colors_.push_back(color);
+      if (colors_.size() < num_colors_)
+      {
+        colors_.push_back(color);
+      }
+      else break;
     }
   }
   else

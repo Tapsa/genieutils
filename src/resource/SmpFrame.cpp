@@ -42,74 +42,39 @@ SmpFrame::~SmpFrame()
 {
 }
 
-uint32_t SmpFrame::getWidth(void) const
-{
-  return layer_width_;
-}
-
-uint32_t SmpFrame::getHeight(void) const
-{
-  return layer_height_;
-}
-
 void SmpFrame::serializeObject(void)
 {
 }
 
-void SmpFrame::setLoadParams(std::istream &istr, uint32_t smp_offset_)
+//------------------------------------------------------------------------------
+void SmpFrame::load(std::istream &istr, std::streampos offset)
 {
   setIStream(istr);
   setOperation(OP_READ);
-  // This is needed because SMP frames are not stored immediately in contiguous order.
-  smp_frame_pos_ = smp_offset_;
-  istr.seekg(smp_offset_);
-}
+  istr.seekg(offset);
 
-void SmpFrame::setSaveParams(std::ostream &ostr, uint32_t &smp_offset_)
-{
-  setOStream(ostr);
-  setOperation(OP_WRITE);
-  smp_offset_;
-}
-
-//------------------------------------------------------------------------------
-void SmpFrame::serializeHeader(void)
-{
   serialize<uint32_t>(width_);
   serialize<uint32_t>(height_);
-
-  serialize<int32_t>(hotspot_x);
-  serialize<int32_t>(hotspot_y);
-
+  serialize<int32_t>(hotspot_x_);
+  serialize<int32_t>(hotspot_y_);
   serialize<uint32_t>(type);
   serialize<uint32_t>(diffuse_palette_xid);
   serialize<uint32_t>(diffuse_palette_num);
-  serialize<uint32_t>(num_layers);
+  uint32_t num_layers = read<uint32_t>();
 
-// Immediately after there is layer info.
-// I guess as many times as there are layers.
-// Read in the basic image layer only for now.
+  // Immediately after there is layer info.
   if (num_layers > 0)
   {
     serialize<uint32_t>(layer_width_);
     serialize<uint32_t>(layer_height_);
-
     serialize<int32_t>(layer_hotspot_x);
     serialize<int32_t>(layer_hotspot_y);
-
     serialize<uint32_t>(layer_type_);
     serialize<uint32_t>(layer_outline_offsets_);
     serialize<uint32_t>(layer_data_offsets_);
     serialize<uint32_t>(layer_flags_);
   }
-}
-
-//------------------------------------------------------------------------------
-void SmpFrame::load(std::istream &istr)
-{
-  setIStream(istr);
-
-  if (0 == num_layers)
+  else
   {
      log.error("No layers");
      return;
@@ -118,21 +83,28 @@ void SmpFrame::load(std::istream &istr)
   img_data.pixel_indexes.resize(layer_width_ * layer_height_);
   img_data.alpha_channel.resize(layer_width_ * layer_height_, 0);
 
-  istr.seekg(smp_frame_pos_ + std::streampos(layer_outline_offsets_));
-  readEdges();
+  istr.seekg(offset + std::streampos(layer_outline_offsets_));
+  std::vector<uint16_t> left_edges(layer_height_);
+  std::vector<uint16_t> right_edges(layer_height_);
+  for (uint32_t row = 0; row < layer_height_; ++row)
+  {
+    serialize<uint16_t>(left_edges[row]);
+    serialize<uint16_t>(right_edges[row]);
+  }
 
-  istr.seekg(smp_frame_pos_ + std::streampos(layer_data_offsets_));
-  serialize<uint32_t>(cmd_offsets_, layer_height_);
+  istr.seekg(offset + std::streampos(layer_data_offsets_));
+  std::vector<uint32_t> cmd_offsets(layer_height_);
+  serialize<uint32_t>(cmd_offsets, layer_height_);
 
   // Each row has its commands.
   for (uint32_t row = 0; row < layer_height_; ++row)
   {
-    if (0xFFFF == left_edges_[row] || 0 == cmd_offsets_[row])
+    if (0xFFFF == left_edges[row] || 0 == cmd_offsets[row])
     {
       continue; // Skip transparent lines.
     }
-    uint32_t pix_pos = left_edges_[row]; //Position where to start putting pixels
-    istr.seekg(smp_frame_pos_ + std::streampos(cmd_offsets_[row]));
+    uint32_t pix_pos = left_edges[row]; //Position where to start putting pixels
+    istr.seekg(offset + std::streampos(cmd_offsets[row]));
     assert(!istr.eof());
 
     while (true)
@@ -154,57 +126,37 @@ void SmpFrame::load(std::istream &istr)
           break;
 
         case 0x1: // Copy pixels
-          readPixelsToImage(row, pix_pos, pix_cnt, false);
+        {
+          uint32_t to_pos = pix_pos + pix_cnt;
+          while (pix_pos < to_pos)
+          {
+            uint32_t color_index = read<uint32_t>();
+            uint32_t save_off = row * layer_width_ + pix_pos;
+            assert(save_off < img_data.pixel_indexes.size());
+            img_data.pixel_indexes[save_off] = color_index;
+            img_data.alpha_channel[save_off] = 255;
+            ++pix_pos;
+          }
           break;
-
+        }
         case 0x2: // Player color pixels
-          readPixelsToImage(row, pix_pos, pix_cnt, true);
+        {
+          uint32_t to_pos = pix_pos + pix_cnt;
+          while (pix_pos < to_pos)
+          {
+            uint32_t color_index = read<uint32_t>();
+            uint32_t save_off = row * layer_width_ + pix_pos;
+            assert(save_off < img_data.pixel_indexes.size());
+            img_data.pixel_indexes[save_off] = color_index;
+            img_data.alpha_channel[save_off] = 255;
+            img_data.player_color_mask.emplace_back(pix_pos, row, color_index);
+            ++pix_pos;
+          }
           break;
-
-        default:
-          log.error("Unknown command [%X]", data);
-          return;
+        }
       }
     }
   }
-}
-
-//------------------------------------------------------------------------------
-void SmpFrame::readEdges(void)
-{
-  left_edges_.resize(layer_height_);
-  right_edges_.resize(layer_height_);
-
-  for (uint32_t row = 0; row < layer_height_; ++row)
-  {
-    serialize<uint16_t>(left_edges_[row]);
-    serialize<uint16_t>(right_edges_[row]);
-  }
-}
-
-//------------------------------------------------------------------------------
-void SmpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
-                                 uint32_t count, bool player_col)
-{
-  uint32_t to_pos = col + count;
-  while (col < to_pos)
-  {
-    uint32_t color_index = read<uint32_t>();
-    assert(row * layer_width_ + col < img_data.pixel_indexes.size());
-    img_data.pixel_indexes[row * layer_width_ + col] = color_index;
-    img_data.alpha_channel[row * layer_width_ + col] = 255;
-    if (player_col)
-    {
-      img_data.player_color_mask.push_back({col, row, color_index});
-    }
-    ++col;
-  }
-}
-
-//------------------------------------------------------------------------------
-void SmpFrame::save(std::ostream &ostr)
-{
-  setOStream(ostr);
 }
 
 }

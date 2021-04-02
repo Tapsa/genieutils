@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +40,6 @@ SlpFile::SlpFile() : IFile()
 //------------------------------------------------------------------------------
 SlpFile::~SlpFile()
 {
-  delete slp_stream_;
-  delete[] slp_data_;
 }
 
 //------------------------------------------------------------------------------
@@ -60,7 +58,44 @@ void SlpFile::serializeObject(void)
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
-  serializeHeader();
+  version = readString(4);
+  if (version[3] != 'P')//4.2P
+  {
+    num_frames_ = read<uint32_t>();
+    comment = readString(24);
+
+    // Avoid crash
+    if (num_frames_ > 4000)
+    {
+      num_frames_ = 0;
+    }
+  }
+  else
+  {
+    // Decompress rest of the file
+    int32_t original_size = read<int32_t>();
+    int32_t unpack_count;
+    std::vector<uint8_t> slp_data(original_size);
+    char *slp_data_ptr = reinterpret_cast<char *>(slp_data.data());
+    // There's probably better way to do this.
+    {
+      std::vector<uint8_t> input(std::istreambuf_iterator<char>(*getIStream()), {});
+      int32_t size = input.size();
+      unpack_count = LZ4_decompress_safe(reinterpret_cast<const char *>(input.data()),
+        slp_data_ptr, size, original_size);
+    }
+    // Set the stream
+    if (unpack_count == original_size)
+    {
+      IMemoryStream slp_stream(slp_data_ptr, slp_data_ptr + original_size);
+      setIStream(slp_stream);
+      return loadFile();
+    }
+    else
+    {
+      num_frames_ = 0;
+    }
+  }
 
   frames_.resize(num_frames_);
 
@@ -76,14 +111,9 @@ void SlpFile::loadFile()
   // Load frame content
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    frames_[i]->load(*getIStream());
+    frames_[i]->load();
   }
 
-  // In case file content was decompressed
-  delete slp_stream_;
-  delete[] slp_data_;
-  slp_stream_ = nullptr;
-  slp_data_ = nullptr;
   loaded_ = true;
 }
 
@@ -93,25 +123,37 @@ void SlpFile::saveFile()
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 #endif
-  serializeHeader();
-  slp_offset_ = 32 + 32 * num_frames_;
+  writeString(version, 4);
+  serializeSize<uint32_t>(num_frames_, frames_.size());
+  writeString(comment, 24);
+
+  uint32_t slp_offset = 32 + 32 * num_frames_;
+
+  std::vector<SlpSaveData> save_data(num_frames_);
 
   // Write frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    frames_[i]->setSaveParams(*getOStream(), slp_offset_);
+    frames_[i]->buildSaveData(*getOStream(), slp_offset, save_data[i]);
     frames_[i]->serializeHeader();
   }
 
   // Write frame content
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    frames_[i]->save(*getOStream());
+    frames_[i]->save(save_data[i]);
   }
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
-  log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+  log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
 #endif
+}
+
+//------------------------------------------------------------------------------
+void SlpFile::loadAndRelease(const char *fileName)
+{
+  load(fileName);
+  freelock();
 }
 
 //------------------------------------------------------------------------------
@@ -124,12 +166,6 @@ void SlpFile::unload(void)
   num_frames_ = 0;
 
   loaded_ = false;
-}
-
-//------------------------------------------------------------------------------
-bool SlpFile::isLoaded(void) const
-{
-  return loaded_;
 }
 
 //------------------------------------------------------------------------------
@@ -171,50 +207,6 @@ void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
   if (frame < frames_.size())
   {
     frames_[frame] = data;
-  }
-}
-
-//------------------------------------------------------------------------------
-void SlpFile::serializeHeader()
-{
-  serialize(version, 4);
-  if (version[3] != 'P')//4.2P
-  {
-    serializeSize<uint32_t>(num_frames_, frames_.size());
-    serialize(comment, 24);
-
-    // Avoid crash
-    if (num_frames_ > 4000)
-    {
-      num_frames_ = 0;
-    }
-  }
-  else
-  {
-    // Decompress rest of the file
-    int32_t original_size = read<int32_t>();
-    int32_t unpack_count;
-    slp_data_ = new char[original_size];
-    // There's probably better way to do this.
-    {
-      std::vector<uint8_t> input(std::istreambuf_iterator<char>(*getIStream()), {});
-      int32_t size = input.size();
-      unpack_count = LZ4_decompress_safe(reinterpret_cast<const char*>(input.data()),
-        slp_data_, size, original_size);
-    }
-    // Set the stream
-    if (unpack_count == original_size)
-    {
-      slp_stream_ = new IMemoryStream(slp_data_, slp_data_ + original_size);
-      setIStream(*slp_stream_);
-      serializeHeader();
-    }
-    else
-    {
-      num_frames_ = 0;
-      delete[] slp_data_;
-      slp_data_ = nullptr;
-    }
   }
 }
 
