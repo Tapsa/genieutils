@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -41,22 +41,6 @@ SlpFrame::SlpFrame()
 //------------------------------------------------------------------------------
 SlpFrame::~SlpFrame()
 {
-}
-
-//------------------------------------------------------------------------------
-void SlpFrame::setSlpFilePos(std::streampos pos)
-{
-  slp_file_pos_ = pos;
-}
-
-uint32_t SlpFrame::getWidth(void) const
-{
-  return width_;
-}
-
-uint32_t SlpFrame::getHeight(void) const
-{
-  return height_;
 }
 
 void SlpFrame::setSize(const uint32_t width, const uint32_t height)
@@ -125,17 +109,17 @@ void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_
     xy.y += offset_y;
   }
 
-  hotspot_x += offset_x;
-  hotspot_y += offset_y;
+  hotspot_x_ += offset_x;
+  hotspot_y_ += offset_y;
   width_ = width;
   height_ = height;
 }
 
 void SlpFrame::enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os_y)
 {
-  const int32_t hsdx = frame.hotspot_x - hotspot_x, hsdy = frame.hotspot_y - hotspot_y,
-    hsrdx = int32_t(frame.getWidth()) - frame.hotspot_x - (int32_t(width_) - hotspot_x),
-    hsrdy = int32_t(frame.getHeight()) - frame.hotspot_y - (int32_t(height_) - hotspot_y);
+  const int32_t hsdx = frame.hotspot_x_ - hotspot_x_, hsdy = frame.hotspot_y_ - hotspot_y_,
+    hsrdx = int32_t(frame.getWidth()) - frame.hotspot_x_ - (int32_t(width_) - hotspot_x_),
+    hsrdy = int32_t(frame.getHeight()) - frame.hotspot_y_ - (int32_t(height_) - hotspot_y_);
   uint32_t width = width_, height = height_;
   int32_t offset_x = 0, offset_y = 0;
   if(uint32_t(hsdx) < width_)
@@ -165,16 +149,6 @@ void SlpFrame::enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os
   enlarge(width, height, offset_x, offset_y);
 }
 
-uint32_t SlpFrame::getPaletteOffset(void) const
-{
-  return palette_offset_;
-}
-
-uint32_t SlpFrame::getProperties(void) const
-{
-  return properties_;
-}
-
 bool SlpFrame::is32bit(void) const
 {
   return (properties_ & 7) == 7;
@@ -190,7 +164,7 @@ void SlpFrame::setLoadParams(std::istream &istr)
   setOperation(OP_READ);
 }
 
-void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
+void SlpFrame::buildSaveData(std::ostream &ostr, uint32_t &slp_offset, SlpSaveData &save_data)
 {
   setOStream(ostr);
   setOperation(OP_WRITE);
@@ -199,15 +173,15 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
 #endif
 
   assert(height_ < 4096);
-  outline_table_offset_ = slp_offset_;
-  cmd_table_offset_ = slp_offset_ + 4 * height_;
-  slp_offset_ = cmd_table_offset_ + 4 * height_;
+  outline_table_offset_ = slp_offset;
+  cmd_table_offset_ = slp_offset + 4 * height_;
+  slp_offset = cmd_table_offset_ + 4 * height_;
 
   // Build integers from image data.
-  left_edges_.resize(height_);
-  right_edges_.resize(height_);
-  cmd_offsets_.resize(height_);
-  commands_.resize(height_);
+  save_data.left_edges.resize(height_);
+  save_data.right_edges.resize(height_);
+  save_data.cmd_offsets.resize(height_);
+  save_data.commands.reserve(height_);
   uint32_t player_color_slot = 0;
   uint32_t shadow_slot = 0;
   uint32_t shield_slot = 0;
@@ -235,15 +209,16 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
 
   for (uint32_t row = 0; row < height_; ++row)
   {
-    cmd_offsets_[row] = slp_offset_;
+    size_t line_size = save_data.commands.size();
+    save_data.cmd_offsets[row] = slp_offset;
     // Count left edge
-    left_edges_[row] = 0;
+    save_data.left_edges[row] = 0;
     if (is32bit())
     {
       for (uint32_t col = 0; col < width_; ++col)
       {
         if (img_data.bgra_channels[row * width_ + col] == 0)
-          ++left_edges_[row];
+          ++save_data.left_edges[row];
         else break;
       }
     }
@@ -252,14 +227,14 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       for (uint32_t col = 0; col < width_; ++col)
       {
         if (img_data.alpha_channel[row * width_ + col] == 0)
-          ++left_edges_[row];
+          ++save_data.left_edges[row];
         else break;
       }
     }
     // Fully transparent row
-    if (left_edges_[row] == width_)
+    if (save_data.left_edges[row] == width_)
     {
-      left_edges_[row] = 0x8000;
+      save_data.left_edges[row] = 0x8000;
       continue;
     }
     // Read colors and count right edge
@@ -267,7 +242,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     uint32_t bgra = 0;
     uint32_t pixel_set_size = 0;
     cnt_type count_type = CNT_LEFT;
-    for (uint32_t col = left_edges_[row]; col < width_; ++col)
+    for (uint32_t col = save_data.left_edges[row]; col < width_; ++col)
     {
       ++pixel_set_size;
       uint16_t last_color = color_index;
@@ -353,17 +328,17 @@ KEEP_COLOR:
           case CNT_DIFF:
             if (count_type == CNT_SAME)
             {
-              handleColors(CNT_DIFF, row, col - 1, pixel_set_size - 2);
+              handleColors(CNT_DIFF, row, col - 1, pixel_set_size - 2, save_data.commands);
               pixel_set_size = 2;
             }
             else
             {
-              handleColors(CNT_DIFF, row, col, --pixel_set_size);
+              handleColors(CNT_DIFF, row, col, --pixel_set_size, save_data.commands);
               pixel_set_size = 1;
             }
             break;
           default:
-            handleColors(old_count, row, col, --pixel_set_size);
+            handleColors(old_count, row, col, --pixel_set_size, save_data.commands);
             pixel_set_size = 1;
             break;
         }
@@ -372,20 +347,21 @@ KEEP_COLOR:
     // Handle last colors
     if (is32bit() ? bgra == 0 : count_type == CNT_TRANSPARENT)
     {
-      right_edges_[row] = pixel_set_size;
+      save_data.right_edges[row] = pixel_set_size;
     }
     else
     {
-      right_edges_[row] = 0;
-      handleColors(count_type, row, width_, pixel_set_size);
+      save_data.right_edges[row] = 0;
+      handleColors(count_type, row, width_, pixel_set_size, save_data.commands);
     }
     // End of line
-    commands_[row].push_back(0x0F);
-    slp_offset_ += commands_[row].size();
+    save_data.commands.push_back(0x0F);
+    line_size = save_data.commands.size() - line_size;
+    slp_offset += static_cast<uint32_t>(line_size);
   }
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
-  log.debug("Frame (%u bytes) encoding took [%u] milliseconds", slp_offset_ - outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+  log.debug("Frame (%u bytes) encoding took [%u] milliseconds", slp_offset - outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
 #endif
 }
 
@@ -406,8 +382,8 @@ void SlpFrame::serializeHeader(void)
   serialize<uint32_t>(width_);
   serialize<uint32_t>(height_);
 
-  serialize<int32_t>(hotspot_x);
-  serialize<int32_t>(hotspot_y);
+  serialize<int32_t>(hotspot_x_);
+  serialize<int32_t>(hotspot_y_);
 
 /*#ifndef NDEBUG
   log.debug("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
@@ -417,9 +393,9 @@ void SlpFrame::serializeHeader(void)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::load(std::istream &istr)
+void SlpFrame::load(void)
 {
-  setIStream(istr);
+  std::istream &istr = *getIStream();
 
   if (is32bit())
   {
@@ -433,10 +409,18 @@ void SlpFrame::load(std::istream &istr)
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
-  readEdges(integrity);
+  std::vector<uint16_t> left_edges(height_);
+  std::vector<uint16_t> right_edges(height_);
+  for (uint32_t row = 0; row < height_; ++row)
+  {
+    serialize<uint16_t>(left_edges[row]);
+    serialize<uint16_t>(right_edges[row]);
+    integrity |= left_edges[row];
+  }
 
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
-  serialize<uint32_t>(cmd_offsets_, height_);
+  std::vector<uint32_t> cmd_offsets(height_);
+  serialize<uint32_t>(cmd_offsets, height_);
 
   // Read embedded palette
   if (properties_ == 0x78)
@@ -455,14 +439,14 @@ void SlpFrame::load(std::istream &istr)
   // Each row has it's commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
-    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
+    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
     assert(!istr.eof());
     // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
-    if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) // Remember signedness!
+    if (0x8000 == left_edges[row] || 0x8000 == right_edges[row]) // Remember signedness!
     {
       continue; // Pretend it does not exist.
     }
-    uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
+    uint32_t pix_pos = left_edges[row]; //pos where to start putting pixels
 
     uint8_t data = 0;
     while (true)
@@ -597,20 +581,6 @@ void SlpFrame::load(std::istream &istr)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::readEdges(uint16_t &integrity)
-{
-  left_edges_.resize(height_);
-  right_edges_.resize(height_);
-
-  for (uint32_t row = 0; row < height_; ++row)
-  {
-    serialize<uint16_t>(left_edges_[row]);
-    serialize<uint16_t>(right_edges_[row]);
-    integrity |= left_edges_[row];
-  }
-}
-
-//------------------------------------------------------------------------------
 void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
                                  uint32_t count, bool player_col)
 {
@@ -623,7 +593,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
     img_data.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
-      img_data.player_color_mask.push_back({col, row, color_index});
+      img_data.player_color_mask.emplace_back(col, row, color_index);
     }
     ++col;
   }
@@ -641,11 +611,11 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
     img_data.bgra_channels[row * width_ + col] = bgra;
     if (special == 1)
     {
-      img_data.player_color_mask.push_back({col, row, 0});
+      img_data.player_color_mask.emplace_back(col, row, 0);
     }
     else if (special == 2)
     {
-      img_data.transparency_mask.push_back({col, row});
+      img_data.transparency_mask.emplace_back(col, row);
     }
     ++col;
   }
@@ -664,7 +634,7 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
     img_data.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
-      img_data.player_color_mask.push_back({col, row, color_index});
+      img_data.player_color_mask.emplace_back(col, row, color_index);
     }
     ++col;
   }
@@ -682,7 +652,7 @@ void SlpFrame::setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
     img_data.bgra_channels[row * width_ + col] = bgra;
     if (player_col)
     {
-      img_data.player_color_mask.push_back({col, row, 0});
+      img_data.player_color_mask.emplace_back(col, row, 0);
     }
     ++col;
   }
@@ -694,7 +664,7 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    img_data.shadow_mask.push_back({col, row});
+    img_data.shadow_mask.emplace_back(col, row);
     ++col;
   }
 }
@@ -705,7 +675,7 @@ void SlpFrame::setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count)
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    img_data.shield_mask.push_back({col, row});
+    img_data.shield_mask.emplace_back(col, row);
     ++col;
   }
 }
@@ -716,7 +686,7 @@ void SlpFrame::setPixelsToPcOutline(uint32_t row, uint32_t &col, uint32_t count)
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    img_data.outline_pc_mask.push_back({col, row});
+    img_data.outline_pc_mask.emplace_back(col, row);
     ++col;
   }
 }
@@ -737,7 +707,8 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count)
+void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col,
+  uint32_t count, std::vector<uint8_t> &commands)
 {
   if (count == 0) return;
   switch (count_type)
@@ -745,117 +716,118 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
     case CNT_TRANSPARENT:
       if (count > 0x3F) // Greater skip.
       {
-        commands_[row].push_back(0x3 | (count & 0xF00) >> 4);
-        commands_[row].push_back(count);
+        commands.push_back(0x3 | (count & 0xF00) >> 4);
+        commands.push_back(count);
       }
       else // Lesser skip.
       {
-        commands_[row].push_back(0x1 | count << 2);
+        commands.push_back(0x1 | count << 2);
       }
       break;
     case CNT_SAME:
-      handleSpecial(0x7, row, col, count, 1);
+      handleSpecial(0x7, row, col, count, 1, commands);
       break;
     case CNT_DIFF:
       if (count > 0x3F) // Greater copy.
       {
-        commands_[row].push_back(0x2 | (count & 0xF00) >> 4);
-        commands_[row].push_back(count);
-        pushPixelsToBuffer(row, col, count);
+        commands.push_back(0x2 | (count & 0xF00) >> 4);
+        commands.push_back(count);
+        pushPixelsToBuffer(row, col, count, commands);
       }
       else // Lesser copy.
       {
-        commands_[row].push_back(count << 2);
-        pushPixelsToBuffer(row, col, count);
+        commands.push_back(count << 2);
+        pushPixelsToBuffer(row, col, count, commands);
       }
       break;
     case CNT_FEATHERING:
-      commands_[row].push_back(0x9E);
-      commands_[row].push_back(count);
-      pushPixelsToBuffer(row, col, count);
+      commands.push_back(0x9E);
+      commands.push_back(count);
+      pushPixelsToBuffer(row, col, count, commands);
       break;
     case CNT_PLAYER:
-      handleSpecial(0x6, row, col, count, count);
+      handleSpecial(0x6, row, col, count, count, commands);
       break;
     case CNT_SHIELD:
       if (count == 1)
       {
-        commands_[row].push_back(0x6E);
+        commands.push_back(0x6E);
       }
       else
       {
-        commands_[row].push_back(0x7E);
-        commands_[row].push_back(count);
+        commands.push_back(0x7E);
+        commands.push_back(count);
       }
       break;
     case CNT_PC_OUTLINE:
       if (count == 1)
       {
-        commands_[row].push_back(0x4E);
+        commands.push_back(0x4E);
       }
       else
       {
-        commands_[row].push_back(0x5E);
-        commands_[row].push_back(count);
+        commands.push_back(0x5E);
+        commands.push_back(count);
       }
       break;
     case CNT_SHADOW:
-      handleSpecial(0xB, row, col, count, 0);
+      handleSpecial(0xB, row, col, count, 0, commands);
       break;
     default: break;
   }
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::handleSpecial(uint8_t cmd, uint32_t row, uint32_t col, uint32_t count, uint32_t pixs)
+void SlpFrame::handleSpecial(uint8_t cmd, uint32_t row, uint32_t col,
+  uint32_t count, uint32_t pixs, std::vector<uint8_t> &commands)
 {
   while (count > 0xFF)
   {
     count -= 0xFF;
-    commands_[row].push_back(cmd);
-    commands_[row].push_back(0xFF);
-    pushPixelsToBuffer(row, col, pixs);
+    commands.push_back(cmd);
+    commands.push_back(0xFF);
+    pushPixelsToBuffer(row, col, pixs, commands);
   }
   if (count > 0xF)
   {
-    commands_[row].push_back(cmd);
-    commands_[row].push_back(count);
-    pushPixelsToBuffer(row, col, pixs);
+    commands.push_back(cmd);
+    commands.push_back(count);
+    pushPixelsToBuffer(row, col, pixs, commands);
   }
   else
   {
-    commands_[row].push_back(cmd | count << 4);
-    pushPixelsToBuffer(row, col, pixs);
+    commands.push_back(cmd | count << 4);
+    pushPixelsToBuffer(row, col, pixs, commands);
   }
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count)
+void SlpFrame::pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count,
+  std::vector<uint8_t> &commands)
 {
   if (is32bit())
   {
     for (uint32_t pix = col - count; pix < col; ++pix)
     {
       uint32_t bgra = img_data.bgra_channels[row * width_ + pix];
-      commands_[row].push_back(bgra);
-      commands_[row].push_back(bgra >> 8);
-      commands_[row].push_back(bgra >> 16);
-      commands_[row].push_back(bgra >> 24);
+      commands.push_back(bgra);
+      commands.push_back(bgra >> 8);
+      commands.push_back(bgra >> 16);
+      commands.push_back(bgra >> 24);
     }
   }
   else
   {
     for (uint32_t pix = col - count; pix < col; ++pix)
     {
-      commands_[row].push_back(img_data.pixel_indexes[row * width_ + pix]);
+      commands.push_back(img_data.pixel_indexes[row * width_ + pix]);
     }
   }
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::save(std::ostream &ostr)
+void SlpFrame::save(SlpSaveData &save_data)
 {
-  setOStream(ostr);
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 #endif
@@ -863,19 +835,16 @@ void SlpFrame::save(std::ostream &ostr)
   //Write edges
   for (uint32_t row = 0; row < height_; ++row)
   {
-    serialize<uint16_t>(left_edges_[row]);
-    serialize<uint16_t>(right_edges_[row]);
+    serialize<uint16_t>(save_data.left_edges[row]);
+    serialize<uint16_t>(save_data.right_edges[row]);
   }
 
   //Write cmd offsets
-  serialize<uint32_t>(cmd_offsets_, height_);
-  cmd_offsets_.clear();
+  serialize<uint32_t>(save_data.cmd_offsets, height_);
 
-  for (auto &commands: commands_)
-    for (auto &col: commands)
-      serialize<uint8_t>(col);
+  for (uint8_t command : save_data.commands)
+    serialize<uint8_t>(command);
 
-  commands_.clear();
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
   log.debug("SLP frame data saving took [%u] milliseconds", std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
@@ -891,8 +860,8 @@ SlpFramePtr SlpFrame::mirrorX(void)
   mirrored->width_ = width_;
   uint32_t swapper = width_ - 1;
   mirrored->height_ = height_;
-  mirrored->hotspot_x = swapper - hotspot_x;
-  mirrored->hotspot_y = hotspot_y;
+  mirrored->hotspot_x_ = swapper - hotspot_x_;
+  mirrored->hotspot_y_ = hotspot_y_;
 
   genie::SlpFrameData &new_data = mirrored->img_data;
   new_data.bgra_channels.resize(img_data.bgra_channels.size());
@@ -948,13 +917,13 @@ SlpFramePtr SlpFrame::mirrorX(void)
   }
   new_data.transparency_mask = std::vector<XY>(new_transparency_mask.begin(), new_transparency_mask.end());
 
-  std::set<PlayerColorXY> new_player_color_mask;
-  for(PlayerColorXY pixel: img_data.player_color_mask)
+  std::set<ColorXY> new_player_color_mask;
+  for(ColorXY pixel: img_data.player_color_mask)
   {
     pixel.x = swapper - pixel.x;
     new_player_color_mask.emplace(pixel);
   }
-  new_data.player_color_mask = std::vector<PlayerColorXY>(new_player_color_mask.begin(), new_player_color_mask.end());
+  new_data.player_color_mask = std::vector<ColorXY>(new_player_color_mask.begin(), new_player_color_mask.end());
 
   return mirrored;
 }

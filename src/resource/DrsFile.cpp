@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2013 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -28,8 +28,6 @@
 
 namespace genie
 {
-
-using std::string;
 
 Logger& DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
 
@@ -152,12 +150,12 @@ void DrsFile::loadHeader()
     log.warn("Trying to load header again!");
   else
   {
-    string copy_right = readString(getCopyRightHeaderSize());
+    std::string copy_right = readString(getCopyRightHeaderSize());
 
-    string version = readString(4);
+    std::string version = readString(4);
 
     //File type
-    string file_type = readString(12);
+    std::string file_type = readString(12);
 
     num_of_tables_ = read<uint32_t>();
     header_offset_ = read<uint32_t>();

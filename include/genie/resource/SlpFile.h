@@ -51,22 +51,29 @@ public:
   //
   virtual ~SlpFile();
 
+  inline bool isSLP(void) override { return true; }
+
+  //----------------------------------------------------------------------------
+  /// Loads contents of a sprite file and then unlocks the file for others.
+  //
+  void loadAndRelease(const char *fileName) override;
+
   //----------------------------------------------------------------------------
   /// Frees all content of a slp file.
   //
   void unload(void) override;
 
   //----------------------------------------------------------------------------
-  /// Check whether the files content is loaded or not.
+  /// Check whether the file's content is loaded or not.
   //
-  bool isLoaded(void) const;
+  inline bool isLoaded(void) const { return loaded_; }
 
   //----------------------------------------------------------------------------
   /// Return number of frames stored in the file. Available after load.
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount(void);
+  uint32_t getFrameCount(void) override;
   void setFrameCount(uint32_t);
 
   //----------------------------------------------------------------------------
@@ -91,15 +98,6 @@ private:
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;
 
-  // Used to calculate offsets when saving the SLP.
-  uint32_t slp_offset_;
-
-  // Used to store decompressed SLP file.
-  char *slp_data_ = nullptr;
-
-  // Used to read decompressed SLP file.
-  IMemoryStream *slp_stream_ = nullptr;
-
   //----------------------------------------------------------------------------
   virtual void serializeObject(void);
 
@@ -107,10 +105,11 @@ private:
   /// Loads the file and its frames.
   //
   void loadFile(void);
-  void saveFile(void);
 
   //----------------------------------------------------------------------------
-  void serializeHeader(void);
+  /// Saves the file and its frames.
+  //
+  void saveFile(void);
 };
 
 typedef std::shared_ptr<SlpFile> SlpFilePtr;

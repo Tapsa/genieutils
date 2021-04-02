@@ -37,21 +37,23 @@ struct SmxFrameData
 public:
   std::vector<uint16_t> pixel_indexes;
   std::vector<uint8_t> alpha_channel;
-  std::vector<PlayerColorXY> player_color_mask;
-  std::vector<XY> shadow_mask;
+  std::vector<ColorXY> player_color_mask;
+  std::vector<ColorXY> shadow_mask;
   std::vector<XY> outline_pc_mask;
 };
 
 struct SmxLayerInfo
 {
   friend class SmxFrame;
-public:
+private:
   uint16_t width;
   uint16_t height;
   int16_t hotspot_x;
   int16_t hotspot_y;
   uint32_t size;
   uint32_t original_size;
+  int32_t offset_x = 0;
+  int32_t offset_y = 0;
 };
 
 //------------------------------------------------------------------------------
@@ -81,27 +83,36 @@ public:
   //----------------------------------------------------------------------------
   /// Get image's width.
   //
-  uint32_t getWidth(void) const;
+  inline uint32_t getWidth(void) const { return width_; }
 
   //----------------------------------------------------------------------------
   /// Get image's height.
   //
-  uint32_t getHeight(void) const;
+  inline uint32_t getHeight(void) const { return height_; }
+
+  inline uint32_t getMainLayerWidth(void) const { return main_layer_.width; }
 
   //----------------------------------------------------------------------------
   /// Get image's hotspot x.
   //
-  int16_t getHotspotX(void) const;
+  inline int32_t getHotspotX(void) const { return hotspot_x_; }
 
   //----------------------------------------------------------------------------
   /// Get image's hotspot y.
   //
-  int16_t getHotspotY(void) const;
+  inline int32_t getHotspotY(void) const { return hotspot_y_; }
+
+  inline int32_t getMainLayerOffsetX(void) const { return main_layer_.offset_x; }
+  inline int32_t getMainLayerOffsetY(void) const { return main_layer_.offset_y; }
+  inline int32_t getShadowLayerOffsetX(void) const { return shadow_layer_.offset_x; }
+  inline int32_t getShadowLayerOffsetY(void) const { return shadow_layer_.offset_y; }
+  inline int32_t getOutlineLayerOffsetX(void) const { return outline_layer_.offset_x; }
+  inline int32_t getOutlineLayerOffsetY(void) const { return outline_layer_.offset_y; }
+
+  void findMaximumExtents(void);
 
   bool is32bit(void) const {return false;}
 
-  int16_t hotspot_x;
-  int16_t hotspot_y;
   uint8_t layer_flags;
   uint8_t palette_id;
   union
@@ -118,6 +129,11 @@ private:
   SmxLayerInfo main_layer_;
   SmxLayerInfo shadow_layer_;
   SmxLayerInfo outline_layer_;
+
+  uint32_t width_ = 0;
+  uint32_t height_ = 0;
+  int32_t hotspot_x_ = 0;
+  int32_t hotspot_y_ = 0;
 
   virtual void serializeObject(void) override;
 };

@@ -106,7 +106,7 @@ public:
   {
     for (auto &it: vec)
     {
-      ISerializable *item = dynamic_cast<ISerializable *>(&it);
+      ISerializable *item = static_cast<ISerializable *>(&it);
       item->setGameVersion(gv);
     }
   }
@@ -498,7 +498,7 @@ protected:
 
       for (auto it = vec.begin(); it != vec.end(); ++it)
       {
-        ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
+        ISerializable *data = static_cast<ISerializable *>(&(*it));
 
         data->serializeSubObject(this);
 
@@ -512,7 +512,7 @@ protected:
 
       for (size_t i=0; i < size; ++i)
       {
-        ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
+        ISerializable *cast_obj = static_cast<ISerializable *>(&vec[i]);
         cast_obj->serializeSubObject(this);
       }
     }
@@ -570,7 +570,7 @@ protected:
       {
         if (pointers[i])
         {
-          ISerializable *data = dynamic_cast<ISerializable *>(&vec[i]);
+          ISerializable *data = static_cast<ISerializable *>(&vec[i]);
           data->serializeSubObject(this);
 
           if (isOperation(OP_CALC_SIZE))
@@ -585,7 +585,7 @@ protected:
       {
         if (pointers[i])
         {
-          ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
+          ISerializable *cast_obj = static_cast<ISerializable *>(&vec[i]);
           cast_obj->serializeSubObject(this);
         }
       }

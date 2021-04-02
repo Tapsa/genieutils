@@ -41,24 +41,25 @@ SmxFrame::~SmxFrame()
 {
 }
 
-uint32_t SmxFrame::getWidth(void) const
+void SmxFrame::findMaximumExtents(void)
 {
-  return main_layer_.width;
-}
+  hotspot_x_ = std::max(main_layer_.hotspot_x, std::max(shadow_layer_.hotspot_x, outline_layer_.hotspot_x));
+  hotspot_y_ = std::max(main_layer_.hotspot_y, std::max(shadow_layer_.hotspot_y, outline_layer_.hotspot_y));
 
-uint32_t SmxFrame::getHeight(void) const
-{
-  return main_layer_.height;
-}
+  int32_t opposite_hotspot_x = std::max(-main_layer_.hotspot_x + main_layer_.width,
+    std::max(-shadow_layer_.hotspot_x + shadow_layer_.width, -outline_layer_.hotspot_x + outline_layer_.width));
+  int32_t opposite_hotspot_y = std::max(-main_layer_.hotspot_y + main_layer_.height,
+    std::max(-shadow_layer_.hotspot_y + shadow_layer_.height, -outline_layer_.hotspot_y + outline_layer_.height));
 
-int16_t SmxFrame::getHotspotX(void) const
-{
-  return main_layer_.hotspot_x;
-}
+  width_ = static_cast<uint32_t>(hotspot_x_ + opposite_hotspot_x);
+  height_ = static_cast<uint32_t>(hotspot_y_ + opposite_hotspot_y);
 
-int16_t SmxFrame::getHotspotY(void) const
-{
-  return main_layer_.hotspot_y;
+  main_layer_.offset_x = hotspot_x_ - main_layer_.hotspot_x;
+  main_layer_.offset_y = hotspot_y_ - main_layer_.hotspot_y;
+  shadow_layer_.offset_x = hotspot_x_ - shadow_layer_.hotspot_x;
+  shadow_layer_.offset_y = hotspot_y_ - shadow_layer_.hotspot_y;
+  outline_layer_.offset_x = hotspot_x_ - outline_layer_.hotspot_x;
+  outline_layer_.offset_y = hotspot_y_ - outline_layer_.hotspot_y;
 }
 
 void SmxFrame::serializeObject(void)
@@ -181,7 +182,7 @@ void SmxFrame::load(std::istream &istr)
             }
             break;
           }
-          case 0x2:
+          case 0x2: // Player color pixels
           {
             uint32_t to_pos = pix_pos + pix_cnt;
             while (pix_pos < to_pos)
@@ -248,12 +249,12 @@ void SmxFrame::load(std::istream &istr)
             break;
 
           case 0x1: // Copy pixels
-          case 0x2:
           {
             uint32_t to_pos = pix_pos + pix_cnt;
             while (pix_pos < to_pos)
             {
-              img_data.shadow_mask.emplace_back(pix_pos, row);
+              uint32_t shadow_index = cmd_data[cmd_off++];
+              img_data.shadow_mask.emplace_back(pix_pos, row, shadow_index);
               ++pix_pos;
             }
             break;
@@ -310,7 +311,6 @@ void SmxFrame::load(std::istream &istr)
             break;
 
           case 0x1: // Copy pixels
-          case 0x2:
           {
             uint32_t to_pos = pix_pos + pix_cnt;
             while (pix_pos < to_pos)
@@ -324,6 +324,8 @@ void SmxFrame::load(std::istream &istr)
       }
     }
   }
+
+  findMaximumExtents();
 }
 
 //------------------------------------------------------------------------------

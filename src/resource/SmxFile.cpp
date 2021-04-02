@@ -79,6 +79,13 @@ void SmxFile::saveFile()
 }
 
 //------------------------------------------------------------------------------
+void SmxFile::loadAndRelease(const char *fileName)
+{
+  load(fileName);
+  freelock();
+}
+
+//------------------------------------------------------------------------------
 void SmxFile::unload(void)
 {
   if (!loaded_)
@@ -91,15 +98,9 @@ void SmxFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-bool SmxFile::isLoaded(void) const
+uint32_t SmxFile::getFrameCount(void)
 {
-  return loaded_;
-}
-
-//------------------------------------------------------------------------------
-uint16_t SmxFile::getFrameCount(void)
-{
-  return static_cast<uint16_t>(frames_.size());
+  return static_cast<uint32_t>(frames_.size());
 }
 
 //------------------------------------------------------------------------------

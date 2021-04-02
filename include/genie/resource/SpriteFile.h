@@ -25,7 +25,43 @@ namespace genie
 class SpriteFile
 {
 public:
+  //----------------------------------------------------------------------------
+  /// Loads contents of a sprite file and then unlocks the file for others.
+  //
+  virtual void loadAndRelease(const char *fileName) = 0;
+
+  //----------------------------------------------------------------------------
+  /// Frees all content of a sprite file.
+  //
   virtual void unload(void) = 0;
+
+  //----------------------------------------------------------------------------
+  /// Return number of frames stored in the file. Available after load.
+  ///
+  /// @return number of frames
+  //
+  virtual uint32_t getFrameCount(void) = 0;
+
+  //----------------------------------------------------------------------------
+  /// Check if the sprite is of SLP format.
+  ///
+  /// @return true if the sprite is of SLP format.
+  //
+  virtual bool isSLP(void) { return false; }
+
+  //----------------------------------------------------------------------------
+  /// Check if the sprite is of SLP format.
+  ///
+  /// @return true if the sprite is of SLP format.
+  //
+  virtual bool isSMP(void) { return false; }
+
+  //----------------------------------------------------------------------------
+  /// Check if the sprite is of SLP format.
+  ///
+  /// @return true if the sprite is of SLP format.
+  //
+  virtual bool isSMX(void) { return false; }
 };
 
 typedef std::shared_ptr<SpriteFile> SpriteFilePtr;

@@ -31,6 +31,8 @@
 namespace genie
 {
 
+/// Element for pixel vector. The vector stores position (x, y) of
+/// a pixel whose color is determined externally.
 struct XY
 {
   XY(uint32_t x, uint32_t y) :x(x), y(y)
@@ -45,11 +47,11 @@ inline bool operator<(const XY &l, const XY &r)
   return l.y == r.y ? l.x < r.x : l.y < r.y;
 }
 
-// Element for player_color vector, the vector stores position (x, y) of
-// a player color pixel and the palette index for the color
-struct PlayerColorXY
+/// Element for color vector. The vector stores position (x, y) of
+/// a color pixel and the palette index for the color.
+struct ColorXY
 {
-  PlayerColorXY(uint32_t x, uint32_t y, uint32_t index) :
+  ColorXY(uint32_t x, uint32_t y, uint32_t index) :
     x(x), y(y), index(index)
   {
   }
@@ -58,7 +60,7 @@ struct PlayerColorXY
   uint32_t index;
 };
 
-inline bool operator<(const PlayerColorXY &l, const PlayerColorXY &r)
+inline bool operator<(const ColorXY &l, const ColorXY &r)
 {
   return l.y == r.y ? l.x < r.x : l.y < r.y;
 }
