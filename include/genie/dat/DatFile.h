@@ -54,6 +54,8 @@ public:
   /// Standard constructor
   //
   DatFile();
+  DatFile(const DatFile &) = delete;
+  DatFile &operator=(const DatFile &) = delete;
 
   //----------------------------------------------------------------------------
   /// Destructor
@@ -134,9 +136,6 @@ private:
   std::fstream *file_ = 0;
 
   Compressor compressor_;
-
-  DatFile(const DatFile &other);
-  DatFile &operator=(const DatFile &other);
 
   //----------------------------------------------------------------------------
   /// Clears all data.
