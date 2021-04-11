@@ -37,7 +37,7 @@ struct SmpFrameData
 public:
   std::vector<uint16_t> pixel_indexes;
   std::vector<uint8_t> alpha_channel;
-  std::vector<ColorXY> player_color_mask;
+  std::vector<ColorXY16> player_color_mask;
 };
 
 //------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ public:
   /// Loads frame data and creates an image. Frame data is located after all
   /// frame headers of the smp file.
   //
-  void load(std::istream &istr, std::streampos offset);
+  size_t load(std::istream &istr, std::streampos offset);
 
   //----------------------------------------------------------------------------
   /// Get image's width.
@@ -84,8 +84,6 @@ public:
   /// Get image's hotspot y.
   //
   inline int32_t getHotspotY(void) const { return hotspot_y_; }
-
-  bool is32bit(void) const {return false;}
 
   //----------------------------------------------------------------------------
   /// Get the hotspot of the frame. The Hotspot is the isometric center of

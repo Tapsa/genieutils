@@ -43,13 +43,13 @@ SmxFrame::~SmxFrame()
 
 void SmxFrame::findMaximumExtents(void)
 {
-  hotspot_x_ = std::max(main_layer_.hotspot_x, std::max(shadow_layer_.hotspot_x, outline_layer_.hotspot_x));
-  hotspot_y_ = std::max(main_layer_.hotspot_y, std::max(shadow_layer_.hotspot_y, outline_layer_.hotspot_y));
+  hotspot_x_ = std::max<int16_t>(main_layer_.hotspot_x, std::max<int16_t>(shadow_layer_.hotspot_x, outline_layer_.hotspot_x));
+  hotspot_y_ = std::max<int16_t>(main_layer_.hotspot_y, std::max<int16_t>(shadow_layer_.hotspot_y, outline_layer_.hotspot_y));
 
-  int32_t opposite_hotspot_x = std::max(-main_layer_.hotspot_x + main_layer_.width,
-    std::max(-shadow_layer_.hotspot_x + shadow_layer_.width, -outline_layer_.hotspot_x + outline_layer_.width));
-  int32_t opposite_hotspot_y = std::max(-main_layer_.hotspot_y + main_layer_.height,
-    std::max(-shadow_layer_.hotspot_y + shadow_layer_.height, -outline_layer_.hotspot_y + outline_layer_.height));
+  int32_t opposite_hotspot_x = std::max<int32_t>(-main_layer_.hotspot_x + main_layer_.width,
+    std::max<int32_t>(-shadow_layer_.hotspot_x + shadow_layer_.width, -outline_layer_.hotspot_x + outline_layer_.width));
+  int32_t opposite_hotspot_y = std::max<int32_t>(-main_layer_.hotspot_y + main_layer_.height,
+    std::max<int32_t>(-shadow_layer_.hotspot_y + shadow_layer_.height, -outline_layer_.hotspot_y + outline_layer_.height));
 
   width_ = static_cast<uint32_t>(hotspot_x_ + opposite_hotspot_x);
   height_ = static_cast<uint32_t>(hotspot_y_ + opposite_hotspot_y);
@@ -67,7 +67,7 @@ void SmxFrame::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-void SmxFrame::load(std::istream &istr)
+size_t SmxFrame::load(std::istream &istr)
 {
   setIStream(istr);
   setOperation(OP_READ);
@@ -102,7 +102,7 @@ void SmxFrame::load(std::istream &istr)
     if (pixel_data_size % 5 != 0)
     {
       log.error("Bad pixel data");
-      return;
+      return sizeof(SmxFrame);
     }
     std::vector<uint16_t> pixel_data;
     size_t block_count = pixel_data_size / 5;
@@ -173,7 +173,7 @@ void SmxFrame::load(std::istream &istr)
             uint32_t to_pos = pix_pos + pix_cnt;
             while (pix_pos < to_pos)
             {
-              uint32_t color_index = pixel_data[pix_off++];
+              uint16_t color_index = pixel_data[pix_off++];
               uint32_t save_off = row * main_layer_.width + pix_pos;
               assert(save_off < img_data.pixel_indexes.size());
               img_data.pixel_indexes[save_off] = color_index;
@@ -187,7 +187,7 @@ void SmxFrame::load(std::istream &istr)
             uint32_t to_pos = pix_pos + pix_cnt;
             while (pix_pos < to_pos)
             {
-              uint32_t color_index = pixel_data[pix_off++];
+              uint16_t color_index = pixel_data[pix_off++];
               uint32_t save_off = row * main_layer_.width + pix_pos;
               assert(save_off < img_data.pixel_indexes.size());
               img_data.pixel_indexes[save_off] = color_index;
@@ -326,6 +326,13 @@ void SmxFrame::load(std::istream &istr)
   }
 
   findMaximumExtents();
+
+  size_t pixel_memory = img_data.pixel_indexes.capacity() * sizeof(uint16_t);
+  size_t alpha_memory = img_data.alpha_channel.capacity() * sizeof(uint8_t);
+  size_t player_memory = img_data.player_color_mask.capacity() * sizeof(ColorXY16);
+  size_t shadow_memory = img_data.shadow_mask.capacity() * sizeof(ColorXY16);
+  size_t outline_memory = img_data.outline_pc_mask.capacity() * sizeof(XY16);
+  return sizeof(SmxFrame) + pixel_memory + alpha_memory + player_memory + shadow_memory + outline_memory;
 }
 
 //------------------------------------------------------------------------------

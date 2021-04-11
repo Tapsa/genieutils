@@ -19,6 +19,7 @@
 
 #include "genie/resource/SlpFile.h"
 
+#include <cassert>
 #include <stdexcept>
 #include <chrono>
 
@@ -61,13 +62,19 @@ void SlpFile::loadFile()
   version = readString(4);
   if (version[3] != 'P')//4.2P
   {
-    num_frames_ = read<uint32_t>();
-    comment = readString(24);
-
-    // Avoid crash
-    if (num_frames_ > 4000)
+    num_frames_ = read<uint16_t>();
+    properties_ = read<uint16_t>();
+    if (version[0] == '4')
     {
-      num_frames_ = 0;
+      read<uint64_t>();
+      uint32_t main_offset = read<uint32_t>();
+      assert(main_offset == 32);
+      shadow_offset_ = read<uint32_t>();
+      read<uint64_t>();
+    }
+    else
+    {
+      comment = readString(24);
     }
   }
   else
@@ -98,9 +105,10 @@ void SlpFile::loadFile()
   }
 
   frames_.resize(num_frames_);
+  size_in_memory_ = sizeof(SlpFile);
 
   // Load frame headers
-  for (uint32_t i = 0; i < num_frames_; ++i)
+  for (uint16_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SlpFramePtr(new SlpFrame());
     frames_[i]->setLoadParams(*getIStream());
@@ -109,9 +117,27 @@ void SlpFile::loadFile()
   }
 
   // Load frame content
-  for (uint32_t i = 0; i < num_frames_; ++i)
+  for (uint16_t i = 0; i < num_frames_; ++i)
   {
-    frames_[i]->load();
+    size_in_memory_ += frames_[i]->load(properties_);
+  }
+
+  // Load shadow layer
+  if (shadow_offset_ != 0)
+  {
+    getIStream()->seekg(getInitialReadPosition() + std::streampos(shadow_offset_));
+
+    // Load shadow headers
+    for (uint16_t i = 0; i < num_frames_; ++i)
+    {
+      frames_[i]->serializeShadowHeader();
+    }
+
+    // Load shadow content
+    for (uint16_t i = 0; i < num_frames_; ++i)
+    {
+      size_in_memory_ += frames_[i]->loadSpecialShadow();
+    }
   }
 
   loaded_ = true;
@@ -124,7 +150,8 @@ void SlpFile::saveFile()
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 #endif
   writeString(version, 4);
-  serializeSize<uint32_t>(num_frames_, frames_.size());
+  serializeSize<uint16_t>(num_frames_, frames_.size());
+  write<uint16_t>(properties_);
   writeString(comment, 24);
 
   uint32_t slp_offset = 32 + 32 * num_frames_;
@@ -132,14 +159,14 @@ void SlpFile::saveFile()
   std::vector<SlpSaveData> save_data(num_frames_);
 
   // Write frame headers
-  for (uint32_t i = 0; i < num_frames_; ++i)
+  for (uint16_t i = 0; i < num_frames_; ++i)
   {
     frames_[i]->buildSaveData(*getOStream(), slp_offset, save_data[i]);
     frames_[i]->serializeHeader();
   }
 
   // Write frame content
-  for (uint32_t i = 0; i < num_frames_; ++i)
+  for (uint16_t i = 0; i < num_frames_; ++i)
   {
     frames_[i]->save(save_data[i]);
   }
@@ -169,20 +196,20 @@ void SlpFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-uint32_t SlpFile::getFrameCount(void)
+uint16_t SlpFile::getFrameCount(void) const
 {
-  return frames_.size();
+  return static_cast<uint16_t>(frames_.size());
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::setFrameCount(uint32_t count)
+void SlpFile::setFrameCount(uint16_t count)
 {
   frames_.resize(count);
   num_frames_ = count;
 }
 
 //------------------------------------------------------------------------------
-SlpFramePtr SlpFile::getFrame(uint32_t frame)
+SlpFramePtr SlpFile::getFrame(uint16_t frame)
 {
   if (frame >= frames_.size())
   {
@@ -202,7 +229,7 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
+void SlpFile::setFrame(uint16_t frame, SlpFramePtr data)
 {
   if (frame < frames_.size())
   {

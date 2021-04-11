@@ -36,15 +36,16 @@ namespace genie
 struct SlpFrameData
 {
   std::vector<uint8_t> pixel_indexes;
-  std::vector<uint32_t> bgra_channels;
   std::vector<uint8_t> alpha_channel;
+  std::vector<uint32_t> bgra_channels;
 
-  std::vector<XY> shadow_mask;
-  std::vector<XY> shield_mask;
-  std::vector<XY> outline_pc_mask;
-  std::vector<XY> transparency_mask;
+  std::vector<XY16> shadow_mask;
+  std::vector<XY16> shield_mask;
+  std::vector<XY16> outline_pc_mask;
+  std::vector<XY16> transparency_mask;
 
-  std::vector<ColorXY> player_color_mask;
+  std::vector<Color8XY16> player_color_mask;
+  std::vector<Color8XY16> special_shadow_mask;
   std::vector<genie::Color> palette;
 };
 
@@ -89,6 +90,12 @@ public:
   /// the slp file.
   //
   void serializeHeader(void);
+  
+  //----------------------------------------------------------------------------
+  /// Loads shadow header data. The headers of shadow frames are stored
+  /// after the main frame data of the slp file.
+  //
+  void serializeShadowHeader(void);
 
   //----------------------------------------------------------------------------
   /// Set stream parameters for loading frame data.
@@ -99,7 +106,13 @@ public:
   /// Loads frame data and creates an image. Frame data is located after all
   /// frame headers of the slp file.
   //
-  void load(void);
+  size_t load(uint16_t properties);
+  
+  //----------------------------------------------------------------------------
+  /// Loads shadow frame data and creates an image. Shadow frame data is
+  /// located after all shadow frame headers of the slp file.
+  //
+  size_t loadSpecialShadow(void);
 
   //----------------------------------------------------------------------------
   /// Builds frame data from an image.
@@ -111,26 +124,36 @@ public:
   //
   void save(SlpSaveData &save_data);
 
+  /// Clears buffers.
+  size_t purge(void);
+
   //----------------------------------------------------------------------------
   /// Get image's width.
   //
-  inline uint32_t getWidth(void) const { return width_; }
+  inline uint32_t getWidth(void) const { return full_width_; }
+  inline uint32_t getMainLayerWidth(void) const { return width_; }
 
   //----------------------------------------------------------------------------
   /// Get image's height.
   //
-  inline uint32_t getHeight(void) const { return height_; }
+  inline uint32_t getHeight(void) const { return full_height_; }
 
-  //----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
   /// Get image's hotspot x.
   //
-  inline int32_t getHotspotX(void) const { return hotspot_x_; }
+  inline int32_t getHotspotX(void) const { return full_hotspot_x_; }
 
   //----------------------------------------------------------------------------
   /// Get image's hotspot y.
   //
-  inline int32_t getHotspotY(void) const { return hotspot_y_; }
+  inline int32_t getHotspotY(void) const { return full_hotspot_y_; }
 
+  inline int32_t getMainLayerOffsetX(void) const { return offset_x_; }
+  inline int32_t getMainLayerOffsetY(void) const { return offset_y_; }
+  inline int32_t getShadowLayerOffsetX(void) const { return shadow_offset_x_; }
+  inline int32_t getShadowLayerOffsetY(void) const { return shadow_offset_y_; }
+
+  void findMaximumExtents(void);
   void setSize(const uint32_t width, const uint32_t height);
   void enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y);
   void enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os_y);
@@ -147,6 +170,7 @@ private:
   static Logger &log;
 
   std::streampos slp_file_pos_;
+  bool programmed_decay;
 
   uint32_t cmd_table_offset_;
   uint32_t outline_table_offset_;
@@ -155,8 +179,26 @@ private:
 
   uint32_t width_;
   uint32_t height_;
+  uint32_t full_width_ = 0;
+  uint32_t full_height_ = 0;
   int32_t hotspot_x_;
   int32_t hotspot_y_;
+  int32_t full_hotspot_x_ = 0;
+  int32_t full_hotspot_y_ = 0;
+  int32_t offset_x_ = 0;
+  int32_t offset_y_ = 0;
+
+  uint32_t shadow_cmd_table_offset_;
+  uint32_t shadow_outline_table_offset_;
+  uint32_t shadow_palette_offset_;
+  uint32_t shadow_properties_;
+
+  uint32_t shadow_width_;
+  uint32_t shadow_height_;
+  int32_t shadow_hotspot_x_;
+  int32_t shadow_hotspot_y_;
+  int32_t shadow_offset_x_ = 0;
+  int32_t shadow_offset_y_ = 0;
 
   virtual void serializeObject(void);
 
@@ -174,6 +216,7 @@ private:
                          bool player_col = false);
   void readPixelsToImage32(uint32_t row, uint32_t &col, uint32_t count,
                          uint8_t special = 0);
+  void readPixelsToSpecialShadow(uint32_t row, uint32_t &col, uint32_t count);
 
   //----------------------------------------------------------------------------
   /// Sets the next count of pixels to given color without reading from stream.
@@ -188,7 +231,7 @@ private:
                         bool player_col = false);
   void setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
                         bool player_col = false);
-
+  void setPixelsToSpecialShadow(uint32_t row, uint32_t &col, uint32_t count);
 
   //----------------------------------------------------------------------------
   /// Sets the next count of pixels to shadow without reading from stream.

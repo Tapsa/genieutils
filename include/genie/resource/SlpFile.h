@@ -51,7 +51,7 @@ public:
   //
   virtual ~SlpFile();
 
-  inline bool isSLP(void) override { return true; }
+  inline bool isSLP(void) const override { return true; }
 
   //----------------------------------------------------------------------------
   /// Loads contents of a sprite file and then unlocks the file for others.
@@ -73,8 +73,8 @@ public:
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount(void) override;
-  void setFrameCount(uint32_t);
+  uint16_t getFrameCount(void) const override;
+  void setFrameCount(uint16_t);
 
   //----------------------------------------------------------------------------
   /// Returns the slp frame at given frame index.
@@ -82,8 +82,8 @@ public:
   /// @param frame frame index
   /// @return SlpFrame
   //
-  SlpFramePtr getFrame(uint32_t frame=0);
-  void setFrame(uint32_t, SlpFramePtr);
+  SlpFramePtr getFrame(uint16_t frame = 0);
+  void setFrame(uint16_t, SlpFramePtr);
 
   std::string version;
   std::string comment;
@@ -93,7 +93,9 @@ private:
 
   bool loaded_ = false;
 
-  uint32_t num_frames_ = 0;
+  uint16_t num_frames_ = 0;
+  uint16_t properties_;
+  uint32_t shadow_offset_ = 0;
 
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;

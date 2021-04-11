@@ -19,49 +19,42 @@
 #ifndef GENIE_SPRITEFILE_H
 #define GENIE_SPRITEFILE_H
 
+#include <memory>
+
 namespace genie
 {
 
 class SpriteFile
 {
 public:
-  //----------------------------------------------------------------------------
   /// Loads contents of a sprite file and then unlocks the file for others.
-  //
   virtual void loadAndRelease(const char *fileName) = 0;
 
-  //----------------------------------------------------------------------------
   /// Frees all content of a sprite file.
-  //
   virtual void unload(void) = 0;
 
-  //----------------------------------------------------------------------------
   /// Return number of frames stored in the file. Available after load.
-  ///
   /// @return number of frames
-  //
-  virtual uint32_t getFrameCount(void) = 0;
+  virtual uint16_t getFrameCount(void) const = 0;
 
-  //----------------------------------------------------------------------------
   /// Check if the sprite is of SLP format.
-  ///
   /// @return true if the sprite is of SLP format.
-  //
-  virtual bool isSLP(void) { return false; }
+  virtual bool isSLP(void) const { return false; }
 
-  //----------------------------------------------------------------------------
   /// Check if the sprite is of SLP format.
-  ///
   /// @return true if the sprite is of SLP format.
-  //
-  virtual bool isSMP(void) { return false; }
+  virtual bool isSMP(void) const { return false; }
 
-  //----------------------------------------------------------------------------
   /// Check if the sprite is of SLP format.
-  ///
   /// @return true if the sprite is of SLP format.
-  //
-  virtual bool isSMX(void) { return false; }
+  virtual bool isSMX(void) const { return false; }
+
+  /// Return approximate size in memory.
+  /// @return bytes of memory consumed.
+  size_t getSizeInMemory(void) const { return size_in_memory_; }
+
+protected:
+  size_t size_in_memory_ = 0;
 };
 
 typedef std::shared_ptr<SpriteFile> SpriteFilePtr;

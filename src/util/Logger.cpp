@@ -19,6 +19,7 @@
 
 #include "genie/util/Logger.h"
 
+#include <cassert>
 #include <iostream>
 #include <fstream>
 
@@ -30,20 +31,20 @@ Logger::LogLevel Logger::LOG_LEVEL = L_OFF;
 std::ostream *Logger::global_out_ = &std::cout;
 
 //------------------------------------------------------------------------------
-Logger& Logger::getRootLogger(void) 
+Logger& Logger::getRootLogger(void)
 {
   static Logger l;
   return l;
 }
 
 //------------------------------------------------------------------------------
-Logger& Logger::getLogger(std::string name) 
+Logger& Logger::getLogger(std::string name)
 {
   return getRootLogger();
 }
 
 //------------------------------------------------------------------------------
-void Logger::setLogLevel(Logger::LogLevel loglevel) 
+void Logger::setLogLevel(Logger::LogLevel loglevel)
 {
   Logger::LOG_LEVEL = loglevel;
 }
@@ -59,74 +60,96 @@ std::ostream* Logger::getGlobalOutputStream(void)
 }
 
 //------------------------------------------------------------------------------
-Logger::Logger() 
+Logger::Logger()
 {
   out_ = 0;
 }
 
 //------------------------------------------------------------------------------
-Logger::~Logger() 
+Logger::~Logger()
 {
 
 }
 
 //------------------------------------------------------------------------------
-void Logger::log(Logger::LogLevel loglevel, const char *msg, ...) 
-{
-  va_list args;
-  va_start(args,msg);
-
-  this->log(loglevel, args, msg);
-}
-
-//------------------------------------------------------------------------------
-void Logger::log(Logger::LogLevel loglevel, va_list args, const char *msg) 
+void Logger::log(Logger::LogLevel loglevel, const char *msg, ...)
 {
   if (loglevel >= Logger::LOG_LEVEL)
   {
-    char msgBuf[1024];                  //TODO: reserve memory on time
-    vsprintf_s(msgBuf, 1024, msg, args);
+    va_list args;
+    va_start(args, msg);
 
-    if (out_)
-      *out_ << getLogLevelName(loglevel) << ": " << msgBuf << std::endl;
-    else
-      *global_out_ << getLogLevelName(loglevel) << ": " << msgBuf << std::endl;
+    this->log(loglevel, args, msg);
   }
 }
 
 //------------------------------------------------------------------------------
-void Logger::error(const char *msg, ...) {
-  va_list args;
-  va_start(args,msg);
-  this->log(L_ERROR, args, msg);
+void Logger::log(Logger::LogLevel loglevel, va_list args, const char *msg)
+{
+  assert(loglevel >= Logger::LOG_LEVEL);
+
+  char msgBuf[1024]; //TODO: reserve memory on time
+  vsprintf_s(msgBuf, 1024, msg, args);
+
+  if (out_)
+    *out_ << getLogLevelName(loglevel) << ": " << msgBuf << std::endl;
+  else
+    *global_out_ << getLogLevelName(loglevel) << ": " << msgBuf << std::endl;
 }
 
 //------------------------------------------------------------------------------
-void Logger::warn(const char *msg, ...) {
-  va_list args;
-  va_start(args,msg);
-  this->log(L_WARNING, args, msg);
+void Logger::error(const char *msg, ...)
+{
+  if (L_ERROR >= Logger::LOG_LEVEL)
+  {
+    va_list args;
+    va_start(args, msg);
+    this->log(L_ERROR, args, msg);
+  }
 }
 
 //------------------------------------------------------------------------------
-void Logger::info(const char *msg, ...) {
-  va_list args;
-  va_start(args,msg);
-  this->log(L_INFO, args, msg);
+void Logger::warn(const char *msg, ...)
+{
+  if (L_WARNING >= Logger::LOG_LEVEL)
+  {
+    va_list args;
+    va_start(args, msg);
+    this->log(L_WARNING, args, msg);
+  }
 }
 
 //------------------------------------------------------------------------------
-void Logger::fatal(const char *msg, ...) {
-  va_list args;
-  va_start(args,msg);
-  this->log(L_FATAL, args, msg);
+void Logger::info(const char *msg, ...)
+{
+  if (L_INFO >= Logger::LOG_LEVEL)
+  {
+    va_list args;
+    va_start(args, msg);
+    this->log(L_INFO, args, msg);
+  }
 }
 
 //------------------------------------------------------------------------------
-void Logger::debug(const char *msg, ...) {
-  va_list args;
-  va_start(args,msg);
-  this->log(L_DEBUG, args, msg);
+void Logger::fatal(const char *msg, ...)
+{
+  if (L_FATAL >= Logger::LOG_LEVEL)
+  {
+    va_list args;
+    va_start(args, msg);
+    this->log(L_FATAL, args, msg);
+  }
+}
+
+//------------------------------------------------------------------------------
+void Logger::debug(const char *msg, ...)
+{
+  if (L_DEBUG >= Logger::LOG_LEVEL)
+  {
+    va_list args;
+    va_start(args, msg);
+    this->log(L_DEBUG, args, msg);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -140,7 +163,7 @@ std::string Logger::getLogLevelName(Logger::LogLevel loglevel)
     "FATAL  ",
     "Off    "   //LOFF
   };
-  
+
   return LOG_LEVEL_NAMES[loglevel];
 }
 
