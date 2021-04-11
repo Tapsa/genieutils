@@ -51,7 +51,7 @@ public:
   //
   virtual ~SmpFile();
 
-  inline bool isSMP(void) override { return true; }
+  inline bool isSMP(void) const override { return true; }
 
   //----------------------------------------------------------------------------
   /// Loads contents of a sprite file and then unlocks the file for others.
@@ -73,8 +73,8 @@ public:
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount(void) override;
-  void setFrameCount(uint32_t);
+  uint16_t getFrameCount(void) const override;
+  void setFrameCount(uint16_t);
 
   //----------------------------------------------------------------------------
   /// Returns the smp frame at given frame index.
@@ -82,8 +82,8 @@ public:
   /// @param frame frame index
   /// @return SmpFrame
   //
-  SmpFramePtr getFrame(uint32_t frame=0);
-  void setFrame(uint32_t, SmpFramePtr);
+  SmpFramePtr getFrame(uint16_t frame = 0);
+  void setFrame(uint16_t, SmpFramePtr);
 
   std::string signature;
   std::string comment;

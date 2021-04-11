@@ -50,7 +50,7 @@ public:
   //
   virtual ~SmxFile();
 
-  inline bool isSMX(void) override { return true; }
+  inline bool isSMX(void) const override { return true; }
 
   //----------------------------------------------------------------------------
   /// Loads contents of a sprite file and then unlocks the file for others.
@@ -72,7 +72,7 @@ public:
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount(void) override;
+  uint16_t getFrameCount(void) const override;
   void setFrameCount(uint16_t);
 
   //----------------------------------------------------------------------------

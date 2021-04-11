@@ -56,13 +56,14 @@ void SmpFile::loadFile()
   frames_.resize(num_frames_);
   std::vector<uint32_t> frame_offsets;
   serialize<uint32_t>(frame_offsets, num_frames_);
+  size_in_memory_ = sizeof(SmpFile);
 
   // Load frame headers and content
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SmpFramePtr(new SmpFrame());
     std::streampos frame_offset = std::streampos(frame_offsets[i]) + getInitialReadPosition();
-    frames_[i]->load(*getIStream(), frame_offset);
+    size_in_memory_ += frames_[i]->load(*getIStream(), frame_offset);
   }
 
   loaded_ = true;
@@ -88,20 +89,20 @@ void SmpFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-uint32_t SmpFile::getFrameCount(void)
+uint16_t SmpFile::getFrameCount(void) const
 {
-  return frames_.size();
+  return static_cast<uint16_t>(frames_.size());
 }
 
 //------------------------------------------------------------------------------
-void SmpFile::setFrameCount(uint32_t count)
+void SmpFile::setFrameCount(uint16_t count)
 {
   frames_.resize(count);
   num_frames_ = count;
 }
 
 //------------------------------------------------------------------------------
-SmpFramePtr SmpFile::getFrame(uint32_t frame)
+SmpFramePtr SmpFile::getFrame(uint16_t frame)
 {
   if (frame >= frames_.size())
   {
@@ -121,7 +122,7 @@ SmpFramePtr SmpFile::getFrame(uint32_t frame)
 }
 
 //------------------------------------------------------------------------------
-void SmpFile::setFrame(uint32_t frame, SmpFramePtr data)
+void SmpFile::setFrame(uint16_t frame, SmpFramePtr data)
 {
   if (frame < frames_.size())
   {

@@ -62,12 +62,13 @@ void SmxFile::loadFile()
     num_unique_frames = num_frames_;
   }
   frames_.resize(num_frames_);
+  size_in_memory_ = sizeof(SmxFile);
 
   // Load frame headers and content
   for (uint16_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SmxFramePtr(new SmxFrame());
-    frames_[i]->load(*getIStream());
+    size_in_memory_ += frames_[i]->load(*getIStream());
   }
 
   loaded_ = true;
@@ -98,9 +99,9 @@ void SmxFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-uint32_t SmxFile::getFrameCount(void)
+uint16_t SmxFile::getFrameCount(void) const
 {
-  return static_cast<uint32_t>(frames_.size());
+  return static_cast<uint16_t>(frames_.size());
 }
 
 //------------------------------------------------------------------------------

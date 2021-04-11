@@ -16,10 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
- *  TODO: Config file for logger (loglevel, log method)
- */
-
 #ifndef GENIE_LOGGER_H
 #define GENIE_LOGGER_H
 
@@ -32,26 +28,27 @@ namespace genie
 //------------------------------------------------------------------------------
 /// Simple logging class
 //
-class Logger {
+class Logger
+{
 
 public:
-  enum LogLevel 
+  enum LogLevel
   {
     L_INFO    = 0, // Informational messages that highlight the process
     L_DEBUG   = 1, // Messages that are most useful for debugging
     L_WARNING = 2, // Messages that designate potential harmful situations
-    L_ERROR   = 3, // Malfunctions which allows the application to continue 
+    L_ERROR   = 3, // Malfunctions which allows the application to continue
     L_FATAL   = 4, // Malfunctions that break the application
     L_OFF     = 5  // No messages at all
   };
-  
+
   //----------------------------------------------------------------------------
   /// Returns the static root logger.
   ///
   /// @return root logger
   //
   static Logger& getRootLogger(void);
-  
+
   //----------------------------------------------------------------------------
   /// Returns specific logger that prints additionally its name before log info
   /// TODO
@@ -68,25 +65,25 @@ public:
   /// @param loglevel minimum level to log
   //
   static void setLogLevel(LogLevel loglevel);
-  
+
   static std::ostream* getGlobalOutputStream(void);
   static void setGlobalOutputStream(std::ostream &ostream);
 
   //----------------------------------------------------------------------------
-  /// Logs messages which aren't very important, but they highlight the 
+  /// Logs messages which aren't very important, but they highlight the
   /// program status.
   ///
   /// @param msg message to print
   //
   void info(const char *msg, ...);
-  
+
   //----------------------------------------------------------------------------
   /// Messages crucial for debugging can be printed using this method.
   ///
   /// @param msg message to print
   //
   void debug(const char *msg, ...);
-  
+
   //----------------------------------------------------------------------------
   /// Message that could interfere the programms behaviour should be printed
   /// using this method.
@@ -94,7 +91,7 @@ public:
   /// @param msg message to print
   //
   void warn(const char *msg, ...);
-  
+
   //----------------------------------------------------------------------------
   /// Method for printing information about a malfunction which are serious
   /// but lets the programm continue.
@@ -102,7 +99,7 @@ public:
   /// @param msg message to print
   //
   void error(const char *msg, ...);
-  
+
   //----------------------------------------------------------------------------
   /// Prints messages that crashes the program.
   ///
@@ -113,13 +110,13 @@ public:
 protected:
   void log(LogLevel loglevel, va_list vlist, const char *msg);
   void log(LogLevel loglevel, const char *msg, ...);
-  
+
   std::string getLogLevelName(LogLevel loglevel);
 
 private:
   Logger();
   virtual ~Logger();
-  
+
   static std::ostream *global_out_;
   std::ostream *out_;
 

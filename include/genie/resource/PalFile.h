@@ -47,6 +47,22 @@ inline bool operator<(const XY &l, const XY &r)
   return l.y == r.y ? l.x < r.x : l.y < r.y;
 }
 
+/// Element for pixel vector. The vector stores position (x, y) of
+/// a pixel whose color is determined externally.
+struct XY16
+{
+  XY16(uint16_t x, uint16_t y) :x(x), y(y)
+  {
+  }
+  uint16_t x;
+  uint16_t y;
+};
+
+inline bool operator<(const XY16 &l, const XY16 &r)
+{
+  return l.y == r.y ? l.x < r.x : l.y < r.y;
+}
+
 /// Element for color vector. The vector stores position (x, y) of
 /// a color pixel and the palette index for the color.
 struct ColorXY
@@ -61,6 +77,42 @@ struct ColorXY
 };
 
 inline bool operator<(const ColorXY &l, const ColorXY &r)
+{
+  return l.y == r.y ? l.x < r.x : l.y < r.y;
+}
+
+/// Element for color vector. The vector stores position (x, y) of
+/// a color pixel and the palette index for the color.
+struct ColorXY16
+{
+  ColorXY16(uint16_t x, uint16_t y, uint16_t index) :
+    x(x), y(y), index(index)
+  {
+  }
+  uint16_t x;
+  uint16_t y;
+  uint16_t index;
+};
+
+inline bool operator<(const ColorXY16 &l, const ColorXY16 &r)
+{
+  return l.y == r.y ? l.x < r.x : l.y < r.y;
+}
+
+/// Element for color vector. The vector stores position (x, y) of
+/// a color pixel and the palette index for the color.
+struct Color8XY16
+{
+  Color8XY16(uint16_t x, uint16_t y, uint8_t index) :
+    x(x), y(y), index(index)
+  {
+  }
+  uint16_t x;
+  uint16_t y;
+  uint8_t index;
+};
+
+inline bool operator<(const Color8XY16 &l, const Color8XY16 &r)
 {
   return l.y == r.y ? l.x < r.x : l.y < r.y;
 }

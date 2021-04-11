@@ -47,7 +47,7 @@ void SmpFrame::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-void SmpFrame::load(std::istream &istr, std::streampos offset)
+size_t SmpFrame::load(std::istream &istr, std::streampos offset)
 {
   setIStream(istr);
   setOperation(OP_READ);
@@ -77,7 +77,7 @@ void SmpFrame::load(std::istream &istr, std::streampos offset)
   else
   {
      log.error("No layers");
-     return;
+     return sizeof(SmpFrame);
   }
 
   img_data.pixel_indexes.resize(layer_width_ * layer_height_);
@@ -157,6 +157,11 @@ void SmpFrame::load(std::istream &istr, std::streampos offset)
       }
     }
   }
+
+  size_t pixel_memory = img_data.pixel_indexes.capacity() * sizeof(uint16_t);
+  size_t alpha_memory = img_data.alpha_channel.capacity() * sizeof(uint8_t);
+  size_t player_memory = img_data.player_color_mask.capacity() * sizeof(ColorXY16);
+  return sizeof(SmpFrame) + pixel_memory + alpha_memory + player_memory;
 }
 
 }

@@ -43,6 +43,23 @@ SlpFrame::~SlpFrame()
 {
 }
 
+void SlpFrame::findMaximumExtents(void)
+{
+  full_hotspot_x_ = std::max<int32_t>(hotspot_x_, shadow_hotspot_x_);
+  full_hotspot_y_ = std::max<int32_t>(hotspot_y_, shadow_hotspot_y_);
+
+  int32_t opposite_hotspot_x = std::max<int32_t>(-hotspot_x_ + width_, -shadow_hotspot_x_ + shadow_width_);
+  int32_t opposite_hotspot_y = std::max<int32_t>(-hotspot_y_ + height_, -shadow_hotspot_y_ + shadow_height_);
+
+  full_width_ = static_cast<uint32_t>(full_hotspot_x_ + opposite_hotspot_x);
+  full_height_ = static_cast<uint32_t>(full_hotspot_y_ + opposite_hotspot_y);
+
+  offset_x_ = full_hotspot_x_ - hotspot_x_;
+  offset_y_ = full_hotspot_y_ - hotspot_y_;
+  shadow_offset_x_ = full_hotspot_x_ - shadow_hotspot_x_;
+  shadow_offset_y_ = full_hotspot_y_ - shadow_hotspot_y_;
+}
+
 void SlpFrame::setSize(const uint32_t width, const uint32_t height)
 {
   width_ = width;
@@ -88,22 +105,22 @@ void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_
   }
 
   // You better not crop the frame.
-  for(auto &xy: img_data.shadow_mask)
+  for(XY16 &xy: img_data.shadow_mask)
   {
     xy.x += offset_x;
     xy.y += offset_y;
   }
-  for(auto &xy: img_data.shield_mask)
+  for(XY16 &xy: img_data.shield_mask)
   {
     xy.x += offset_x;
     xy.y += offset_y;
   }
-  for(auto &xy: img_data.outline_pc_mask)
+  for(XY16 &xy: img_data.outline_pc_mask)
   {
     xy.x += offset_x;
     xy.y += offset_y;
   }
-  for(auto &xy: img_data.player_color_mask)
+  for(Color8XY16 &xy: img_data.player_color_mask)
   {
     xy.x += offset_x;
     xy.y += offset_y;
@@ -188,16 +205,16 @@ void SlpFrame::buildSaveData(std::ostream &ostr, uint32_t &slp_offset, SlpSaveDa
   uint32_t outline_pc_slot = 0;
   uint32_t transparent_slot = 0;
   // Ensure that all 8-bit masks get saved.
-  for(auto const &pixel: img_data.outline_pc_mask)
+  for(XY16 const &pixel: img_data.outline_pc_mask)
     img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
-  for(auto const &pixel: img_data.shield_mask)
+  for(XY16 const &pixel: img_data.shield_mask)
     img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
   {
-    std::vector<XY> new_shadow_mask;
+    std::vector<XY16> new_shadow_mask;
     new_shadow_mask.reserve(img_data.shadow_mask.size());
-    for(auto const &pixel: img_data.shadow_mask)
+    for(XY16 const &pixel: img_data.shadow_mask)
     {
-      auto loc = pixel.y * width_ + pixel.x;
+      size_t loc = pixel.y * width_ + pixel.x;
       if(img_data.alpha_channel[loc] == 0)
       {
         new_shadow_mask.emplace_back(pixel);
@@ -393,9 +410,28 @@ void SlpFrame::serializeHeader(void)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::load(void)
+void SlpFrame::serializeShadowHeader(void)
+{
+  serialize<uint32_t>(shadow_cmd_table_offset_);
+  serialize<uint32_t>(shadow_outline_table_offset_);
+  serialize<uint32_t>(shadow_palette_offset_);
+
+  // uint16_t properties & 0xFFFF
+  // int8_t palette id >> 16 & 255
+  // int8_t image type >> 24 & 255
+  serialize<uint32_t>(shadow_properties_);
+
+  serialize<uint32_t>(shadow_width_);
+  serialize<uint32_t>(shadow_height_);
+  serialize<int32_t>(shadow_hotspot_x_);
+  serialize<int32_t>(shadow_hotspot_y_);
+}
+
+//------------------------------------------------------------------------------
+size_t SlpFrame::load(uint16_t properties)
 {
   std::istream &istr = *getIStream();
+  programmed_decay = properties == 32;
 
   if (is32bit())
   {
@@ -427,7 +463,7 @@ void SlpFrame::load(void)
   {
     istr.seekg(slp_file_pos_ + std::streampos(palette_offset_));
     img_data.palette.resize(read<uint32_t>());
-    for (auto &rgba: img_data.palette)
+    for (Color &rgba: img_data.palette)
     {
       rgba.r = read<uint8_t>();
       rgba.g = read<uint8_t>();
@@ -436,7 +472,7 @@ void SlpFrame::load(void)
   }
 
   if (integrity != 0x8000) // At least one visible row.
-  // Each row has it's commands, 0x0F signals the end of a rows commands.
+  // Each row has its commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
     istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
@@ -529,32 +565,32 @@ void SlpFrame::load(void)
             case 0x0E: // Forward draw
             case 0x1E: // Reverse draw
               log.error("Cmd [%X] is obsolete", data);
-              return;
+              return purge();
 
             case 0x2E: // Normal transform
             case 0x3E: // Alternative transform
               log.error("Cmd [%X] is obsolete", data);
-              return;
+              return purge();
 
             case 0x4E:
-              setPixelsToPcOutline(row, pix_pos, 1);//, 242);
+              setPixelsToPcOutline(row, pix_pos, 1);
               break;
             case 0x6E:
-              setPixelsToShield(row, pix_pos, 1);//, 0);
+              setPixelsToShield(row, pix_pos, 1);
               break;
 
             case 0x5E:
               pix_cnt = read<uint8_t>();
-              setPixelsToPcOutline(row, pix_pos, pix_cnt);//, 242);
+              setPixelsToPcOutline(row, pix_pos, pix_cnt);
               break;
             case 0x7E:
               pix_cnt = read<uint8_t>();
-              setPixelsToShield(row, pix_pos, pix_cnt);//, 0);
+              setPixelsToShield(row, pix_pos, pix_cnt);
               break;
 
             case 0x8E: // Dither
               log.error("Cmd [%X] not implemented", data);
-              return;
+              return purge();
 
             case 0x9E: // Premultiplied alpha
             case 0xAE: // Original alpha
@@ -567,17 +603,141 @@ void SlpFrame::load(void)
 
             default:
               log.error("Cmd [%X] is unknown", data);
-              return;
+              return purge();
           }
           break;
 
         default:
           log.error("Unknown cmd [%X]", data);
           std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
-          return;
+          return purge();
       }
     }
   }
+
+  full_width_ = width_;
+  full_height_ = height_;
+  full_hotspot_x_ = hotspot_x_;
+  full_hotspot_y_ = hotspot_y_;
+
+  size_t pixel_memory = img_data.pixel_indexes.capacity() * sizeof(uint8_t);
+  size_t alpha_memory = img_data.alpha_channel.capacity() * sizeof(uint8_t);
+  size_t bgra_memory = img_data.bgra_channels.capacity() * sizeof(uint32_t);
+
+  size_t shadow_memory = img_data.shadow_mask.capacity() * sizeof(XY16);
+  size_t shield_memory = img_data.shield_mask.capacity() * sizeof(XY16);
+  size_t outline_memory = img_data.outline_pc_mask.capacity() * sizeof(XY16);
+  size_t transparency_memory = img_data.transparency_mask.capacity() * sizeof(XY16);
+
+  size_t player_memory = img_data.player_color_mask.capacity() * sizeof(Color8XY16);
+  size_t special_memory = img_data.special_shadow_mask.capacity() * sizeof(Color8XY16);
+  size_t palette_memory = img_data.palette.capacity() * sizeof(genie::Color);
+
+  return sizeof(SlpFrame) + pixel_memory + alpha_memory + bgra_memory +
+    shadow_memory + shield_memory + outline_memory + transparency_memory +
+    player_memory + special_memory + palette_memory;
+}
+
+//------------------------------------------------------------------------------
+size_t SlpFrame::loadSpecialShadow(void)
+{
+  uint16_t properties = shadow_properties_ & 0xFFFF;
+  int8_t palette_id = shadow_properties_ >> 16 & 255;
+  int8_t image_type = shadow_properties_ >> 24 & 255;
+
+  assert(shadow_palette_offset_ == 0);
+
+  std::istream &istr = *getIStream();
+
+  uint16_t integrity = 0;
+  istr.seekg(slp_file_pos_ + std::streampos(shadow_outline_table_offset_));
+  std::vector<uint16_t> left_edges(shadow_height_);
+  std::vector<uint16_t> right_edges(shadow_height_);
+  for (uint32_t row = 0; row < shadow_height_; ++row)
+  {
+    serialize<uint16_t>(left_edges[row]);
+    serialize<uint16_t>(right_edges[row]);
+    integrity |= left_edges[row];
+  }
+
+  istr.seekg(slp_file_pos_ + std::streampos(shadow_cmd_table_offset_));
+  std::vector<uint32_t> cmd_offsets(shadow_height_);
+  serialize<uint32_t>(cmd_offsets, shadow_height_);
+
+  // Should be no embedded palette
+  assert(properties != 0x78);
+
+  if (integrity != 0x8000) // At least one visible row.
+  // Each row has its commands, 0x0F signals the end of a rows commands.
+  for (uint32_t row = 0; row < shadow_height_; ++row)
+  {
+    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
+    assert(!istr.eof());
+    if (0x8000 == left_edges[row] || 0x8000 == right_edges[row])
+    {
+      continue; // Pretend it does not exist.
+    }
+    uint32_t pix_pos = left_edges[row]; //pos where to start putting pixels
+
+    uint8_t data = 0;
+    while (pix_pos < shadow_width_)
+    {
+      data = read<uint8_t>();
+
+      if (data == 15) break;
+
+      uint8_t cmd = data & 15;
+      uint8_t sub = data & 240;
+      uint32_t pix_cnt = 0;
+
+      switch (cmd)
+      {
+        case 0x0: // Lesser block copy
+        case 0x4:
+        case 0x8:
+        case 0xC:
+          pix_cnt = data >> 2 & 63;
+          readPixelsToSpecialShadow(row, pix_pos, pix_cnt);
+          break;
+
+        case 0x1: // Lesser skip (making pixels transparent)
+        case 0x5:
+        case 0x9:
+        case 0xD:
+          pix_cnt = data >> 2 & 63;
+          pix_pos += pix_cnt;
+          break;
+
+        case 0x2: // Greater block copy
+          pix_cnt = (sub << 4) + read<uint8_t>();
+          readPixelsToSpecialShadow(row, pix_pos, pix_cnt);
+          break;
+
+        case 0x3: // Greater skip
+          pix_cnt = (sub << 4) + read<uint8_t>();
+          pix_pos += pix_cnt;
+          break;
+
+        case 0x7: // Run of plain color
+          pix_cnt = getPixelCountFromData(data);
+          setPixelsToSpecialShadow(row, pix_pos, pix_cnt);
+          break;
+
+        default:
+          log.error("Unknown special cmd [%X]", data);
+          std::cerr << "SlpFrame: Unknown special cmd at " << std::hex << std::endl;
+          std::vector<Color8XY16>().swap(img_data.special_shadow_mask);
+          return img_data.special_shadow_mask.capacity();
+      }
+    }
+  }
+
+  findMaximumExtents();
+
+  size_t pixel_memory = img_data.pixel_indexes.capacity() * sizeof(uint8_t);
+  size_t shadow_memory = img_data.special_shadow_mask.capacity() * sizeof(Color8XY16);
+  log.info("Shadow memory %zu", shadow_memory);
+  return shadow_memory;
 }
 
 //------------------------------------------------------------------------------
@@ -587,6 +747,10 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
+    if (programmed_decay)
+    {
+      read<uint8_t>();
+    }
     uint8_t color_index = read<uint8_t>();
     assert(row * width_ + col < img_data.pixel_indexes.size());
     img_data.pixel_indexes[row * width_ + col] = color_index;
@@ -622,9 +786,25 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
 }
 
 //------------------------------------------------------------------------------
+void SlpFrame::readPixelsToSpecialShadow(uint32_t row, uint32_t &col, uint32_t count)
+{
+  uint32_t to_pos = col + count;
+  while (col < to_pos)
+  {
+    uint16_t color_index = read<uint8_t>() << 2;
+    img_data.special_shadow_mask.emplace_back(col, row, 255 - color_index);
+    ++col;
+  }
+}
+
+//------------------------------------------------------------------------------
 void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
                                 bool player_col)
 {
+  if (programmed_decay)
+  {
+    read<uint8_t>();
+  }
   uint8_t color_index = read<uint8_t>();
   uint32_t to_pos = col + count;
   while (col < to_pos)
@@ -670,6 +850,18 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
 }
 
 //------------------------------------------------------------------------------
+void SlpFrame::setPixelsToSpecialShadow(uint32_t row, uint32_t &col, uint32_t count)
+{
+  uint16_t color_index = read<uint8_t>() << 2;
+  uint32_t to_pos = col + count;
+  while (col < to_pos)
+  {
+    img_data.special_shadow_mask.emplace_back(col, row, 255 - color_index);
+    ++col;
+  }
+}
+
+//------------------------------------------------------------------------------
 void SlpFrame::setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count)
 {
   uint32_t to_pos = col + count;
@@ -704,6 +896,23 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
     pix_cnt = data;
 
   return pix_cnt;
+}
+
+//------------------------------------------------------------------------------
+size_t SlpFrame::purge(void)
+{
+  assert(false);
+  std::vector<uint8_t>().swap(img_data.pixel_indexes);
+  std::vector<uint8_t>().swap(img_data.alpha_channel);
+  std::vector<uint32_t>().swap(img_data.bgra_channels);
+  std::vector<XY16>().swap(img_data.shadow_mask);
+  std::vector<XY16>().swap(img_data.shield_mask);
+  std::vector<XY16>().swap(img_data.outline_pc_mask);
+  std::vector<XY16>().swap(img_data.transparency_mask);
+  std::vector<Color8XY16>().swap(img_data.player_color_mask);
+  std::vector<Color8XY16>().swap(img_data.special_shadow_mask);
+  std::vector<genie::Color>().swap(img_data.palette);
+  return sizeof(SlpFrame);
 }
 
 //------------------------------------------------------------------------------
@@ -885,45 +1094,45 @@ SlpFramePtr SlpFrame::mirrorX(void)
   }
 
   // Let std::set sort the pixels for us.
-  std::set<XY> new_shadow_mask;
-  for(XY pixel: img_data.shadow_mask)
+  std::set<XY16> new_shadow_mask;
+  for(XY16 pixel: img_data.shadow_mask)
   {
     pixel.x = swapper - pixel.x;
     new_shadow_mask.emplace(pixel);
   }
-  new_data.shadow_mask = std::vector<XY>(new_shadow_mask.begin(), new_shadow_mask.end());
+  new_data.shadow_mask = std::vector<XY16>(new_shadow_mask.begin(), new_shadow_mask.end());
 
-  std::set<XY> new_shield_mask;
-  for(XY pixel: img_data.shield_mask)
+  std::set<XY16> new_shield_mask;
+  for(XY16 pixel: img_data.shield_mask)
   {
     pixel.x = swapper - pixel.x;
     new_shield_mask.emplace(pixel);
   }
-  new_data.shield_mask = std::vector<XY>(new_shield_mask.begin(), new_shield_mask.end());
+  new_data.shield_mask = std::vector<XY16>(new_shield_mask.begin(), new_shield_mask.end());
 
-  std::set<XY> new_outline_pc_mask;
-  for(XY pixel: img_data.outline_pc_mask)
+  std::set<XY16> new_outline_pc_mask;
+  for(XY16 pixel: img_data.outline_pc_mask)
   {
     pixel.x = swapper - pixel.x;
     new_outline_pc_mask.emplace(pixel);
   }
-  new_data.outline_pc_mask = std::vector<XY>(new_outline_pc_mask.begin(), new_outline_pc_mask.end());
+  new_data.outline_pc_mask = std::vector<XY16>(new_outline_pc_mask.begin(), new_outline_pc_mask.end());
 
-  std::set<XY> new_transparency_mask;
-  for(XY pixel: img_data.transparency_mask)
+  std::set<XY16> new_transparency_mask;
+  for(XY16 pixel: img_data.transparency_mask)
   {
     pixel.x = swapper - pixel.x;
     new_transparency_mask.emplace(pixel);
   }
-  new_data.transparency_mask = std::vector<XY>(new_transparency_mask.begin(), new_transparency_mask.end());
+  new_data.transparency_mask = std::vector<XY16>(new_transparency_mask.begin(), new_transparency_mask.end());
 
-  std::set<ColorXY> new_player_color_mask;
-  for(ColorXY pixel: img_data.player_color_mask)
+  std::set<Color8XY16> new_player_color_mask;
+  for(Color8XY16 pixel: img_data.player_color_mask)
   {
     pixel.x = swapper - pixel.x;
     new_player_color_mask.emplace(pixel);
   }
-  new_data.player_color_mask = std::vector<ColorXY>(new_player_color_mask.begin(), new_player_color_mask.end());
+  new_data.player_color_mask = std::vector<Color8XY16>(new_player_color_mask.begin(), new_player_color_mask.end());
 
   return mirrored;
 }

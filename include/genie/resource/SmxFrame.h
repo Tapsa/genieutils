@@ -37,9 +37,9 @@ struct SmxFrameData
 public:
   std::vector<uint16_t> pixel_indexes;
   std::vector<uint8_t> alpha_channel;
-  std::vector<ColorXY> player_color_mask;
-  std::vector<ColorXY> shadow_mask;
-  std::vector<XY> outline_pc_mask;
+  std::vector<ColorXY16> player_color_mask;
+  std::vector<ColorXY16> shadow_mask;
+  std::vector<XY16> outline_pc_mask;
 };
 
 struct SmxLayerInfo
@@ -77,7 +77,7 @@ public:
   //----------------------------------------------------------------------------
   /// Loads header and frame data and creates an image.
   //
-  void load(std::istream &istr);
+  size_t load(std::istream &istr);
   void save(std::ostream &ostr);
 
   //----------------------------------------------------------------------------
@@ -110,8 +110,6 @@ public:
   inline int32_t getOutlineLayerOffsetY(void) const { return outline_layer_.offset_y; }
 
   void findMaximumExtents(void);
-
-  bool is32bit(void) const {return false;}
 
   uint8_t layer_flags;
   uint8_t palette_id;
