@@ -29,8 +29,6 @@ namespace genie
 {
 
 float ISerializable::dat_internal_ver = 0.f;
-GameVersion GV_LatestTap = GV_T8;
-GameVersion GV_LatestDE2 = GV_C16;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() : compressor_(this)
@@ -91,55 +89,35 @@ void DatFile::serializeObject(void)
   serialize(FileVersion, FILE_VERSION_SIZE);
 
   // Handle all different versions while in development.
-  if(getGameVersion() == GV_C2) // 5.8
+  if (getGameVersion() == GV_C2) // 5.8
   {
-    if("VER 7.3" == FileVersion)
+    if ("VER 7.4" == FileVersion)
+      setGameVersion(GV_C17);
+    else if ("VER 7.3" == FileVersion)
       setGameVersion(GV_C16);
-    else if("VER 7.2" == FileVersion)
+    else if ("VER 7.2" == FileVersion)
       setGameVersion(GV_C15);
-    else if("VER 7.1" == FileVersion)
+    else if ("VER 7.1" == FileVersion)
       setGameVersion(GV_C14);
-    else if("VER 7.0" == FileVersion)
-      setGameVersion(GV_C13);
-    else if("VER 6.9" == FileVersion)
-      setGameVersion(GV_C12);
-    else if("VER 6.8" == FileVersion)
-      setGameVersion(GV_C11);
-    else if("VER 6.7" == FileVersion)
-      setGameVersion(GV_C10);
-    else if("VER 6.6" == FileVersion)
-      setGameVersion(GV_C9);
-    else if("VER 6.5" == FileVersion)
-      setGameVersion(GV_C8);
-    else if("VER 6.4" == FileVersion)
-      setGameVersion(GV_C7);
-    else if("VER 6.3" == FileVersion)
-      setGameVersion(GV_C6);
-    else if("VER 6.2" == FileVersion)
-      setGameVersion(GV_C5);
-    else if("VER 6.1" == FileVersion)
-      setGameVersion(GV_CK);
-    else if("VER 6.0" == FileVersion)
-      setGameVersion(GV_C4);
-    else if("VER 5.9" == FileVersion)
-      setGameVersion(GV_C3);
+    else
+    {
+      std::cout << "Unsupported version " << FileVersion;
+      std::cout << ". Aborting." << std::endl;
+      compressor_.endCompression();
+      return;
+    }
   }
-  else if(getGameVersion() == GV_Tapsa)
+  else if (getGameVersion() == GV_Tapsa)
   {
-    if("VER 4.5" == FileVersion)
+    if ("VER 4.5" == FileVersion)
       setGameVersion(GV_T8);
-    else if("VER 4.4" == FileVersion)
-      setGameVersion(GV_T7);
-    else if("VER 4.3" == FileVersion)
-      setGameVersion(GV_T6);
-    else if("VER 4.2" == FileVersion)
-      setGameVersion(GV_T5);
-    else if("VER 4.1" == FileVersion)
-      setGameVersion(GV_T4);
-    else if("VER 4.0" == FileVersion)
-      setGameVersion(GV_T3);
-    else if("VER 3.9" == FileVersion)
-      setGameVersion(GV_T2);
+    else
+    {
+      std::cout << "Unsupported version " << FileVersion;
+      std::cout << ". Aborting." << std::endl;
+      compressor_.endCompression();
+      return;
+    }
   }
 
   GameVersion gv = getGameVersion();
