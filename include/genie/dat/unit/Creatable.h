@@ -72,6 +72,7 @@ public:
   int16_t DisplayedPierceArmour = 0;
   int16_t SpawningGraphic = -1;
   int16_t UpgradeGraphic = -1;
+  int16_t HeroGlowGraphic = -1;
 
   float MaxCharge = 0;
   float RechargeRate = 0;

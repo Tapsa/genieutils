@@ -75,6 +75,10 @@ void Creatable::serializeObject(void)
 
           if (gv >= GV_C16)
           {
+            if (gv >= GV_C17)
+            {
+              serialize<int16_t>(HeroGlowGraphic);
+            }
             serialize<float>(MaxCharge);
             serialize<float>(RechargeRate);
             serialize<int16_t>(ChargeEvent);
