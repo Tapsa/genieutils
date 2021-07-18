@@ -23,6 +23,7 @@ set(Boost_USE_MULTITHREADED      ON)
 # dependencies:
 
 find_package(ZLIB REQUIRED)
+find_package(LZ4 REQUIRED)
 find_package(Boost 1.55 COMPONENTS iostreams REQUIRED)
 
 if(GUTILS_TOOLS)
@@ -169,7 +170,7 @@ if(STATIC_COMPILE)
 else()
   add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
                                     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
-  target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
+  target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${LZ4_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
 endif(STATIC_COMPILE)
 
 #add_executable(main main.cpp)
