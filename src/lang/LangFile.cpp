@@ -335,10 +335,10 @@ std::string LangFile::convert(iconv_t cd, std::string input)
   input.copy(inbuf, inleft);
   
   while (cd != (iconv_t)-1 && inleft > 0 && iconv_value == 0)
-  { 
-    iconv_value = iconv(cd, const_cast<const char**>(&inptr), &inleft, &outptr, &outleft);
-    
-    if (iconv_value == (size_t)-1) 
+  {
+    iconv_value = iconv(cd, &inptr, &inleft, &outptr, &outleft);
+
+    if (iconv_value == (size_t)-1)
     {
       if(errno == E2BIG)
       {
