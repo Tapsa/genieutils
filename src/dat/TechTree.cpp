@@ -58,7 +58,7 @@ void TechTree::serializeObject(void)
 {
   uint8_t age_count;
   uint8_t building_count;
-  uint8_t research_count;
+  int16_t research_count;
   int16_t unit_count;
 
   serializeSize<uint8_t>(age_count, TechTreeAges.size());
@@ -74,7 +74,14 @@ void TechTree::serializeObject(void)
     unit_count = tbc;
   }
 
-  serializeSize<uint8_t>(research_count, ResearchConnections.size());
+  if (getGameVersion() == GV_CCV2)
+    serializeSize<int16_t>(research_count, ResearchConnections.size());
+  else
+  {
+    uint8_t tbc = 0;
+    serializeSize<uint8_t>(tbc, ResearchConnections.size());
+    research_count = tbc;
+  }
 
   serialize<int32_t>(TotalUnitTechGroups); // 9.39
 
@@ -132,6 +139,18 @@ void TechTreeAge::serializeObject(void)
 
     serialize<uint8_t>(count);
     serialize<int32_t>(Techs, TechTree::getCount());
+  }
+  else if (getGameVersion() == GV_CCV2)
+  {
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
+
+    int16_t connected_units_count = 0;
+    serializeSize<int16_t>(connected_units_count, Units.size());
+    serialize<int32_t>(Units, connected_units_count);
+
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
   }
   else
   {
@@ -191,6 +210,18 @@ void BuildingConnection::serializeObject(void)
 
     serialize<uint8_t>(count);
     serialize<int32_t>(Techs, TechTree::getCount());
+  }
+  else if (getGameVersion() == GV_CCV2)
+  {
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
+
+    int16_t connected_units_count = 0;
+    serializeSize<int16_t>(connected_units_count, Units.size());
+    serialize<int32_t>(Units, connected_units_count);
+
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
   }
   else
   {

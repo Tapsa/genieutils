@@ -49,7 +49,8 @@ enum GameVersion
   GV_C17, // 20.14
   GV_SWGB, // 1.0
   GV_CC, // 1.1
-  GV_CCV // Terrain patch
+  GV_CCV, // Terrain patch
+  GV_CCV2 // Terrain patch + tech tree patch
 };
 
 const GameVersion GV_LatestTap = GV_T8;

@@ -113,7 +113,7 @@ void TerrainBlock::serializeObject(void)
   if (gv < GV_C9 || gv > GV_LatestDE2)
   {
     // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-    if (gv != GV_CCV && gv != GV_TCV)
+    if (gv != GV_CCV && gv != GV_CCV2 && gv != GV_TCV)
       serializeSub<TerrainBorder>(TerrainBorders, 16);
 
     // Probably filled after loading map in game.
