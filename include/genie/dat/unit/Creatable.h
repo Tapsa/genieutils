@@ -49,7 +49,7 @@ public:
   float FlankAttackModifier = 0;
   uint8_t CreatableType = 0;
   uint8_t HeroMode = 0;
-  int32_t GarrisonGraphic = -1; 
+  int32_t GarrisonGraphic = -1;
   float TotalProjectiles = 0;
   uint8_t MaxTotalProjectiles = 0;
 

@@ -90,7 +90,7 @@ public:
   /// the slp file.
   //
   void serializeHeader(void);
-  
+
   //----------------------------------------------------------------------------
   /// Loads shadow header data. The headers of shadow frames are stored
   /// after the main frame data of the slp file.
@@ -107,7 +107,7 @@ public:
   /// frame headers of the slp file.
   //
   size_t load(uint16_t properties);
-  
+
   //----------------------------------------------------------------------------
   /// Loads shadow frame data and creates an image. Shadow frame data is
   /// located after all shadow frame headers of the slp file.

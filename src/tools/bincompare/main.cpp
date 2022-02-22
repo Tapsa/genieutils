@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     return 0;
 
   int fail_cnt = binaryCompare(argv[1], argv[2]);
-  
+
   if (fail_cnt)
     return -1;
   else

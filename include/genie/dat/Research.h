@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2022  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -60,11 +60,18 @@ public:
   /// ID of the unit where this research is available to buy.
   int16_t ResearchLocation = -1;
 
-  /// Index of the name in language.dll
-  int16_t LanguageDLLName = 7000;
-
-  /// Index of the description in language.dll
-  int16_t LanguageDLLDescription = 8000;
+  union
+  {
+    /// Index of the name in language.dll
+    int32_t LanguageDLLName = 7000;
+    int16_t LanguageDLLNameU16;
+  };
+  union
+  {
+    /// Index of the description in language.dll
+    int32_t LanguageDLLDescription = 8000;
+    int16_t LanguageDLLDescriptionU16;
+  };
 
   /// Number of seconds it takes to research
   int16_t ResearchTime = 0;

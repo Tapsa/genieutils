@@ -154,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -169,7 +169,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -186,7 +186,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -205,7 +205,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -222,7 +222,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -237,7 +237,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -254,7 +254,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -273,7 +273,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_75;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%Cpp libs%\zlib;%Cpp libs%\Boost\include\boost-1_78;%Cpp libs%\Iconv\include;%Cpp libs%\lz4;.\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>26495;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
