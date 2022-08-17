@@ -324,7 +324,11 @@ std::string LangFile::convert(iconv_t cd, std::string input)
 {
   size_t inleft = input.size();
   char *inbuf = new char[inleft];
+  #ifdef _WIN32
   const char *inptr = inbuf;
+  #else
+  char *inptr = inbuf;
+  #endif
 
   char buf[CONV_BUF_SIZE];
   size_t outleft = CONV_BUF_SIZE, iconv_value = 0;
