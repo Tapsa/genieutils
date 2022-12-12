@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2022  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -82,7 +82,7 @@ void ScnFile::serializeObject(void)
   serializeVersion();
   if (isOperation(OP_WRITE))
   {
-    headerLength_ = 21 + scenarioInstructions.size();
+    headerLength_ = 21 + static_cast<uint32_t>(scenarioInstructions.size());
   }
   serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
   {

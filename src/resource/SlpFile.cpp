@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2022  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -87,7 +87,7 @@ void SlpFile::loadFile()
     // There's probably better way to do this.
     {
       std::vector<uint8_t> input(std::istreambuf_iterator<char>(*getIStream()), {});
-      int32_t size = input.size();
+      int32_t size = static_cast<int32_t>(input.size());
       unpack_count = LZ4_decompress_safe(reinterpret_cast<const char *>(input.data()),
         slp_data_ptr, size, original_size);
     }
