@@ -3,6 +3,7 @@
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2014 - 2022  Mikko "Tapsa" P
+    Copyright (C) 2023  Manuel Winocur
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -48,6 +49,7 @@ enum GameVersion
   GV_C16, // 20.01
   GV_C17, // 20.14
   GV_C18, // 25.27
+  GV_C19, GV_C20, // 26.23 - 40.3
   GV_SWGB, // 1.0
   GV_CC, // 1.1
   GV_CCV, // Terrain patch
@@ -55,7 +57,7 @@ enum GameVersion
 };
 
 const GameVersion GV_LatestTap = GV_T8;
-const GameVersion GV_LatestDE2 = GV_C18;
+const GameVersion GV_LatestDE2 = GV_C20;
 
 struct XYZF
 {

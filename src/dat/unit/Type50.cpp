@@ -3,6 +3,7 @@
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2011 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2023  Manuel Winocur
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -90,6 +91,10 @@ void Type50::serializeObject(void)
     serialize<int16_t>(DisplayedAttack);
     serialize<float>(DisplayedRange);
     serialize<float>(DisplayedReloadTime);
+    if (gv >= GV_C20)
+    {
+      serialize<float>(BlastDamage);
+    }
   }
 }
 

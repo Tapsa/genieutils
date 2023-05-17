@@ -3,6 +3,7 @@
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2011 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2023  Manuel Winocur
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -61,6 +62,7 @@ public:
   std::vector<float> GraphicDisplacement = {0, 0, 0};
 
   uint8_t BlastAttackLevel = 0;
+  float BlastDamage = 0;
   float MinRange = 0;
   float AccuracyDispersion = 0;
   int16_t AttackGraphic = -1;
