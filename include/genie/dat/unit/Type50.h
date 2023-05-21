@@ -62,7 +62,6 @@ public:
   std::vector<float> GraphicDisplacement = {0, 0, 0};
 
   uint8_t BlastAttackLevel = 0;
-  float BlastDamage = 0;
   float MinRange = 0;
   float AccuracyDispersion = 0;
   int16_t AttackGraphic = -1;
@@ -70,6 +69,7 @@ public:
   int16_t DisplayedAttack = 0;
   float DisplayedRange = 0;
   float DisplayedReloadTime = 0;
+  float BlastDamage = 0;
 
 protected:
   virtual void serializeObject(void);
