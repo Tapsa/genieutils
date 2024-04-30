@@ -61,7 +61,17 @@ void Bird::serializeObject(void)
   serialize<int16_t>(DefaultTaskID);
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
-  serialize<int16_t>(DropSites, getDropSiteCount());
+
+  if (gv >= GV_C21 && gv <= GV_LatestDE2)
+  {
+    int16_t drop_site_count;
+    serializeSize<int16_t>(drop_site_count, DropSites.size());
+    serialize<int16_t>(DropSites, drop_site_count);
+  }
+  else
+  {
+    serialize<int16_t>(DropSites, getDropSiteCount());
+  }
   serialize<uint8_t>(TaskSwapGroup);
   serialize<int16_t>(AttackSound);
   if (gv >= GV_AoEB)
