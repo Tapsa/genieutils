@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2024  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -47,8 +47,13 @@ void Bird::setGameVersion(GameVersion gv)
 unsigned short Bird::getDropSiteCount(void)
 {
   GameVersion gv = getGameVersion();
-  if (gv >= GV_C15 && gv <= GV_LatestDE2)
-    return 3;
+  if (gv <= GV_LatestDE2)
+  {
+    if (gv >= GV_C21)
+      return static_cast<uint16_t>(DropSites.size());
+    if (gv >= GV_C15)
+      return 3;
+  }
   if (gv >= GV_TEST)
     return 2;
   return 1;
