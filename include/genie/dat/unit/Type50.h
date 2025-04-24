@@ -65,11 +65,16 @@ public:
   float MinRange = 0;
   float AccuracyDispersion = 0;
   int16_t AttackGraphic = -1;
+  int16_t AttackGraphic2 = -1;
   int16_t DisplayedMeleeArmour = 0;
   int16_t DisplayedAttack = 0;
   float DisplayedRange = 0;
   float DisplayedReloadTime = 0;
   float BlastDamage = 0;
+  float FriendlyFireDamage = 1;
+  float DamageReflection = 0;
+  int16_t InterruptFrame = -1;
+  float GarrisonFirepower = 0;
 
 protected:
   virtual void serializeObject(void);

@@ -94,6 +94,17 @@ void Type50::serializeObject(void)
     if (gv <= GV_LatestDE2 && gv >= GV_C20)
     {
       serialize<float>(BlastDamage);
+      if (gv >= GV_C22)
+      {
+        serialize<float>(DamageReflection);
+        serialize<float>(FriendlyFireDamage);
+        if (gv >= GV_C27)
+        {
+          serialize<int16_t>(InterruptFrame);
+          serialize<float>(GarrisonFirepower);
+          serialize<int16_t>(AttackGraphic2);
+        }
+      }
     }
   }
 }

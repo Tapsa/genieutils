@@ -4,6 +4,8 @@
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2014 - 2022  Mikko "Tapsa" P
     Copyright (C) 2023  Manuel Winocur
+    Copyright (C) 2024  Charles Harbord
+    Copyright (C) 2024  Igor Djordjevic aka BugA_the_Great
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -51,6 +53,7 @@ enum GameVersion
   GV_C18, // 25.27
   GV_C19, GV_C20, // 26.23 - 40.3
   GV_C21, // 61.4
+  GV_C22, GV_C23, GV_C24, GV_C25, GV_C26, GV_C27, // 61.6 - 63.4
   GV_SWGB, // 1.0
   GV_CC, // 1.1
   GV_CCV, // Terrain patch
@@ -58,7 +61,7 @@ enum GameVersion
 };
 
 const GameVersion GV_LatestTap = GV_T8;
-const GameVersion GV_LatestDE2 = GV_C21;
+const GameVersion GV_LatestDE2 = GV_C27;
 
 struct XYZF
 {

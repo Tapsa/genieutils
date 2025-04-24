@@ -3,6 +3,8 @@
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2011 - 2022  Mikko "Tapsa" P
+    Copyright (C) 2024  Charles Harbord
+    Copyright (C) 2024  Igor Djordjevic aka BugA_the_Great
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -78,6 +80,10 @@ void Creatable::serializeObject(void)
             if (gv >= GV_C17)
             {
               serialize<int16_t>(HeroGlowGraphic);
+              if (gv >= GV_C26)
+              {
+                serialize<int16_t>(IdleAttackGraphic);
+              }
             }
             serialize<float>(MaxCharge);
             serialize<float>(RechargeRate);
@@ -86,6 +92,23 @@ void Creatable::serializeObject(void)
 
             if (gv >= GV_C19)
             {
+              if (gv >= GV_C23)
+              {
+                serialize<int16_t>(ChargeTarget);
+                if (gv >= GV_C24)
+                {
+                  if (gv >= GV_C25)
+                  {
+                    serialize<int32_t>(ChargeProjectileUnit);
+                    serialize<uint8_t>(AttackPriority);
+                    serialize<float>(InvulnerabilityLevel);
+                  }
+                  serialize<int16_t>(ButtonIconID);
+                  serialize<int32_t>(ButtonShortTooltipID);
+                  serialize<int32_t>(ButtonExtendedTooltipID);
+                  serialize<int16_t>(ButtonHotkeyAction);
+                }
+              }
               serialize<float>(MinConversionTimeMod);
               serialize<float>(MaxConversionTimeMod);
               serialize<float>(ConversionChanceMod);

@@ -4,6 +4,8 @@
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2011 - 2022  Mikko "Tapsa" P
     Copyright (C) 2023  Manuel Winocur
+    Copyright (C) 2024  Charles Harbord
+    Copyright (C) 2024  Igor Djordjevic aka BugA_the_Great
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -92,7 +94,19 @@ void DatFile::serializeObject(void)
   // Handle all different versions while in development.
   if (getGameVersion() == GV_C2) // 5.8
   {
-    if ("VER 7.8" == FileVersion)
+    if ("VER 8.4" == FileVersion)
+      setGameVersion(GV_C27);
+    else if ("VER 8.3" == FileVersion)
+      setGameVersion(GV_C26);
+    else if ("VER 8.2" == FileVersion)
+      setGameVersion(GV_C25);
+    else if ("VER 8.1" == FileVersion)
+      setGameVersion(GV_C24);
+    else if ("VER 8.0" == FileVersion)
+      setGameVersion(GV_C23);
+    else if ("VER 7.9" == FileVersion)
+      setGameVersion(GV_C22);
+    else if ("VER 7.8" == FileVersion)
       setGameVersion(GV_C21);
     else if ("VER 7.7" == FileVersion)
       setGameVersion(GV_C20);

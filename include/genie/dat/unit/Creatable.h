@@ -3,6 +3,8 @@
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
     Copyright (C) 2011 - 2022  Mikko "Tapsa" P
+    Copyright (C) 2024  Charles Harbord
+    Copyright (C) 2024  Igor Djordjevic aka BugA_the_Great
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -69,15 +71,24 @@ public:
     have a different graphic.
    */
   uint8_t SpecialAbility = 0;
+  int16_t ButtonIconID = -1;
+  int32_t ButtonShortTooltipID = -1;
+  int32_t ButtonExtendedTooltipID = -1;
+  int16_t ButtonHotkeyAction = -1;
   int16_t DisplayedPierceArmour = 0;
   int16_t SpawningGraphic = -1;
   int16_t UpgradeGraphic = -1;
   int16_t HeroGlowGraphic = -1;
+  int16_t IdleAttackGraphic = -1;
 
   float MaxCharge = 0;
   float RechargeRate = 0;
   int16_t ChargeEvent = 0;
   int16_t ChargeType = 0;
+  int16_t ChargeTarget = 0;
+  int32_t ChargeProjectileUnit = -1;
+  uint8_t AttackPriority = 0;
+  float InvulnerabilityLevel = 0;
 
   float MinConversionTimeMod = 0;
   float MaxConversionTimeMod = 0;
