@@ -119,14 +119,14 @@ public:
 
   int16_t TerrainsUsed1;
 
-  //SWGB Unknowns:
-  int32_t SUnknown2;
-  int32_t SUnknown3;
-  int32_t SUnknown4;
-  int32_t SUnknown5;
+  // SWGB variables
+  int32_t WaypointSprite;
+  int32_t MoveToSprite;
+  int32_t GarrisonSound;
+  int32_t UngarrisonSound;
 
-  uint8_t SUnknown7;
-  uint8_t SUnknown8;
+  uint8_t TechsStartMarker;
+  uint8_t TechsEndMarker;
 
 private:
   // if true print debug messages

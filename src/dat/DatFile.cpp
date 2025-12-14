@@ -150,18 +150,18 @@ void DatFile::serializeObject(void)
   if (gv >= GV_SWGB)
   {
     serializeSize<int16_t>(count16, Civs.size());
-    serialize<int32_t>(SUnknown2);
-    serialize<int32_t>(SUnknown3);
-    serialize<int32_t>(SUnknown4);
-    serialize<int32_t>(SUnknown5);
+    serialize<int32_t>(WaypointSprite);
+    serialize<int32_t>(MoveToSprite);
+    serialize<int32_t>(GarrisonSound);
+    serialize<int32_t>(UngarrisonSound);
 
     if (verbose_)
     {
       std::cout << "Unkown1: " << count16 << std::endl;
-      std::cout << "Unkown2: " << SUnknown2 << std::endl;
-      std::cout << "Unkown3: " << SUnknown3 << std::endl;
-      std::cout << "Unkown4: " << SUnknown4 << std::endl;
-      std::cout << "Unkown5: " << SUnknown5 << std::endl;
+      std::cout << "WaypointSprite: " << WaypointSprite << std::endl;
+      std::cout << "MoveToSprite: " << MoveToSprite << std::endl;
+      std::cout << "GarrisonSound: " << GarrisonSound << std::endl;
+      std::cout << "UngarrisonSound: " << UngarrisonSound << std::endl;
     }
   }
 
@@ -258,7 +258,7 @@ void DatFile::serializeObject(void)
   serializeSub<Civ>(Civs, count16);
 
   if (gv >= GV_SWGB)
-    serialize<uint8_t>(SUnknown7);
+    serialize<uint8_t>(TechsStartMarker);
 
   serializeSize<int16_t>(count16, Techs.size());
 
@@ -274,7 +274,7 @@ void DatFile::serializeObject(void)
   }
 
   if (gv >= GV_SWGB)
-    serialize<uint8_t>(SUnknown8);
+    serialize<uint8_t>(TechsEndMarker);
 
   if (gv >= GV_AoKA) // 9.38
   {
