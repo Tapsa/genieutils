@@ -54,10 +54,16 @@
     <ClInclude Include="include\genie\dat\PlayerColour.h">
       <Filter>Data</Filter>
     </ClInclude>
+    <ClInclude Include="include\genie\dat\QueueLocation.h">
+      <Filter>Data</Filter>
+    </ClInclude>
     <ClInclude Include="include\genie\dat\RandomMap.h">
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="include\genie\dat\Research.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\ResearchLocation.h">
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="include\genie\dat\ResourceUsage.h">
@@ -127,6 +133,9 @@
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="include\genie\dat\unit\Projectile.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="include\genie\dat\unit\TrainLocation.h">
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="include\genie\dat\unit\Type50.h">
@@ -221,6 +230,9 @@
     <ClCompile Include="src\dat\Research.cpp">
       <Filter>Data</Filter>
     </ClCompile>
+    <ClCompile Include="src\dat\ResearchLocation.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
     <ClCompile Include="src\dat\Sound.cpp">
       <Filter>Data</Filter>
     </ClCompile>
@@ -285,6 +297,9 @@
       <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="src\dat\unit\Projectile.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dat\unit\TrainLocation.cpp">
       <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="src\dat\unit\Type50.cpp">

@@ -21,6 +21,7 @@
 #ifndef GENIE_RESEARCH_H
 #define GENIE_RESEARCH_H
 #include "genie/file/ISerializable.h"
+#include "genie/dat/ResearchLocation.h"
 #include "ResourceUsage.h"
 
 namespace genie
@@ -57,9 +58,6 @@ public:
   /// MinGameVersion: aok
   int16_t FullTechMode = 0;
 
-  /// ID of the unit where this research is available to buy.
-  int16_t ResearchLocation = -1;
-
   union
   {
     /// Index of the name in language.dll
@@ -73,9 +71,6 @@ public:
     int16_t LanguageDLLDescriptionU16;
   };
 
-  /// Number of seconds it takes to research
-  int16_t ResearchTime = 0;
-
   /// Holds the techage id that corresponds to this data
   int16_t EffectID = -1;
 
@@ -85,15 +80,10 @@ public:
   /// ID of the research's icon in icon.slp (frame number - 1)
   int16_t IconID = -1;
 
-  /// ID of the button
-  uint8_t ButtonID = 0;
-
   /// The first number is 100 000 plus the Language FIle ID for the name/description.
   int32_t LanguageDLLHelp = 107000;
   /// The second number is 150 000 plus the Language File ID for TheSecondName.
   int32_t LanguageDLLTechTree = 150000;
-  /// The third number has been -1 in every technology so far.
-  int32_t HotKey = -1;
 
   /// Internal name
   std::string Name = "";
@@ -103,6 +93,8 @@ public:
   std::string Name2 = "";
 
   uint8_t Repeatable = false;
+
+  std::vector<ResearchLocation> ResearchLocations = std::vector<ResearchLocation>(1);
 
 private:
   virtual void serializeObject(void);

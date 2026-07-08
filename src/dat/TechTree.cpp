@@ -65,8 +65,10 @@ void TechTree::serializeObject(void)
 
   serializeSize<uint8_t>(building_count, BuildingConnections.size());
 
-  if (getGameVersion() >= GV_SWGB)
-   serializeSize<int16_t>(unit_count, UnitConnections.size());
+  if (getGameVersion() >= GV_C32)
+  {
+    serializeSize<int16_t>(unit_count, UnitConnections.size());
+  }
   else
   {
     uint8_t tbc = 0;

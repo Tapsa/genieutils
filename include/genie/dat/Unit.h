@@ -24,6 +24,7 @@
 #include "unit/DamageGraphic.h"
 #include "UnitCommand.h"
 #include "unit/AttackOrArmor.h"
+#include "unit/TrainLocation.h"
 #include "unit/DeadFish.h"
 #include "unit/Bird.h"
 #include "unit/Type50.h"
@@ -203,7 +204,6 @@ public:
   uint8_t MinimapColor = 0;
   int32_t LanguageDLLHelp = 105000;
   int32_t LanguageDLLHotKeyText = 155000;
-  int32_t HotKey = 16000;
   uint8_t Recyclable = 0;
   uint8_t EnableAutoGather = 0;
   uint8_t CreateDoppelgangerOnDeath = 0;

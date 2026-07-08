@@ -24,6 +24,8 @@
 #ifndef GENIE_TYPES_H
 #define GENIE_TYPES_H
 
+#include <map>
+
 namespace genie
 {
 
@@ -54,14 +56,42 @@ enum GameVersion
   GV_C19, GV_C20, // 26.23 - 40.3
   GV_C21, // 61.4
   GV_C22, GV_C23, GV_C24, GV_C25, GV_C26, GV_C27, // 61.6 - 63.4
+  GV_C28, // 64.6
+  GV_C29, // 64.8
+  GV_C30, // 65.0
+  GV_C31, // 65.5
+  GV_C32, // 67.9
   GV_SWGB, // 1.0
   GV_CC, // 1.1
   GV_CCV, // Terrain patch
   GV_CCV2 // Terrain patch + tech tree patch
 };
 
+const std::map<std::string, GameVersion> SupportedDatVersionsToGameVersion =
+{
+    {"VER 7.1", GV_C14},
+    {"VER 7.2", GV_C15},
+    {"VER 7.3", GV_C16},
+    {"VER 7.4", GV_C17},
+    {"VER 7.5", GV_C18},
+    {"VER 7.6", GV_C19},
+    {"VER 7.7", GV_C20},
+    {"VER 7.8", GV_C21},
+    {"VER 7.9", GV_C22},
+    {"VER 8.0", GV_C23},
+    {"VER 8.1", GV_C24},
+    {"VER 8.2", GV_C25},
+    {"VER 8.3", GV_C26},
+    {"VER 8.4", GV_C27},
+    {"VER 8.5", GV_C28},
+    {"VER 8.6", GV_C29},
+    {"VER 8.7", GV_C30},
+    {"VER 8.8", GV_C31},
+    {"VER 8.9", GV_C32},
+};
+
 const GameVersion GV_LatestTap = GV_T8;
-const GameVersion GV_LatestDE2 = GV_C27;
+const GameVersion GV_LatestDE2 = GV_C32;
 
 struct XYZF
 {

@@ -94,34 +94,11 @@ void DatFile::serializeObject(void)
   // Handle all different versions while in development.
   if (getGameVersion() == GV_C2) // 5.8
   {
-    if ("VER 8.4" == FileVersion)
-      setGameVersion(GV_C27);
-    else if ("VER 8.3" == FileVersion)
-      setGameVersion(GV_C26);
-    else if ("VER 8.2" == FileVersion)
-      setGameVersion(GV_C25);
-    else if ("VER 8.1" == FileVersion)
-      setGameVersion(GV_C24);
-    else if ("VER 8.0" == FileVersion)
-      setGameVersion(GV_C23);
-    else if ("VER 7.9" == FileVersion)
-      setGameVersion(GV_C22);
-    else if ("VER 7.8" == FileVersion)
-      setGameVersion(GV_C21);
-    else if ("VER 7.7" == FileVersion)
-      setGameVersion(GV_C20);
-    else if ("VER 7.6" == FileVersion)
-      setGameVersion(GV_C19);
-    else if ("VER 7.5" == FileVersion)
-      setGameVersion(GV_C18);
-    else if ("VER 7.4" == FileVersion)
-      setGameVersion(GV_C17);
-    else if ("VER 7.3" == FileVersion)
-      setGameVersion(GV_C16);
-    else if ("VER 7.2" == FileVersion)
-      setGameVersion(GV_C15);
-    else if ("VER 7.1" == FileVersion)
-      setGameVersion(GV_C14);
+    auto it = SupportedDatVersionsToGameVersion.find(FileVersion);
+    if (it != SupportedDatVersionsToGameVersion.end())
+    {
+      setGameVersion(it->second);
+    }
     else
     {
       std::cout << "Unsupported version " << FileVersion;
@@ -157,7 +134,7 @@ void DatFile::serializeObject(void)
 
     if (verbose_)
     {
-      std::cout << "Unkown1: " << count16 << std::endl;
+      std::cout << "CivCount: " << count16 << std::endl;
       std::cout << "WaypointSprite: " << WaypointSprite << std::endl;
       std::cout << "MoveToSprite: " << MoveToSprite << std::endl;
       std::cout << "GarrisonSound: " << GarrisonSound << std::endl;

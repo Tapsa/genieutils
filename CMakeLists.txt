@@ -62,7 +62,7 @@ include_directories(${GU_INCLUDE_DIRS})
 add_definitions(-Wall -Wsign-compare)
 
 #------------------------------------------------------------------------------#
-# Source files: 
+# Source files:
 #------------------------------------------------------------------------------#
 set(FILE_SRC
     src/file/ISerializable.cpp
@@ -80,11 +80,11 @@ if(${GU_LANG_SUPPORT})
 else(${GU_LANG_SUPPORT})
   set(LANG_SRC)
 endif(${GU_LANG_SUPPORT})
-    
 
 set(DAT_SRC
-    src/dat/Research.cpp 
-   
+    src/dat/Research.cpp
+    src/dat/ResearchLocation.cpp
+
     src/dat/Civ.cpp
     src/dat/TechageEffect.cpp
     src/dat/Techage.cpp
@@ -112,7 +112,8 @@ set(DAT_SRC
 
     src/dat/unit/AttackOrArmor.cpp
     src/dat/unit/DamageGraphic.cpp
-    src/dat/unit/DeadFish.cpp 
+    src/dat/unit/TrainLocation.cpp
+    src/dat/unit/DeadFish.cpp
     src/dat/unit/Bird.cpp
     src/dat/unit/Type50.cpp
     src/dat/unit/Projectile.cpp
@@ -156,7 +157,6 @@ set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
-                
 
 
 #------------------------------------------------------------------------------#
@@ -164,11 +164,11 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 #------------------------------------------------------------------------------#
 
 if(STATIC_COMPILE)
-  add_library(${Genieutils_LIBRARY} STATIC ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
+  add_library(${Genieutils_LIBRARY} STATIC ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
                                     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
   target_link_libraries(${Genieutils_LIBRARY} ${Boost_LIBRARIES} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES})
 else()
-  add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
+  add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
                                     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
   target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${LZ4_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
 endif(STATIC_COMPILE)

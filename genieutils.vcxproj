@@ -291,8 +291,10 @@
     <ClInclude Include="include\genie\dat\GraphicAttackSound.h" />
     <ClInclude Include="include\genie\dat\GraphicDelta.h" />
     <ClInclude Include="include\genie\dat\PlayerColour.h" />
+    <ClInclude Include="include\genie\dat\QueueLocation.h" />
     <ClInclude Include="include\genie\dat\RandomMap.h" />
     <ClInclude Include="include\genie\dat\Research.h" />
+    <ClInclude Include="include\genie\dat\ResearchLocation.h" />
     <ClInclude Include="include\genie\dat\ResourceUsage.h" />
     <ClInclude Include="include\genie\dat\Sound.h" />
     <ClInclude Include="include\genie\dat\SoundItem.h" />
@@ -316,6 +318,7 @@
     <ClInclude Include="include\genie\dat\unit\DamageGraphic.h" />
     <ClInclude Include="include\genie\dat\unit\DeadFish.h" />
     <ClInclude Include="include\genie\dat\unit\Projectile.h" />
+    <ClInclude Include="include\genie\dat\unit\TrainLocation.h" />
     <ClInclude Include="include\genie\dat\unit\Type50.h" />
     <ClInclude Include="include\genie\file\Compressor.h" />
     <ClInclude Include="include\genie\file\IFile.h" />
@@ -350,6 +353,7 @@
     <ClCompile Include="src\dat\PlayerColour.cpp" />
     <ClCompile Include="src\dat\RandomMap.cpp" />
     <ClCompile Include="src\dat\Research.cpp" />
+    <ClCompile Include="src\dat\ResearchLocation.cpp" />
     <ClCompile Include="src\dat\Sound.cpp" />
     <ClCompile Include="src\dat\SoundItem.cpp" />
     <ClCompile Include="src\dat\Techage.cpp" />
@@ -372,6 +376,7 @@
     <ClCompile Include="src\dat\unit\DamageGraphic.cpp" />
     <ClCompile Include="src\dat\unit\DeadFish.cpp" />
     <ClCompile Include="src\dat\unit\Projectile.cpp" />
+    <ClCompile Include="src\dat\unit\TrainLocation.cpp" />
     <ClCompile Include="src\dat\unit\Type50.cpp" />
     <ClCompile Include="src\file\Compressor.cpp" />
     <ClCompile Include="src\file\IFile.cpp" />

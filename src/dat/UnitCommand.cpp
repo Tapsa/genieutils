@@ -77,6 +77,10 @@ void Task::serializeObject(void)
   {
     serialize<uint32_t>(WwiseResourceGatheringSoundID);
     serialize<uint32_t>(WwiseResourceDepositSoundID);
+    if (gv >= GV_C28)
+    {
+      serialize<int16_t>(Enabled);
+    }
   }
 }
 

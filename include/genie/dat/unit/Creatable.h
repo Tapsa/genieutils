@@ -24,6 +24,7 @@
 #define GENIE_CREATABLE_H
 
 #include "genie/file/ISerializable.h"
+#include "TrainLocation.h"
 #include "../ResourceUsage.h"
 
 namespace genie
@@ -44,9 +45,7 @@ public:
   typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
 
   std::vector<ResourceCost> ResourceCosts;
-  int16_t TrainTime = 0;
-  int16_t TrainLocationID = -1;
-  uint8_t ButtonID = 0;
+  std::vector<TrainLocation> TrainLocations = std::vector<TrainLocation>(1);
   float RearAttackModifier = 0;
   float FlankAttackModifier = 0;
   uint8_t CreatableType = 0;

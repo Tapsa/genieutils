@@ -124,7 +124,13 @@ void Unit::serializeObject(void)
   {
     serialize<int32_t>(LanguageDLLHelp);
     serialize<int32_t>(LanguageDLLHotKeyText);
-    serialize<int32_t>(HotKey);
+
+    if (gv < GV_C30 || gv > GV_LatestDE2)
+    {
+      Creatable.TrainLocations.resize(1);
+      serialize<int32_t>(Creatable.TrainLocations.front().HotKeyID);
+    }
+
     serialize<uint8_t>(Recyclable);
     serialize<uint8_t>(EnableAutoGather);
     serialize<uint8_t>(CreateDoppelgangerOnDeath);

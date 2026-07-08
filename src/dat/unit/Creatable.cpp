@@ -41,6 +41,8 @@ Creatable::~Creatable()
 void Creatable::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
+
+  updateGameVersion(TrainLocations);
 }
 
 unsigned short Creatable::getResourceCostsSize()
@@ -53,9 +55,17 @@ void Creatable::serializeObject(void)
   GameVersion gv = getGameVersion();
 
   serializeSub<ResourceCost>(ResourceCosts, 3);
-  serialize<int16_t>(TrainTime);
-  serialize<int16_t>(TrainLocationID);
-  serialize<uint8_t>(ButtonID);
+  
+  if (gv >= GV_C29 && gv <= GV_LatestDE2)
+  {
+    int16_t train_location_count;
+    serializeSize<int16_t>(train_location_count, TrainLocations.size());
+    serializeSub<TrainLocation>(TrainLocations, train_location_count);
+  }
+  else
+  {
+    serializeSub<TrainLocation>(TrainLocations, 1);
+  }
 
   if (gv >= GV_AoEB) // 7.01
   {

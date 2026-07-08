@@ -63,6 +63,7 @@ public:
   int16_t ResourceDepositSoundID = -1;
   uint32_t WwiseResourceGatheringSoundID = 0;
   uint32_t WwiseResourceDepositSoundID = 0;
+  int16_t Enabled = -1;
 
 private:
   virtual void serializeObject(void);
