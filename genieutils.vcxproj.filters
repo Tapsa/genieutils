@@ -350,9 +350,6 @@
     <ClCompile Include="src\util\Logger.cpp">
       <Filter>Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\AGE\Misc Files\zlib.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="src\resource\SmxFile.cpp">
       <Filter>Sprites</Filter>
     </ClCompile>

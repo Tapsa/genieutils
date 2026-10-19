@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2019  Mikko "Tapsa" P
+    Copyright (C) 2019 - 2026  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,12 +24,6 @@
 #include <iostream>
 #include <memory>
 #include "ISerializable.h"
-
-namespace boost {
-namespace iostreams {
-struct zlib_params;
-}
-}
 
 namespace genie
 {
@@ -63,7 +57,6 @@ public:
   static void decompress(std::istream &source, std::ostream &sink);
 
 private:
-
   ISerializable *obj_;
 
   std::istream *istream_ = 0;
@@ -73,13 +66,6 @@ private:
   std::shared_ptr<std::iostream> bufferedStream_;
 
   Compressor();
-
-  //----------------------------------------------------------------------------
-  /// Get zlib parameters necessary for (de)compressing genie archives.
-  ///
-  /// @return struct with set parameters
-  //
-  boost::iostreams::zlib_params getZlibParams(void) const;
 
   //----------------------------------------------------------------------------
   /// Decompresses istream and sets uncompressedIstream_.
@@ -96,7 +82,6 @@ private:
 
   //----------------------------------------------------------------------------
   void stopCompression(void);
-
 };
 
 }

@@ -2,6 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
+    Copyright (C) 2026  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -19,28 +20,104 @@
 
 #include "genie/file/Compressor.h"
 
+#include <zlib.h>
 #include <vector>
-
-#include <boost/interprocess/streams/vectorstream.hpp>
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-#include <boost/iostreams/device/back_inserter.hpp>
-#include <boost/iostreams/copy.hpp>
-
-using namespace boost;
-using namespace boost::iostreams;
+#include <sstream>
+#include <stdexcept>
 
 namespace genie
 {
 
-typedef boost::interprocess::basic_vectorstream< std::vector<char> > v_stream;
+// Helper: inflate (decompress) raw deflate data
+static std::vector<char> inflateRaw(const std::vector<char> &compressed)
+{
+  if (compressed.empty())
+    return {};
+
+  z_stream strm{};
+  strm.next_in = reinterpret_cast<Bytef *>(const_cast<char *>(compressed.data()));
+  strm.avail_in = static_cast<uInt>(compressed.size());
+
+  if (inflateInit2(&strm, -15) != Z_OK)
+    throw std::runtime_error("inflateInit2 failed");
+
+  std::vector<char> out;
+  out.resize(compressed.size() * 2);
+  size_t offset = 0;
+
+  int ret = Z_OK;
+  while (ret != Z_STREAM_END)
+  {
+    if (offset >= out.size())
+      out.resize(out.size() * 2);
+
+    strm.next_out = reinterpret_cast<Bytef *>(out.data() + offset);
+    strm.avail_out = static_cast<uInt>(out.size() - offset);
+
+    ret = inflate(&strm, Z_NO_FLUSH);
+    if (ret == Z_STREAM_ERROR || ret == Z_DATA_ERROR || ret == Z_MEM_ERROR)
+    {
+      inflateEnd(&strm);
+      throw std::runtime_error("inflate failed");
+    }
+
+    offset += (out.size() - offset) - strm.avail_out;
+  }
+
+  inflateEnd(&strm);
+  out.resize(offset);
+  return out;
+}
+
+// Helper: deflate (compress) to raw deflate
+static std::vector<char> deflateRaw(const std::vector<char> &uncompressed)
+{
+  if (uncompressed.empty())
+    return {};
+
+  z_stream strm{};
+  if (deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED,
+                   -15, 9, Z_DEFAULT_STRATEGY) != Z_OK)
+    throw std::runtime_error("deflateInit2 failed");
+
+  strm.next_in = reinterpret_cast<Bytef *>(const_cast<char *>(uncompressed.data()));
+  strm.avail_in = static_cast<uInt>(uncompressed.size());
+
+  std::vector<char> out;
+  out.resize(uncompressed.size());
+  size_t offset = 0;
+
+  int ret = Z_OK;
+  while (ret != Z_STREAM_END)
+  {
+    if (offset >= out.size())
+      out.resize(out.size() * 2);
+
+    strm.next_out = reinterpret_cast<Bytef *>(out.data() + offset);
+    strm.avail_out = static_cast<uInt>(out.size() - offset);
+
+    ret = deflate(&strm, Z_FINISH);
+    if (ret == Z_STREAM_ERROR)
+    {
+      deflateEnd(&strm);
+      throw std::runtime_error("deflate failed");
+    }
+
+    offset += (out.size() - offset) - strm.avail_out;
+  }
+
+  deflateEnd(&strm);
+  out.resize(offset);
+  return out;
+}
 
 Compressor::Compressor()
 {
 }
 
 //------------------------------------------------------------------------------
-Compressor::Compressor(ISerializable *obj) : obj_(obj)
+Compressor::Compressor(ISerializable *obj) :
+  obj_(obj)
 {
 }
 
@@ -52,7 +129,7 @@ Compressor::~Compressor()
 //------------------------------------------------------------------------------
 void Compressor::beginCompression(void)
 {
-  switch(obj_->getOperation())
+  switch (obj_->getOperation())
   {
     case ISerializable::OP_READ:
       istream_ = obj_->getIStream();
@@ -70,14 +147,13 @@ void Compressor::beginCompression(void)
 
     default:
       break;
-
   }
 }
 
 //------------------------------------------------------------------------------
 void Compressor::endCompression(void)
 {
-  switch(obj_->getOperation())
+  switch (obj_->getOperation())
   {
     case ISerializable::OP_READ:
       stopDecompression();
@@ -89,37 +165,24 @@ void Compressor::endCompression(void)
 
     default:
       break;
-
   }
 }
 
 //------------------------------------------------------------------------------
 void Compressor::decompress(std::istream &source, std::ostream &sink)
 {
-  Compressor cmp;
+  // Read the whole compressed stream into a vector
+  std::vector<char> compressed(
+      (std::istreambuf_iterator<char>(source)),
+      std::istreambuf_iterator<char>());
 
-  cmp.istream_ = &source;
+  if (compressed.empty())
+    return;
 
-  cmp.startDecompression();
+  std::vector<char> uncompressed = inflateRaw(compressed);
 
-  copy(*cmp.uncompressedIstream_, sink);
-}
-
-//------------------------------------------------------------------------------
-boost::iostreams::zlib_params Compressor::getZlibParams(void ) const
-{
-  zlib_params params;
-
-  // important
-  params.window_bits = -15;
-
-  // default
-  params.level = -1;
-  params.method = zlib::deflated;
-  params.mem_level = 9;
-  params.strategy = zlib::default_strategy;
-
-  return params;
+  // Write the result to the sink
+  sink.write(uncompressed.data(), static_cast<std::streamsize>(uncompressed.size()));
 }
 
 //------------------------------------------------------------------------------
@@ -127,48 +190,38 @@ void Compressor::startDecompression(void)
 {
   try
   {
-    filtering_istreambuf in;
+    // Read the whole compressed stream into a vector
+    std::vector<char> compressed(
+        (std::istreambuf_iterator<char>(*istream_)),
+        std::istreambuf_iterator<char>());
 
-    // register decompressor
-    in.push(zlib_decompressor(getZlibParams()));
+    std::vector<char> uncompressed = inflateRaw(compressed);
 
-    in.push(*istream_);
-
-    // extract file to buffer
-    std::vector<char> file_buf;
-    back_insert_device< std::vector<char> > b_ins(file_buf);
-
-    copy(in, b_ins);
-
-    uncompressedIstream_ = std::shared_ptr<std::istream>(new v_stream(file_buf));
+    // Provide an istream over the uncompressed data
+    auto *ss = new std::stringstream(
+        std::string(uncompressed.begin(), uncompressed.end()));
+    uncompressedIstream_.reset(ss);
   }
-  catch ( const zlib_error &z_err)
+  catch (...)
   {
     uncompressedIstream_.reset();
-    std::cerr << "Zlib decompression failed with error code: "
-              <<  z_err.error() << std::endl;
-    throw z_err;
+    throw;
   }
 }
 
 //------------------------------------------------------------------------------
 void Compressor::stopDecompression(void)
 {
-  istream_ = 0;
-
+  istream_ = nullptr;
   uncompressedIstream_.reset();
 }
 
 //------------------------------------------------------------------------------
 void Compressor::startCompression(void)
 {
-  // create buffer
-  std::vector<char> file_buf;
-
-  bufferedStream_ = std::shared_ptr<std::iostream>(new v_stream(file_buf));
-
+  // Just create an empty stringstream that the rest of the code will write into
+  bufferedStream_ = std::make_shared<std::stringstream>();
   ostream_ = obj_->getOStream();
-
   obj_->setOStream(*bufferedStream_);
 }
 
@@ -177,25 +230,25 @@ void Compressor::stopCompression(void)
 {
   try
   {
-    filtering_ostreambuf out;
+    // Get the data that was written into the buffered stream
+    auto *ss = dynamic_cast<std::stringstream *>(bufferedStream_.get());
+    if (!ss)
+      throw std::runtime_error("unexpected stream type");
 
-    out.push(zlib_compressor(getZlibParams()));
+    std::string data = ss->str();
+    std::vector<char> uncompressed(data.begin(), data.end());
+    std::vector<char> compressed = deflateRaw(uncompressed);
 
-    out.push(*ostream_);
-
-    copy (*bufferedStream_, out);
+    // Write the compressed data to the original output stream
+    ostream_->write(compressed.data(), static_cast<std::streamsize>(compressed.size()));
 
     obj_->setOStream(*ostream_);
-    ostream_ = 0;
-
+    ostream_ = nullptr;
     bufferedStream_.reset();
-
   }
-  catch (const zlib_error &z_err)
+  catch (...)
   {
-    std::cerr << "Zlib compression failed with error code: "
-              <<  z_err.error() << std::endl;
-    throw z_err;
+    throw;
   }
 }
 
