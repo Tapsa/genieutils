@@ -42,7 +42,7 @@ static std::vector<char> inflateRaw(const std::vector<char> &compressed)
     throw std::runtime_error("inflateInit2 failed");
 
   std::vector<char> out;
-  out.resize(compressed.size() * 2);
+  out.resize(compressed.size() * 8);
   size_t offset = 0;
 
   int ret = Z_OK;
