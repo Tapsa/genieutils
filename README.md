@@ -17,8 +17,6 @@ because of possible bugs.
 ## Dependencies ##
  
 To compile this project you will need at least:
- *   boost-iostreams >= 1.42
- *   boost-program-options >= 1.42
  *   zlib
    
 If cmake finds libiconv it will automatically enable language*.dll file
